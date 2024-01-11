@@ -1,0 +1,529 @@
+Part : <./Data/ships/terran/base_part_terran.rules>/Part
+{
+	NameKey = "Parts/Turbine"
+	IconNameKey = "Parts/TurbineIcon"
+	ID = YBJ.MMCTturbine // Part IDs must always be in the form of "author_name.part_name". If making your own mod, do *not* use "cosmoteer" as your author name, because it may conflict with future vanilla parts.
+	EditorGroup = "Power"
+	DescriptionKey = "Parts/TurbineDesc"
+	Resources
+	[
+		[steel, 16]
+		[coil, 9]
+		[tristeel, 3]
+	]
+	AIValueFactor = 5
+	TypeCategories = [modular_reactor, mmct_turbine, is_crewed, thermal_sink]
+	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTHeat]
+	Size = [2, 3]
+	MaxHealth = 1000
+	IsFlippable = true
+	BlockedTravelCells
+	[
+		[1, 0]
+		[1, 1]
+	]
+	ForceManhattanPathInPart = true
+	AllowedDoorLocations
+	[
+		[0, 3]
+		[0, -1]
+		[0, 1]
+	]
+	EditorIcon
+	{
+		Texture
+		{
+			File = "icon.png"
+			SampleMode = Linear
+		}
+		Size = [42.66, 64]
+	}
+	
+	// Conversion ratio for transformer - reactor power to batteries
+	transformerRatio = (&<../transformer/transformer.rules>/Part/Components/RobotsInDisguise/ToQuantity) / (&<../transformer/transformer.rules>/Part/Components/RobotsInDisguise/FromQuantity)
+	
+	Components : ^/0/Components
+	{
+
+		IsOperational
+		{
+			Type = MultiToggle
+			Toggles = [PowerToggle, PartCrew, HasThermalInPlace]
+			Mode = All
+		}
+
+		PowerToggle
+		{
+			Type = UIToggle
+			ToggleID = "on_off"
+			Default = 1
+			RequiresCommand = false
+		}
+
+		CommandConsumer
+		{
+			Type = CommandConsumer
+			OperationalToggle = PowerToggle
+			CommandPoints = 15
+		}
+
+		HeatStorage
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&../TurnHeatToPower/FromQuantity) * 3 * 5
+			OperationalToggle = IsOperational
+		}
+		
+		IsRequestingHeat
+		{
+			Type = MultiToggle
+			Toggles = [{Toggle = IsFullyHeated, Invert = true}, HasThermalInPlace]
+			Mode = All
+		}
+		
+		HasThermalInPlace
+		{
+			Type = ToggleProxy
+			PartLocation = [1, -1]
+			ProxyableComponents
+			[
+				{
+					PartCriteria
+					{
+						Category = thermal
+						Left = 1
+						Bottom = 0
+					}
+					ComponentID = IsOperational
+				}
+			]
+		}
+		
+		IsFullyHeated
+		{
+			Type = ThresholdToggle
+			ValueFrom = HeatStorage
+			MinAmount = 99%
+		}
+		
+		PowerStorage
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&../TurnHeatToPower/ToQuantity) * 6 * 5
+			OperationalToggle = IsOperational
+		}
+		
+		HeatDelivery
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ResourceStorages = [HeatStorage]
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [WasteHeat]
+				ComponentID = HeatStorage
+			}
+			AddMode = DistributeEvenly
+			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+		}
+		
+		PowerDelivery
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ResourceStorages = [PowerStorage]
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [PowerOutput]
+				ComponentID = PowerStorage
+			}
+			AddMode = DistributeEvenly
+			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+		}
+		
+		/*
+		 500 heat/0.1 max from pipe
+		  99 heat/0.1 wasted
+		 300 heat/0.1 used for power production
+		6400 power/0.1 max power production from heat (production = 64)
+		8400 power/0.1 max power output (bandwidth == 84)
+		300 power/0.1 power transformed to 2400 batteries/0.1 (transformer bandwidth == 24)
+		----
+		=> 2.67 transformers max capacity => 3 transformers should drain turbine, 2 should keep it full always.
+			=> Should sustain 4 substations at full (64 production / 16 substation bandwidth = 4), 5th should drain turbine (64 power production < 72 bandwidth of 3 transformers < 80 bandwidth of 5 substations < 84 turbine bandwidth)
+		*/
+		SendHeatToWaste
+		{
+			Type = ResourceConverter
+			FromStorage = HeatStorage
+			FromQuantity = 99
+			ToStorage = HeatDelivery
+			ToQuantity = 99
+			Interval = 0.1
+		}
+		
+		SendPowerToPoint
+		{
+			Type = ResourceConverter
+			FromStorage = PowerStorage
+			FromQuantity = 8400 / (&../../transformerRatio)
+			ToStorage = PowerDelivery
+			ToQuantity = 8400 / (&../../transformerRatio)
+			Interval = 0.1
+		}
+		
+		TurnHeatToPower
+		{
+			Type = ResourceConverter
+			FromStorage = HeatStorage
+			FromQuantity = 300
+			ToStorage = PowerStorage
+			ToQuantity = 6400 / (&../../transformerRatio)
+			Interval = 0.1
+			MinFromQuantityForConversion = 150
+			OperationalToggle = PowerToggle
+		}
+
+		WasteHeat
+		{
+			Type = AreaBuffProvider
+			OperationalToggle = IsOperational
+			BuffType = MMCTHeat
+			BuffArea = [1, -1, 2, 3]
+		}
+		
+		PowerOutput
+		{
+			Type = AreaBuffProvider
+			OperationalToggle = IsOperational
+			BuffType = MMCTReactorPower
+			BuffArea = [1, 0, 2, 4]
+			//Criteria {
+			//    Category = mmct_transformer
+			//}
+		}
+		CrewLocation1
+		{
+			Type = CrewLocation
+			Location = [1.2, 2.6]
+			Rotation = 90d
+		}
+		PartCrew
+		{
+			Type = PartCrew
+			Crew = 1
+			DefaultPriority = &/PRIORITIES/ControlRoom_Crew
+			PrerequisitesBeforeCrewing = [PowerToggle]
+			CrewDestinations
+			[
+				&../../CrewLocation1/Location
+			]
+			CrewLocations
+			[
+				CrewLocation1
+			]
+		}
+		Graphics
+		{
+			Type = Graphics
+			Location = [1, 1.5]
+			Floor
+			{
+				Layer = "floors"
+				DamageLevels
+				[
+					{
+						File = "floor.png"
+						Size = [2, 3]
+					}
+					{
+						File = "floor_33.png"
+						Size = [2, 3]
+					}
+					{
+						File = "floor_66.png"
+						Size = [2, 3]
+					}
+				]
+			}
+			OperationalDoodad
+			{
+				Layer = "doodads_low"
+				DamageLevels
+				[
+					{
+						File = "doodads.png"
+						Size = [2, 3]
+					}
+					{
+						File = "doodads_33.png"
+						Size = [2, 3]
+					}
+					{
+						File = "doodads_66.png"
+						Size = [2, 3]
+					}
+				]
+			}
+			Walls
+			{
+				Layer = "walls"
+				DamageLevels
+				[
+					{
+						File = "walls.png"
+						Size = [2, 3]
+					}
+					{
+						File = "walls_33.png"
+						Size = [2, 3]
+					}
+					{
+						File = "walls_66.png"
+						Size = [2, 3]
+					}
+				]
+			}
+			Roof
+			{
+				Layer = "roofs"
+				DamageLevels
+				[
+					{
+						File = "roof.png"
+						NormalsFile = "roof_normals.png"
+						Size = [2, 3]
+					}
+					{
+						File = "roof_33.png"
+						NormalsFile = "roof_normals_33.png"
+						Size = [2, 3]
+					}
+					{
+						File = "roof_66.png"
+						NormalsFile = "roof_normals_66.png"
+						Size = [2, 3]
+					}
+				]
+			}
+		}
+
+		ActiveLights
+		{
+		Type = Graphics
+		Location = [1, 1.5]
+		OperationalToggle = IsOperational
+			OperationalDoodad
+			{
+				Layer = "doodads_high"
+				DamageLevels
+				[
+					{
+						File = "ActiveLights.png"
+						Size = [2, 3]
+					}
+				]
+			}
+		}
+		
+		CrewOperationalDoodad
+		{
+		Type = Graphics
+		Location = [1, 1.5]
+		OperationalToggle = IsOperational
+			OperationalDoodad
+			{
+				Layer = "doodads_high"
+				DamageLevels
+				[
+					{
+						AnimationFiles
+						[
+							"T1.png"
+							"T2.png"
+							"T3.png"
+							"T4.png"
+							"T5.png"
+						]
+						Size = [2, 3]
+						AnimationInterval = 0.4
+					}
+				]
+			}
+		
+		}
+	
+		Blueprints
+		{
+			Type = BlueprintSprite
+			File = "blueprints.png"
+			Size = [2, 3]
+		}
+		
+		AmmoSprites
+		{
+			Type = ResourceSprites
+			Location = [1, 1.5]
+			ResourceStorage = HeatStorage
+			Layer = "doodads_high"
+			HasZeroResourceSprite = false
+			ResourceLevels
+			[
+				{
+					File = "B1.png"
+					Size = [2, 3]
+				}
+				
+				{
+					File = "B2.png"
+					Size = [2, 3]
+				}
+				
+				{
+					File = "B3.png"
+					Size = [2, 3]
+				}
+			]
+		}
+		
+		AmmoSprites2
+		{
+			Type = ResourceSprites
+			Location = [1, 1.5]
+			ResourceStorage = PowerStorage
+			Layer = "doodads_high"
+			HasZeroResourceSprite = false
+			ResourceLevels
+			[
+				{
+					File = "B21.png"
+					Size = [2, 3]
+				}
+				
+				{
+					File = "B22.png"
+					Size = [2, 3]
+				}
+				
+				{
+					File = "B23.png"
+					Size = [2, 3]
+				}
+				
+				{
+					File = "B24.png"
+					Size = [2, 3]
+				}
+				
+				{
+					File = "B25.png"
+					Size = [2, 3]
+				}
+				
+				{
+					File = "B26.png"
+					Size = [2, 3]
+				}
+			]
+		}
+	
+		DestroyedEffects
+		{
+			Type = DeathEffects
+			Location = [1, 1]
+			IncludeWhenUnderConstruction = false
+
+			MediaEffects
+			[
+				&<particles/turbine_explode.rules>
+				&<particles/turbine_explode_flash.rules>
+				&<particles/turbine_shockwave.rules>
+				&<./Data/common_effects/particles/explosions/med_part_explode_debris.rules>
+				&<./Data/common_effects/particles/explosions/big_part_explode_smoke.rules>
+
+				: /BASE_SOUNDS/AudioExterior
+				{
+					Sound = "destroyed.wav"
+					Volume = 1
+					SpeedVariation = .25
+				}
+
+				: /BASE_SHAKE
+				{
+					ShakeAmount = .25
+					Duration = 2
+				}
+			]
+
+			FactorHitEffectsWith = HeatStorage
+			HitEffects
+			[
+				{
+					Type = ExplosiveDamage
+					TotalDamage = 32000
+					Radius = 24
+					Delay = .05
+					ExpandDuration = .1
+					ExpandStartRadius = 4
+					ExpandLoss = 100%
+					FireChancePerNDamage = 200%
+					ImpulsePerNDamage = 10
+					NDamage = 16000
+					Filter
+					{
+						OperationalHealth = true
+						StructuralHealth = false
+						Friendlies = true
+					}
+				}
+				{
+					Type = ExplosiveDamage
+					TotalDamage = 32000
+					Radius = 18
+					Delay = .05
+					ExpandDuration = .05
+					ExpandStartRadius = 2
+					ExpandLoss = 100%
+					ImpulsePerNDamage = 5
+					NDamage = 4000
+					Filter
+					{
+						OperationalHealth = false
+						StructuralHealth = true
+						Friendlies = true
+					}
+				}
+			]
+		}
+		Indicators
+		{
+			Type = IndicatorSprites
+			Location = [1, 1]
+			Layer = "indicators"
+			Indicators
+			[
+				// Out of power.
+				{
+					Toggle = HeatStorage
+					AtlasSprite
+					{
+						File = &/INDICATORS/NoPower
+						Size = [1, 1]
+					}
+				}
+			]
+		}
+	}
+	
+	Stats
+	{
+		MMCTPowerBandwidth = (1 / (&~/Part/Components/SendPowerToPoint/Interval) * (&~/Part/Components/SendPowerToPoint/ToQuantity) / 1000) * (&../transformerRatio)
+		MMCTThermalUse = ((1 / (&~/Part/Components/TurnHeatToPower/Interval) * (&~/Part/Components/TurnHeatToPower/FromQuantity)) + (1 / (&~/Part/Components/SendHeatToWaste/Interval) * (&~/Part/Components/SendHeatToWaste/FromQuantity))) / 100
+		MMCTThermalCapacity = (&~/Part/Components/HeatStorage/MaxResources) / 100
+		MMCTThermalEfficiency = ((&~/Part/Components/SendHeatToWaste/FromQuantity) / ((&~/Part/Components/TurnHeatToPower/FromQuantity) + (&~/Part/Components/SendHeatToWaste/FromQuantity))) * 100
+		PowerCapacity = (&~/Part/Components/PowerStorage/MaxResources) / 1000 * (&../transformerRatio)
+		PowerGeneration = (1 / (&~/Part/Components/TurnHeatToPower/Interval) * (&~/Part/Components/TurnHeatToPower/ToQuantity) / 1000) * (&../transformerRatio)
+	}
+}

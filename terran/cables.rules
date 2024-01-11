@@ -1,0 +1,353 @@
+// Variables
+BatteryStorageMax = 2000
+transferQuantity = 1000
+transferInterval = 0.0625
+
+// Toggles
+CanProvideBatteryPower
+{
+    Type = Toggle
+}
+
+IsHeatUpEmptyish
+{
+    Type = ThresholdToggle
+    ValueFrom = CombinedBatteryStorageNotDown
+    MaxAmount = (&BatteryStorageMax) - (&transferQuantity)
+}
+IsHeatDownEmptyish
+{
+    Type = ThresholdToggle
+    ValueFrom = CombinedBatteryStorageNotUp
+    MaxAmount = (&BatteryStorageMax) - (&transferQuantity)
+}
+IsHeatLeftEmptyish
+{
+    Type = ThresholdToggle
+    ValueFrom = CombinedBatteryStorageNotRight
+    MaxAmount = (&BatteryStorageMax) - (&transferQuantity)
+}
+IsHeatRightEmptyish
+{
+    Type = ThresholdToggle
+    ValueFrom = CombinedBatteryStorageNotLeft
+    MaxAmount = (&BatteryStorageMax) - (&transferQuantity)
+}
+
+// Proxies and storages
+ProxyBatteryStorageUp
+{
+    Type = ResourceStorageProxy
+    ResourceType = battery
+    PartLocation = [0, -1]
+    ProxyableComponents
+    [
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 0
+            }
+            ComponentID = BatteryStorageDown
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 1
+            }
+            ComponentID = BatteryStorageRight
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 2
+            }
+            ComponentID = BatteryStorageUp
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 3
+            }
+            ComponentID = BatteryStorageLeft
+        }
+        {
+            PartCriteria
+            {
+                Category = uses_power
+            }
+            ComponentID = BatteryStorage
+            IsOperational = CanProvideBatteryPower
+        }
+    ]
+}
+ProxyBatteryStorageDown
+{
+    Type = ResourceStorageProxy
+    ResourceType = battery
+    PartLocation = [0, 1]
+    ProxyableComponents
+    [
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 0
+            }
+            ComponentID = BatteryStorageUp
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 1
+            }
+            ComponentID = BatteryStorageLeft
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 2
+            }
+            ComponentID = BatteryStorageDown
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 3
+            }
+            ComponentID = BatteryStorageRight
+        }
+        {
+            PartCriteria
+            {
+                Category = uses_power
+            }
+            ComponentID = BatteryStorage
+            IsOperational = CanProvideBatteryPower
+        }
+    ]
+}
+ProxyBatteryStorageLeft
+{
+    Type = ResourceStorageProxy
+    ResourceType = battery
+    PartLocation = [-1, 0]
+    ProxyableComponents
+    [
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 0
+            }
+            ComponentID = BatteryStorageRight
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 1
+            }
+            ComponentID = BatteryStorageUp
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 2
+            }
+            ComponentID = BatteryStorageLeft
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 3
+            }
+            ComponentID = BatteryStorageLeftDown
+        }
+        {
+            PartCriteria
+            {
+                Category = uses_power
+            }
+            ComponentID = BatteryStorage
+            IsOperational = CanProvideBatteryPower
+        }
+    ]
+}
+ProxyBatteryStorageRight
+{
+    Type = ResourceStorageProxy
+    ResourceType = battery
+    PartLocation = [1, 0]
+    ProxyableComponents
+    [
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 0
+            }
+            ComponentID = BatteryStorageLeft
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 1
+            }
+            ComponentID = BatteryStorageDown
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 2
+            }
+            ComponentID = BatteryStorageRight
+        }
+        {
+            PartCriteria
+            {
+                Category = cable
+                Rot = 3
+            }
+            ComponentID = BatteryStorageLeftUp
+        }
+        {
+            PartCriteria
+            {
+                Category = uses_power
+            }
+            ComponentID = BatteryStorage
+            IsOperational = CanProvideBatteryPower
+        }
+    ]
+}
+
+CombinedBatteryStorageNotUp
+{
+    Type = MultiResourceStorage
+    ResourceType = battery
+    AddMode = PrioritizeMostEmptyCapacity
+    ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+    ResourceStorages = [ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
+}
+CombinedBatteryStorageNotDown
+{
+    Type = MultiResourceStorage
+    ResourceType = battery
+    AddMode = PrioritizeMostEmptyCapacity
+    ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+    ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
+}
+CombinedBatteryStorageNotLeft
+{
+    Type = MultiResourceStorage
+    ResourceType = battery
+    AddMode = PrioritizeMostEmptyCapacity
+    ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+    ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageRight]
+}
+CombinedBatteryStorageNotRight
+{
+    Type = MultiResourceStorage
+    ResourceType = battery
+    AddMode = PrioritizeMostEmptyCapacity
+    ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+    ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageLeft]
+}
+
+BatteryStorage
+{
+    Type = MultiResourceStorage
+    ResourceType = battery
+    AddMode = DistributeEvenly
+    RemoveMode = DistributeEvenly
+    ResourceStorages = [BatteryStorageUp, BatteryStorageDown, BatteryStorageLeft, BatteryStorageRight]
+}
+
+// Real storages		
+BatteryStorageUp
+{
+    Type = ResourceStorage
+    ResourceType = battery
+    MaxResources = &BatteryStorageMax
+    IncludeWhenUnderConstruction = false
+}
+BatteryStorageDown
+{
+    Type = ResourceStorage
+    ResourceType = battery
+    MaxResources = &BatteryStorageMax
+    IncludeWhenUnderConstruction = false
+}
+BatteryStorageLeft
+{
+    Type = ResourceStorage
+    ResourceType = battery
+    MaxResources = &BatteryStorageMax
+    IncludeWhenUnderConstruction = false
+}
+BatteryStorageRight
+{
+    Type = ResourceStorage
+    ResourceType = battery
+    MaxResources = &BatteryStorageMax
+    IncludeWhenUnderConstruction = false
+}
+
+// Workers
+ThermalLoopFromUp
+{
+    Type = ResourceConverter
+    FromStorage = BatteryStorageUp
+    FromQuantity = &transferQuantity
+    ToStorage = CombinedBatteryStorageNotUp
+    ToQuantity = &transferQuantity
+    Interval = &transferInterval
+    OperationalToggle = IsHeatDownEmptyish
+}
+
+
+ThermalLoopFromDown
+{
+    Type = ResourceConverter
+    FromStorage = BatteryStorageDown
+    FromQuantity = &transferQuantity
+    ToStorage = CombinedBatteryStorageNotDown
+    ToQuantity = &transferQuantity
+    Interval = &transferInterval
+    OperationalToggle = IsHeatUpEmptyish
+}
+
+
+ThermalLoopFromLeft
+{
+    Type = ResourceConverter
+    FromStorage = BatteryStorageLeft
+    FromQuantity = &transferQuantity
+    ToStorage = CombinedBatteryStorageNotLeft
+    ToQuantity = &transferQuantity
+    Interval = &transferInterval
+    OperationalToggle = IsHeatRightEmptyish
+}
+
+
+ThermalLoopFromRight
+{
+    Type = ResourceConverter
+    FromStorage = BatteryStorageRight
+    FromQuantity = &transferQuantity
+    ToStorage = CombinedBatteryStorageNotRight
+    ToQuantity = &transferQuantity
+    Interval = &transferInterval
+    OperationalToggle = IsHeatLeftEmptyish
+}

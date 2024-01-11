@@ -1,0 +1,214 @@
+Part : <./Data/ships/terran/base_part_terran.rules>/Part
+{
+	NameKey = "Parts/Cable"
+	IconNameKey = "Parts/CableIcon"
+	ID = YBJ.MMCTcable // Part IDs must always be in the form of "author_name.part_name". If making your own mod, do *not* use "cosmoteer" as your author name, because it may conflict with future vanilla parts.
+	DescriptionKey = "Parts/CableDesc"
+	Resources
+	[
+		[steel, 4]
+		[coil, 2]
+	]
+	AIValueFactor = 0
+	Size = [1, 1]
+	MaxHealth = 800
+	CreatePartPerTileWhenGrabbed = ""
+	CrewSpeedFactor = .66
+	CrewCongestedSpeedFactor = .5
+	TypeCategories = [corridor, cable]
+	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableReceptor]
+	IsRotateable = false
+	IsWalled = false
+	IsSelfDestructible = false
+	GeneratorRequiresDoor = false
+	IgnoreRotationForMirroredSelection = true
+	EditorIcon
+	{
+		Texture
+		{
+			File = "icon.png"
+			SampleMode = Linear
+		}
+		Size = [32, 32]
+	}
+	Components : ^/0/Components
+	{
+
+		IsOperational
+		{
+			Type = MultiToggle
+			Toggles = [BatteryStorage]
+			Mode = All
+		}
+		
+		ColorPicker
+		{
+			Type = UIColor
+			ColorID = "roof_light"
+			Default = White
+		}
+
+		BuffProvider
+		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableCable
+			BuffAmount = 100%
+			GridDistance = 1
+			OperationalToggle = IsOperational
+		}
+		
+		CableSubstation
+		{
+			Type = ResourceConverter
+			FromStorage = BatteryStorage
+			FromQuantity = 1000
+			ToStorage = CombinedBatteryStorage
+			ToQuantity = 1000
+			Interval = 0.0625
+			OperationalToggle = IsOperational
+		}
+
+		CombinedBatteryStorage
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ResourceStorages = [BatteryStorage]
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProvider]
+				ComponentID = BatteryStorage
+			}
+			AddMode = PrioritizeMostEmptyCapacity // DistributeEvenly
+			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+		}
+
+		BatteryStorage
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&../CableSubstation/FromQuantity) * 2
+			IncludeWhenUnderConstruction = false
+		}
+
+		WallsBlend : <./Data/ships/terran/walls/walls.rules>
+		{
+			Type = BlendSprite
+			Location = [.5, .5]
+			BlendsWithCategories = [corridor]
+		}
+
+		Graphics
+		{
+			Type = Graphics
+			Location = [.5, .5]
+			Roof
+			{
+				Layer = "roofs"
+				RandomUVRotation = true
+				DamageLevels
+				[
+					{
+						File = "roof.png"
+						NormalsFile = "roof_normals.png"
+						Size = [1, 1]
+					}
+					{
+						File = "roof_33.png"
+						NormalsFile = "roof_normals_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "roof_66.png"
+						NormalsFile = "roof_normals_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+		}
+		
+		ColoredGraphics
+		{
+			Type = Graphics
+			Location = [.5, .5]
+			GetColorFrom = ColorPicker
+			Floor
+			{
+				Layer = "floors"
+				RandomUVRotation = true
+				DamageLevels
+				[
+					{
+						File = "floor.png"
+						Size = [1, 1]
+					}
+					{
+						File = "floor_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "floor_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+		}
+		
+		AmmoSprites
+		{
+			Type = ResourceSprites
+			Location = [.5, .5]
+			ResourceStorage = BatteryStorage
+			Layer = "doodads_low"
+			ResourceLevels
+			[
+				{
+					File = "batteries1.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "batteries2.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "batteries3.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "batteries4.png"
+					Size = [1, 1]
+				}
+			]
+		}
+
+		DestroyedEffects
+		{
+			Type = DeathEffects
+			MediaEffects = &/COMMON_EFFECTS/SmallPartDestroyedDry
+			Location = [.5, .5]
+		}
+
+		Blueprints
+		{
+			Type = BlueprintSprite
+			File = "blueprints.png"
+			Size = [1, 1]
+		}
+
+		BlueprintWalls : <./Data/ships/terran/walls/blueprint_walls.rules>
+		{
+			Location = [.5, .5]
+			BlendsWithCategories = [corridor]
+		}
+	}
+
+	Stats
+	{
+		MMCTPowerBandwidth = 1 / (&~/Part/Components/CableSubstation/Interval) * (&~/Part/Components/CableSubstation/ToQuantity) / 1000
+		MMCTCableConnect = (&~/Part/Components/BuffProvider/GridDistance)
+		PowerCapacity = (&~/Part/Components/BatteryStorage/MaxResources) / 1000
+	}
+
+}

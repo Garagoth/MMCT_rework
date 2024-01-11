@@ -1,0 +1,66 @@
+Parts
+{
+	Substation = "Power Substation"
+	SubstationIcon = "Substation"
+	SubstationDesc = "A substation capable of inserting or pulling power out of a cable network. It will automatically send power to all blocks around.\n\n"\
+				"Substations must be used to send power to nearby blocks, as cables cannot do that naturally."
+
+	Substation2 = "Wireless Substation"
+	Substation2Icon = "Wireless Substation"
+	Substation2Desc = "A specialized form of wireless power projector capable of sending power to blocks (on the same ship) in a straight line from projector head."
+	
+	PowerStorageDesc = "Stores a limited cache of plasma batteries that may be used by nearby ship's systems or pushed to a cable network."
+	
+	Cable = "Cable (Corridor)"
+	CableIcon = "Cable (Corridor)"
+	CableDesc = "A length of cable that runs through a corridor, the thinner floor plate means crew have to be more careful walking over it. These transmit power from substations or capacitors to substations.\n\n"\
+				"Cables do not deliver power directly to parts, and must deliver to a substation next to those parts."
+	
+	CableAR1 = "Cable (Armor 1x1)"
+	CableAR2 = "Cable (Armor 1x2)"
+	CableARIcon = "Cable (Armor)"
+	CableARDesc = "A length of cable that runs through some armor, reducing the ability to absorb damage. These transmit power from substations or capacitors to substations.\n\n"\
+				"Cables do not deliver power directly to parts, and must deliver to a substation next to those parts."
+
+	ReactorCore = "Modular Reactor Core"
+	ReactorCoreIcon = "Nuclear Core"
+	ReactorCoreDesc = "Controlled fission of enriched uranium allows the reactor to heat up water into steam, which can then be sent via pipes to systems capable of using it."
+	
+	WBoiler = "High Pressure Steam Boiler (Planned)"
+	WBoilerIcon = "Steam Boiler"
+	WBoilerDesc = "A boiler that burns carbon-derived fuel to generate steam for the power plant, requires a specialized ventilation system that ejects the burnt remnants into space."
+
+	VTEEngine = "Vertical Triple Expansion Engine (Planned)"
+	VTEEngineIcon = "Triple Expansion Engine"
+	VTEEngineDesc = "A series of three pistons which intake steam to rotate a shaft, which can be turned into power much the same way as a turbine, this process is quite inefficient and the vibrations may stun crew."
+	
+	Turbine = "Steam Turbine"
+	TurbineIcon = "Turbine"
+	TurbineDesc = "A turbine that can convert high pressure steam into power, this system requires active supervision to function properly, and is notably not 100% efficient.\n\n"\
+				"This part is WIP and as such does not currently have all damage sprites, this will change in the future. Requires attached transformer to extract usable power."
+
+	ThermalLoop = "Steam-Water Loop Pipe"
+	ThermalLoopIcon = "Steam Pipe"
+	ThermalLoopDesc = "A pair of pipes that carry steam one way, and water the other way, this carries heat energy to anywhere it needs to be."
+	
+	ThermalLoopPass = "Steam-Water Loop Pipe (Passable)"
+	ThermalLoopPassIcon = "Steam Pipe (Passable)"
+	ThermalLoopPassDesc = "A pair of pipes that carry steam one way, and water the other way, this carries heat energy to anywhere it needs to be, there is a passageway across this set of pipes, for crew to cross via."
+	
+	Transformer = "Power Transformer"
+	TransformerIcon = "Transformer"
+	TransformerDesc = "A high power electrical conversion system that can feed immense amounts of power into a grid, MMCT denies all allegations that this is a robot in disguise.\n\n"\
+				"This part is WIP and will change visually as MMCT is updated."
+}
+
+Stats
+{
+	MMCTPowerBandwidth = "<white>Power Bandwidth:</white> <good>{0:n0}</good> <gray>/sec</gray>"
+	MMCTCableConnect = "<white>Connection Radius:</white> <good>{0:n0}</good> <gray>meters</gray>"
+	MMCTSupplyDistanceA = "<white>Supply Distance:</white> <good>{0:n1}</good> <gray>meters around</gray>"
+	MMCTSupplyDistanceL = "<white>Supply Distance:</white> <good>{0:n0}</good> <gray>meters forwards</gray>"
+	MMCTThermalCapacity = "<white>Thermal Energy Capacity:</white> <good>{0:n0}</good> <gray>heat</gray>"
+	MMCTThermalGeneration = "<white>Thermal Energy Generation:</white> <good>{0:n0}</good> <gray>heat/sec</gray>"
+	MMCTThermalUse = "<white>Thermal Energy Use:</white> <good>{0:n0}</good> <gray>heat/sec</gray>"
+	MMCTThermalEfficiency = "<white>Thermal Energy Efficiency:</white> <good>{0:n0}</good><gray>% loss</gray>"
+}

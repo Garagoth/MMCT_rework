@@ -1,0 +1,256 @@
+ProxyHeatStorageUp
+{
+	Type = ResourceStorageProxy
+	ResourceType = battery
+	PartLocation = [0, -1]
+	ProxyableComponents
+	[
+		{
+			PartCriteria
+			{
+				Category = thermal_straight
+				Rot = 0
+			}
+			ComponentID = HeatStorageDown
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_straight
+				Rot = 2
+			}
+			ComponentID = HeatStorageUp
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 0
+			}
+			ComponentID = HeatStorageDown
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 1
+			}
+			ComponentID = HeatStorageRight
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 2
+			}
+			ComponentID = HeatStorageUp
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 3
+			}
+			ComponentID = HeatStorageLeft
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_sink
+			}
+			ComponentID = HeatStorage
+		}
+	]
+}
+ProxyHeatStorageDown
+{
+	Type = ResourceStorageProxy
+	ResourceType = battery
+	PartLocation = [0, 1]
+	ProxyableComponents
+	[
+		{
+			PartCriteria
+			{
+				Category = thermal_straight
+				Rot = 0
+			}
+			ComponentID = HeatStorageUp
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_straight
+				Rot = 2
+			}
+			ComponentID = HeatStorageDown
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 0
+			}
+			ComponentID = HeatStorageUp
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 1
+			}
+			ComponentID = HeatStorageLeft
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 2
+			}
+			ComponentID = HeatStorageDown
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 3
+			}
+			ComponentID = HeatStorageRight
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_sink
+			}
+			ComponentID = HeatStorage
+		}
+	]
+}
+ProxyHeatStorageLeft
+{
+	Type = ResourceStorageProxy
+	ResourceType = battery
+	PartLocation = [-1, 0]
+	ProxyableComponents
+	[
+		{
+			PartCriteria
+			{
+				Category = thermal_straight
+				Rot = 1
+			}
+			ComponentID = HeatStorageUp
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_straight
+				Rot = 3
+			}
+			ComponentID = HeatStorageDown
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 0
+			}
+			ComponentID = HeatStorageRight
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 1
+			}
+			ComponentID = HeatStorageUp
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 2
+			}
+			ComponentID = HeatStorageLeft
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 3
+			}
+			ComponentID = HeatStorageLeftDown
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_sink
+			}
+			ComponentID = HeatStorage
+		}
+	]
+}
+ProxyHeatStorageRight
+{
+	Type = ResourceStorageProxy
+	ResourceType = battery
+	PartLocation = [1, 0]
+	ProxyableComponents
+	[
+		{
+			PartCriteria
+			{
+				Category = thermal_straight
+				Rot = 1
+			}
+			ComponentID = HeatStorageDown
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_straight
+				Rot = 3
+			}
+			ComponentID = HeatStorageUp
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 0
+			}
+			ComponentID = HeatStorageLeft
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 1
+			}
+			ComponentID = HeatStorageDown
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 2
+			}
+			ComponentID = HeatStorageRight
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_junction
+				Rot = 3
+			}
+			ComponentID = HeatStorageLeftUp
+		}
+		{
+			PartCriteria
+			{
+				Category = thermal_sink
+			}
+			ComponentID = HeatStorage
+		}
+	]
+}

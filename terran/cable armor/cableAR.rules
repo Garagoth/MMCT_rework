@@ -1,0 +1,221 @@
+Part :<./Data/ships/terran/base_part_terran.rules>/Part
+{
+	NameKey = "Parts/CableAR1"
+	IconNameKey = "Parts/CableArIcon"
+	ID = YBJ.MMCTCableAR // Part IDs must always be in the form of "author_name.part_name". If making your own mod, do *not* use "cosmoteer" as your author name, because it may conflict with future vanilla parts.
+	EditorGroups = ["Defenses", "Power"]
+	DescriptionKey = "Parts/CableARDesc"
+	Resources
+	[
+		[steel, 8]
+		[coil, 2]
+	]
+	AIValueFactor = 0
+	Size = [1, 1]
+	IsRotateable = false
+	SelectionTypeID = "armor"
+	MaxHealth = 3300
+	ExplosiveDamageAbsorption = 100%
+	ExplosiveDamageResistance = 50%
+	TypeCategories = [armor, cable]
+	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableReceptor]
+	Flammable = false
+	InitialPenetrationResistance = 7
+	ContinuingPenetrationResistance = &InitialPenetrationResistance
+	CreatePartPerTileWhenGrabbed = ""
+	CrewSpeedFactor = 0
+	Density = 3
+	IsWalled = true
+	IsSelfDestructible = false
+	AllowedDoorLocations = []
+	GeneratorRequiresDoor = false
+	IgnoreRotationForMirroredSelection = true
+	EditorIcon
+	{
+		Texture
+		{
+			File = "icon.png"
+			SampleMode = Linear
+		}
+		Size = [32, 32]
+	}
+	Components : ^/0/Components, <../cables.rules>
+	{
+	
+		IsOperational
+		{
+			Type = MultiToggle
+			Toggles = [BatteryStorage]
+			Mode = All
+		}
+	
+		EmpAbsorber
+		{
+			Type = ExplosiveResourceDrainSink
+			ResourceType = battery
+			AbsorbsResourceDrain = 1000
+			RecoveryRate = (&AbsorbsResourceDrain) * 0.1
+		}
+		
+		BuffProvider
+		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableCable
+			BuffAmount = 100%
+			GridDistance = 1
+			OperationalToggle = IsOperational
+		}
+		
+		// CableSubstation
+		// {
+		// 	Type = ResourceConverter
+		// 	FromStorage = BatteryStorage
+		// 	FromQuantity = 1000
+		// 	ToStorage = CombinedBatteryStorage
+		// 	ToQuantity = 1000
+		// 	Interval = 0.0625
+		// 	OperationalToggle = IsOperational
+		// }
+
+		// CombinedBatteryStorage
+		// {
+		// 	Type = MultiResourceStorage
+		// 	ResourceType = battery
+		// 	ResourceStorages = [BatteryStorage]
+		// 	ViaBuffs
+		// 	{
+		// 		OutgoingBuffProviders = [BuffProvider]
+		// 		ComponentID = BatteryStorage
+		// 	}
+		// 	AddMode = PrioritizeMostEmptyCapacity // DistributeEvenly //
+		// 	ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+		// }
+
+		// BatteryStorage
+		// {
+		// 	Type = ResourceStorage
+		// 	ResourceType = battery
+		// 	MaxResources = (&../CableSubstation/FromQuantity) * 2
+		// 	IncludeWhenUnderConstruction = false
+		// }
+
+		Graphics
+		{
+			Type = Graphics
+			Location = [0.5, 0.5]
+			Floor // This is needed so that armor shows up in ship ghosts.
+			{
+				Layer = "floors"
+				DamageLevels
+				[
+					{
+						File = "armor.png"
+						Size = [1, 1]
+					}
+					{
+						File = "armor_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "armor_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+			Walls
+			{
+				Layer = "walls"
+				DamageLevels
+				[
+					{
+						File = "armor.png"
+						Size = [1, 1]
+					}
+					{
+						File = "armor_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "armor_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+			Roof
+			{
+				Layer = "roofs"
+				DamageLevels
+				[
+					{
+						File = "roof.png"
+						NormalsFile = "roof_normals.png"
+						Size = [1, 1]
+					}
+					{
+						File = "roof_33.png"
+						NormalsFile = "roof_normals_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "roof_66.png"
+						NormalsFile = "roof_normals_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+		}
+		
+		AmmoSprites
+		{
+			Type = ResourceSprites
+			Location = [.5, .5]
+			ResourceStorage = BatteryStorage
+			Layer = "doodads_high"
+			ResourceLevels
+			[
+				{
+					File = "batteries1.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "batteries2.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "batteries3.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "batteries4.png"
+					Size = [1, 1]
+				}
+			]
+		}
+
+		DestroyedEffects
+		{
+			Type = DeathEffects
+			MediaEffects = &/COMMON_EFFECTS/SmallPartDestroyedDry
+			Location = [.5, .5]
+		}
+
+		Blueprints
+		{
+			Type = BlueprintSprite
+			File = "blueprints.png"
+			Size = [1, 1]
+		}
+	}
+
+	Stats
+	{
+		EMPResist = (&~/Part/Components/EmpAbsorber/AbsorbsResourceDrain) / 1000
+		MMCTPowerBandwidth = 1 / (&~/Part/Components/CableSubstation/Interval) * (&~/Part/Components/CableSubstation/ToQuantity) / 1000
+		MMCTCableConnect = (&~/Part/Components/BuffProvider/GridDistance)
+		PowerCapacity = (&~/Part/Components/BatteryStorage/MaxResources) / 1000
+	}
+
+}

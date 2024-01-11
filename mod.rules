@@ -1,0 +1,492 @@
+ID = YBJ.MMCTMod
+Name = "MMCT - Power Rework, Cables and Stuff"
+Version = 1.3.15 //Revision 1.3, Version 1, Patch 5
+CompatibleGameVersions = ["0.25.0"]
+ModifiesMultiplayer = true
+Author = "yobeefjerky"
+Logo = "logo.png"
+Description = 	"This mod was originally a few slight changes to vanilla, and eventually expanded into a bit of a monster, the original vanilla alterations are available under Mortal Melee Combat Change.\n\n"\
+				"This mod adds a fully fledged power grid system, complete with cables/wires, substations and a slight change to capacitors."\
+				"Updated by Garagoth: thermal pipes, cables, buffs..."
+
+StringsFolder = "strings"
+Actions
+[
+
+//Basic Stuff
+
+	{
+		Action = AddMany
+		AddTo = "<ships/terran/terran.rules>/Terran/Parts"
+		CreateIfNotExisting = false
+		IgnoreIfNotExisting = false
+		ManyToAdd
+		[
+			&<terran/substation/substation.rules>/Part
+			&<terran/substation 2x1/substation 2x1.rules>/Part
+			&<terran/cable corridor/cable corridor.rules>/Part
+			&<terran/cable armor/cableAR.rules>/Part
+			&<terran/cable armor 2 long/cableAR1.rules>/Part
+			&<terran/reactor core/reactor core.rules>/Part
+			&<terran/reactor turbine/steam turbine.rules>/Part
+			&<terran/transformer/transformer.rules>/Part
+			&<terran/thermal cable line/thermal loop I piece.rules>/Part
+			&<terran/thermal cable line/thermal loop crossable.rules>/Part
+			&<terran/thermal cable junction/thermal loop junction.rules>/Part
+		]
+	}
+	
+	{
+        Action = AddMany
+        AddTo = "<gui/game/parts/part_stats.rules>/PartStats"
+        ManyToAdd
+        [
+            {
+                ID = MMCTPowerBandwidth
+                FormatKey = "Stats/MMCTPowerBandwidth"
+            }
+			
+            {
+                ID = MMCTSupplyDistanceA
+                FormatKey = "Stats/MMCTSupplyDistanceA"
+            }
+			
+            {
+                ID = MMCTSupplyDistanceL
+                FormatKey = "Stats/MMCTSupplyDistanceL"
+            }
+			
+            {
+                ID = MMCTThermalCapacity
+                FormatKey = "Stats/MMCTThermalCapacity"
+            }
+			
+            {
+                ID = MMCTThermalGeneration
+                FormatKey = "Stats/MMCTThermalGeneration"
+            }
+			
+            {
+                ID = MMCTThermalUse
+                FormatKey = "Stats/MMCTThermalUse"
+            }
+			
+            {
+                ID = MMCTThermalEfficiency
+                FormatKey = "Stats/MMCTThermalEfficiency"
+            }
+			
+            {
+                ID = MMCTCableConnect
+                FormatKey = "Stats/MMCTCableConnect"
+            }	
+        ]
+    }
+
+//Buff Additions
+
+	{
+		Action = Add
+		AddTo = "<buffs/buffs.rules>"
+		Name = MMCTHeat
+		ToAdd
+		{
+			CombineMode = Max
+			BaseValue = 0%
+			Icon
+			{
+				Texture
+				{
+					File = "terran/buffs/buff_heat.png"
+					MipLevels = 2
+					SampleMode = Linear
+				}
+				Size = [1, 1]
+			}
+		}
+	}
+	
+	{
+		Action = Add
+		AddTo = "<buffs/buffs.rules>"
+		Name = MMCTReactorPower
+		ToAdd
+		{
+			CombineMode = Max
+			BaseValue = 0%
+			
+			Icon
+			{
+				Texture
+				{
+					File = "terran/buffs/buff_power.png"
+					MipLevels = 2
+					SampleMode = Linear
+				}
+				Size = [1, 1]
+			}
+		}
+	}
+	
+	{
+		Action = Add
+		AddTo = "<buffs/buffs.rules>"
+		Name = MMCTCableReceptor
+		ToAdd
+		{
+			CombineMode = Max
+			BaseValue = 0%
+			Icon
+			{
+				Texture
+				{
+					File = "terran/buffs/buff_power.png"
+					MipLevels = 2
+					SampleMode = Linear
+				}
+				Size = [1, 1]
+			}
+		}
+	}
+	
+	{
+		Action = Add
+		AddTo = "<buffs/buffs.rules>"
+		Name = MMCTCableCable
+		ToAdd
+		{
+			CombineMode = Max
+			BaseValue = 0%
+			Icon
+			{
+				Texture
+				{
+					File = "terran/buffs/buff_power.png"
+					MipLevels = 2
+					SampleMode = Linear
+				}
+				Size = [1, 1]
+			}
+		}
+	}
+	
+//Base_Part Buff Additions
+
+	{
+		Action = Add
+		AddTo = "<ships/base_part.rules>/Part/ReceivableBuffs"
+		Name = MMCTCableReceptor
+		ToAdd = MMCTCableReceptor
+		IgnoreTypeCategories = [Cable]
+	}
+	
+//Reactor Backfeed Fix
+
+	{
+		Action = Replace
+		Replace = "<ships/terran/reactor_small/reactor_small.rules>/Part/ReceivableBuffs"
+		IgnoreIfNotExisting = false
+		With = []
+	}
+	
+	{
+		Action = Replace
+		Replace = "<ships/terran/reactor_med/reactor_med.rules>/Part/ReceivableBuffs"
+		IgnoreIfNotExisting = false
+		With = []
+	}
+	
+	{
+		Action = Replace
+		Replace = "<ships/terran/reactor_large/reactor_large.rules>/Part/ReceivableBuffs"
+		IgnoreIfNotExisting = false
+		With = []
+	}
+	
+//Capacitor Alterations
+	{
+		Action = Add
+		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/TypeCategories"
+		Name = power_storage
+		ToAdd = power_storage
+	}
+	{
+		Action = Add
+		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
+		Name = BuffProvider
+		ToAdd
+		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableCable
+			BuffAmount = 100%
+			GridDistance = 4
+			OperationalToggle = IsOperational
+		}
+	}
+	
+	{
+		Action = Add
+		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
+		Name = CableSubstation
+		ToAdd
+		{
+			Type = ResourceConverter
+			FromStorage = BatteryStorage
+			FromQuantity = 1000
+			ToStorage = CombinedBatteryStorage
+			ToQuantity = 1000
+			Interval = 0.0625
+			OperationalToggle = IsOperational
+		}
+	}
+/*	//This setting broke MMCT Capacitor functionality and is thus disabled, if you want Capacitors to discharge as needed, keep this commented out
+	{
+		Action = Add
+		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
+		Name = BatteryConvert
+		ToAdd
+		{
+			Type = ResourceConverter
+			FromStorage = CombinedBatteryStorage
+			FromQuantity = 133
+			ToStorage = BatteryStorage
+			ToQuantity = 133
+			Interval = 0.0333
+			MinFromQuantityForConversion = 133
+			OperationalToggle = IsOperational
+		}
+	}
+*/
+	
+	{
+		Action = Add
+		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
+		Name = CombinedBatteryStorage
+		ToAdd
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ResourceStorages = [BatteryStorage]
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProvider]
+				ComponentID = BatteryStorage
+			}
+			AddMode = DistributeEvenly // Was: DistributeRandomly
+			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+		}
+	}
+	
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/power_storage/power_storage.rules>/Part"
+		Overrides
+		{
+			Stats
+			{
+				BatterySize = (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/BatteryStorage/MaxResourcesPickUp) / 1000
+				PowerCapacity = (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/BatteryStorage/MaxResources) / 1000
+				MMCTPowerBandwidth = 1 / (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/CableSubstation/Interval) * (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/CableSubstation/ToQuantity) / 1000
+				MMCTCableConnect = (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/BuffProvider/GridDistance)
+			}
+		}
+	}
+	
+	{
+		Action = Add
+		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/ReceivableBuffs"
+		Name = MMCTCableCable
+		ToAdd = MMCTCableCable
+	}
+
+//Hyperdrive Fix
+	
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_small/hyperdrive_small.rules>/Part/Components"
+		Overrides
+		{
+			BatteryStorage
+			{
+				Type = ResourceStorage
+				ResourceType = battery
+				MaxResources = 16000
+				InitToMaxResources = 0
+				ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+			}
+		}
+	}
+
+	{
+		Action = Add
+		AddTo = "<ships/terran/hyperdrive_small/hyperdrive_small.rules>/Part/Components"
+		Name = BatteryStorageOnline
+		ToAdd
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			OperationalToggle = FtlDrive
+			MaxResources = 16000
+			InitToMaxResources = 0
+			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+		}
+	}
+
+	{
+		Action = Add
+		AddTo = "<ships/terran/hyperdrive_small/hyperdrive_small.rules>/Part/Components"
+		Name = BatteryConvertSystem
+		ToAdd
+		{
+			Type = ResourceConverter
+			FromStorage = BatteryStorage
+			FromQuantity = 222
+			ToStorage = BatteryStorageOnline
+			ToQuantity = 222
+			Interval = 0.222
+			MinFromQuantityForConversion = 133
+			OperationalToggle = FtlDrive
+		}
+	}
+	
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_small/hyperdrive_small.rules>/Part/Components/FtlDrive"
+		Overrides
+		{
+				PowerStorage = BatteryStorageOnline
+		}
+	}
+	
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_small/hyperdrive_small.rules>/Part/Components/BatterySprites"
+		Overrides
+		{
+			ResourceStorage = BatteryStorageOnline
+		}
+	}
+
+// medium hyperdrive
+	{
+		Action = Add
+		AddTo = "<ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components"
+		Name = BatteryStorageOnline
+		ToAdd
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&<./Data/ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components/BatteryStorage/MaxResources)
+		}
+	}
+	{
+		Action = Add
+		AddTo = "<ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components"
+		Name = BatteryOnlineConverter
+		ToAdd
+		{
+			Type = ResourceConverter
+			ResourceType = battery
+			OperationalToggle = FtlDrive
+			FromStorage = BatteryStorage
+			ToStorage = BatteryStorageOnline
+			FromQuantity = 1000
+			ToQuantity = 1000
+			Interval = 0.1
+		}
+	}
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components/FtlDrive"
+		Overrides
+		{
+				PowerStorage = BatteryStorageOnline
+		}
+	}
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components/BatterySprites"
+		Overrides
+		{
+			ResourceStorage = BatteryStorageOnline
+		}
+	}
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components/BatteryStorageCharging"
+		Overrides
+		{
+			ResourceStorage = BatteryStorageOnline
+		}
+	}
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components/BatteryStorageFull"
+		Overrides
+		{
+			ResourceStorage = BatteryStorageOnline
+		}
+	}
+// large hyperdrive
+	{
+		Action = Add
+		AddTo = "<ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components"
+		Name = BatteryStorageOnline
+		ToAdd
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&<./Data/ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components/BatteryStorage/MaxResources)
+		}
+	}
+	{
+		Action = Add
+		AddTo = "<ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components"
+		Name = BatteryOnlineConverter
+		ToAdd
+		{
+			Type = ResourceConverter
+			ResourceType = battery
+			OperationalToggle = FtlDrive
+			FromStorage = BatteryStorage
+			ToStorage = BatteryStorageOnline
+			FromQuantity = 1000
+			ToQuantity = 1000
+			Interval = 0.1
+		}
+	}
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components/FtlDrive"
+		Overrides
+		{
+				PowerStorage = BatteryStorageOnline
+		}
+	}
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components/BatterySprites"
+		Overrides
+		{
+			ResourceStorage = BatteryStorageOnline
+		}
+	}
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components/BatteryStorageCharging"
+		Overrides
+		{
+			ResourceStorage = BatteryStorageOnline
+		}
+	}
+	{
+		Action = Overrides
+		OverrideIn = "<ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components/BatteryStorageFull"
+		Overrides
+		{
+			ResourceStorage = BatteryStorageOnline
+		}
+	}
+	
+
+]

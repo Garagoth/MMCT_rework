@@ -1,0 +1,265 @@
+Part : <./Data/ships/terran/base_part_terran.rules>/Part
+{
+	NameKey = "Parts/Transformer"
+	IconNameKey = "Parts/TransformerIcon"
+	ID = YBJ.MMCTTransformer // Part IDs must always be in the form of "author_name.part_name". If making your own mod, do *not* use "cosmoteer" as your author name, because it may conflict with future vanilla parts.
+	EditorGroup = "Power"
+	DescriptionKey = "Parts/TransformerDesc"
+	Resources
+	[
+		[steel, 16]
+		[coil2, 3]
+		[tristeel, 2]
+	]
+	TypeCategories = [modular_reactor, mmct_transformer]
+	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTReactorPower]
+	Size = [1, 2]
+	MaxHealth = 1800
+	AllowedDoorLocations
+	[
+		[0, 2]
+	]
+	EditorIcon
+	{
+		Texture
+		{
+			File = "icon.png"
+			SampleMode = Linear
+		}
+		Size = [32, 64]
+	}
+	Components : ^/0/Components
+	{
+
+		IsOperational
+		{
+			Type = MultiToggle
+			Toggles = [PowerToggle, PowerStorage]
+			Mode = All
+		}
+
+		PowerToggle
+		{
+			Type = UIToggle
+			ToggleID = "on_off"
+			Default = 1
+			RequiresCommand = false
+		}
+
+		CommandConsumer
+		{
+			Type = CommandConsumer
+			OperationalToggle = PowerToggle
+			CommandPoints = 1
+		}
+
+		// This receives ReactorPower via Buff
+		// Shows power lights from this
+		PowerStorage
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&../RobotsInDisguise/FromQuantity) * 2 * 5
+		}
+		
+		// Converted by RobotsInDisguise
+		BatteryStorageTrans
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&../RobotsInDisguise/ToQuantity) * 2 * 5
+		}
+		
+		// This feeds cables and compatibile parts
+		CombinedBatteryStorage
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ResourceStorages = [BatteryStorageTrans]
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProvider]
+				ComponentID = BatteryStorage
+			}
+			AddMode = PrioritizeMostEmptyCapacity
+			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+		}
+		
+		// ReactorPower to Batteries: power multiplication!
+		RobotsInDisguise
+		{
+			Type = ResourceConverter
+			FromStorage = PowerStorage
+			FromQuantity = 300
+			ToStorage = CombinedBatteryStorage
+			ToQuantity = 2400
+			Interval = 0.1
+			OperationalToggle = IsOperational
+		}
+		
+		BuffProvider
+		{
+			Type = AreaBuffProvider
+			BuffType = MMCTCableCable
+			BuffArea = [-1, -2, 3, 6]
+			OperationalToggle = IsOperational
+		}
+
+		Graphics
+		{
+			Type = Graphics
+			Location = [.5, 1]
+			Floor
+			{
+				Layer = "floors"
+				DamageLevels
+				[
+					{
+						File = "floor.png"
+						Size = [1, 2]
+					}
+					{
+						File = "floor_33.png"
+						Size = [1, 2]
+					}
+					{
+						File = "floor_66.png"
+						Size = [1, 2]
+					}
+				]
+			}
+			OperationalDoodad
+			{
+				Layer = "doodads_low"
+				DamageLevels
+				[
+					{
+						File = "doodads_on.png"
+						Size = [1, 2]
+					}
+					{
+						File = "doodads_on_33.png"
+						Size = [1, 2]
+					}
+					{
+						File = "doodads_on_66.png"
+						Size = [1, 2]
+					}
+				]
+			}
+			NonOperationalDoodad
+			{
+				Layer = "doodads_low"
+				DamageLevels
+				[
+					{
+						File = "doodads_off.png"
+						Size = [1, 2]
+					}
+					{
+						File = "doodads_off_33.png"
+						Size = [1, 2]
+					}
+					{
+						File = "doodads_off_66.png"
+						Size = [1, 2]
+					}
+				]
+			}
+			Walls
+			{
+				Layer = "walls"
+				DamageLevels
+				[
+					{
+						File = "walls.png"
+						Size = [1, 2]
+					}
+					{
+						File = "walls_33.png"
+						Size = [1, 2]
+					}
+					{
+						File = "walls_66.png"
+						Size = [1, 2]
+					}
+				]
+			}
+			Roof
+			{
+				Layer = "roofs"
+				DamageLevels
+				[
+					{
+						File = "roof.png"
+						NormalsFile = "roof_normals.png"
+						Size = [1, 2]
+					}
+					{
+						File = "roof_33.png"
+						NormalsFile = "roof_normals_33.png"
+						Size = [1, 2]
+					}
+					{
+						File = "roof_66.png"
+						NormalsFile = "roof_normals_66.png"
+						Size = [1, 2]
+					}
+				]
+			}
+		}
+		
+		AmmoSprites
+		{
+			Type = ResourceSprites
+			Location = [.5, 1]
+			ResourceStorage = PowerStorage
+			Layer = "doodads_low"
+			HasZeroResourceSprite = false
+			ResourceLevels
+			[
+				{
+					File = "batteries1.png"
+					Size = [1, 2]
+				}
+				
+				{
+					File = "batteries2.png"
+					Size = [1, 2]
+				}
+				
+				{
+					File = "batteries3.png"
+					Size = [1, 2]
+				}
+				
+				{
+					File = "batteries4.png"
+					Size = [1, 2]
+				}
+			]
+		}
+
+		DestroyedEffects
+		{
+			Type = DeathEffects
+			MediaEffects = &/COMMON_EFFECTS/SmallPartDestroyedDry
+			Location = [.5, 1]
+		}
+
+		Blueprints
+		{
+			Type = BlueprintSprite
+			File = "blueprints.png"
+			Size = [1, 2]
+		}
+	}
+
+	Stats
+	{
+		MMCTPowerBandwidth = 1 / (&~/Part/Components/RobotsInDisguise/Interval) * (&~/Part/Components/RobotsInDisguise/ToQuantity) / 1000
+		MMCTSupplyDistanceA = 1.5
+		PowerCapacity = (&~/Part/Components/BatteryStorageTrans/MaxResources) / 1000
+	}
+
+}

@@ -1,0 +1,341 @@
+Part : <./Data/ships/terran/base_part_terran.rules>/Part
+{
+	NameKey = "Parts/Substation"
+	IconNameKey = "Parts/SubstationIcon"
+	ID = YBJ.MMCTsubstation // Part IDs must always be in the form of "author_name.part_name". If making your own mod, do *not* use "cosmoteer" as your author name, because it may conflict with future vanilla parts.
+	EditorGroup = "Power"
+	DescriptionKey = "Parts/SubstationDesc"
+	Resources
+	[
+		[steel, 8]
+		[coil2, 3]
+		[tristeel, 1]
+	]
+	TypeCategories = [uses_power]
+	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable]
+	Size = [1, 1]
+	MaxHealth = 1000
+	AllowedDoorLocations
+	[
+		[0, 1]
+	]
+	EditorIcon
+	{
+		Texture
+		{
+			File = "icon.png"
+			SampleMode = Linear
+		}
+		Size = [32, 32]
+	}
+	Components : ^/0/Components
+	{
+
+		IsOperational
+		{
+			Type = MultiToggle
+			Toggles = [PowerToggle, BatteryStorage]
+			Mode = All
+		}
+
+		PowerToggle
+		{
+			Type = UIToggle
+			ToggleID = "on_off"
+			Default = 1
+			RequiresCommand = false
+		}
+
+		CommandConsumer
+		{
+			Type = CommandConsumer
+			OperationalToggle = PowerToggle
+			CommandPoints = 1
+		}
+
+		BatteryStorage
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&../CableSubstation/FromQuantity) * 4
+			IncludeWhenUnderConstruction = false
+		}
+		
+		CombinedBatteryStorage
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ResourceStorages = [BatteryStorage]
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProvider, BuffProviderCables, BuffProviderPowerStorage]
+				ComponentID = BatteryStorage
+			}
+			AddMode = DistributeEvenly // Was: PrioritizeMostEmptyCapacity
+			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+			IncludeWhenUnderConstruction = false
+		}
+		
+		BatteryConsumer
+		{
+			Type = ResourceConsumer
+			ResourceType = battery
+			Storage = CombinedBatteryStorage
+			DefaultPriority = &/PRIORITIES/Thruster_Supply
+			ResupplyThreshold = 500
+			OperationalToggle = PowerToggle
+		}
+		
+		CableSubstation
+		{
+			Type = ResourceConverter
+			FromStorage = BatteryStorage
+			FromQuantity = 1000
+			ToStorage = CombinedBatteryStorage
+			ToQuantity = 1000
+			Interval = 0.0625
+			OperationalToggle = IsOperational
+		}
+
+		BuffProvider
+		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableReceptor
+			GridDistance = 3
+			OperationalToggle = IsOperational
+			Criteria {
+			    Category = uses_power
+			}
+		}
+		BuffProviderCables : &BuffProvider
+		{
+			Criteria {
+			    Category = cable
+			}
+		}
+		BuffProviderPowerStorage : &BuffProvider
+		{
+			Criteria {
+			    Category = power_storage
+			}
+		}
+
+		Graphics
+		{
+			Type = Graphics
+			Location = [.5, .5]
+			Floor
+			{
+				Layer = "floors"
+				DamageLevels
+				[
+					{
+						File = "floor.png"
+						Size = [1, 1]
+					}
+					{
+						File = "floor_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "floor_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+			OperationalDoodad
+			{
+				Layer = "doodads_low"
+				DamageLevels
+				[
+					{
+						File = "doodads.png"
+						Size = [1, 1]
+					}
+					{
+						File = "doodads_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "doodads_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+			Walls
+			{
+				Layer = "walls"
+				DamageLevels
+				[
+					{
+						File = "walls.png"
+						Size = [1, 1]
+					}
+					{
+						File = "walls_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "walls_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+			Roof
+			{
+				Layer = "roofs"
+				DamageLevels
+				[
+					{
+						File = "roof.png"
+						NormalsFile = "roof_normals.png"
+						Size = [1, 1]
+					}
+					{
+						File = "roof_33.png"
+						NormalsFile = "roof_normals_33.png"
+						Size = [1, 1]
+					}
+					{
+						File = "roof_66.png"
+						NormalsFile = "roof_normals_66.png"
+						Size = [1, 1]
+					}
+				]
+			}
+		}
+	
+
+		AmmoSprites
+		{
+			Type = ResourceSprites
+			Location = [.5, .5]
+			ResourceStorage = BatteryStorage
+			Layer = "doodads_high"
+			HasZeroResourceSprite = false
+			ResourceLevels
+			[
+				{
+					File = "bat1.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "bat2.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "bat3.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "bat4.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "bat5.png"
+					Size = [1, 1]
+				}
+				
+				{
+					File = "bat6.png"
+					Size = [1, 1]
+				}
+			]
+		}
+
+		OperationalAnimation
+		{
+		Type = Graphics
+		Location = [.5, .5]
+		OperationalToggle = IsOperational
+			OperationalDoodad
+			{
+				Layer = "doodads_high"
+				DamageLevels
+				[
+					{
+						AnimationFiles
+						[
+							"anim1.png"
+							"anim2.png"
+							"anim3.png"
+							"anim4.png"
+							"anim5.png"
+							"anim6.png"
+							"anim7.png"
+						]
+						Size = [1, 1]
+						AnimationInterval = 0.1
+					}
+				]
+			}
+		}
+
+		DestroyedEffects
+		{
+			Type = DeathEffects
+			MediaEffects = &/COMMON_EFFECTS/SmallPartDestroyedDry
+			Location = [.5, 1]
+			IncludeWhenUnderConstruction = false
+
+			FactorHitEffectsWith = BatteryStorage
+			HitEffects
+			[
+				{
+					Type = ResourceDrain
+					ResourceType = battery
+					Amount = 12000
+					Radius = 3
+					Delay = .05
+					ExpandDuration = .1
+					ExpandStartRadius = 4
+					ExpandLoss = 100%
+					Filter
+					{
+						OperationalHealth = true
+						StructuralHealth = false
+						Friendlies = true
+					}
+				}
+			]
+		}
+
+		Indicators
+		{
+			Type = IndicatorSprites
+			Location = [0.5, 0.5]
+			Layer = "indicators"
+			Indicators
+			[
+				// Out of power.
+				{
+					Toggle = BatteryStorage
+					AtlasSprite
+					{
+						File = &/INDICATORS/NoPower
+						Size = [0.5, 0.5]
+					}
+				}
+			]
+		}
+		
+		Blueprints
+		{
+			Type = BlueprintSprite
+			File = "blueprints.png"
+			Size = [1, 1]
+		}
+	}
+
+	Stats
+	{
+		MMCTPowerBandwidth = 1 / (&~/Part/Components/CableSubstation/Interval) * (&~/Part/Components/CableSubstation/ToQuantity) / 1000
+		MMCTSupplyDistanceA = (&~/Part/Components/BuffProvider/GridDistance)
+		PowerCapacity = (&~/Part/Components/BatteryStorage/MaxResources) / 1000
+	}
+
+}
