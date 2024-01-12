@@ -1,4 +1,5 @@
 Part : <./Data/ships/terran/base_part_terran.rules>/Part
+       <../cables.rules>/Part
 {
 	NameKey = "Parts/Cable"
 	IconNameKey = "Parts/CableIcon"
@@ -18,6 +19,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	TypeCategories = [corridor, cable]
 	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableReceptor]
 	IsRotateable = false
+	IsFlippable = false
 	IsWalled = false
 	IsSelfDestructible = false
 	GeneratorRequiresDoor = false
@@ -32,15 +34,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		Size = [32, 32]
 	}
 	Components : ^/0/Components
-	{
-
-		IsOperational
-		{
-			Type = MultiToggle
-			Toggles = [BatteryStorage]
-			Mode = All
-		}
-		
+	             ^/1/Components
+	{	
 		ColorPicker
 		{
 			Type = UIColor
@@ -55,39 +50,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			BuffAmount = 100%
 			GridDistance = 1
 			OperationalToggle = IsOperational
-		}
-		
-		CableSubstation
-		{
-			Type = ResourceConverter
-			FromStorage = BatteryStorage
-			FromQuantity = 1000
-			ToStorage = CombinedBatteryStorage
-			ToQuantity = 1000
-			Interval = 0.0625
-			OperationalToggle = IsOperational
-		}
-
-		CombinedBatteryStorage
-		{
-			Type = MultiResourceStorage
-			ResourceType = battery
-			ResourceStorages = [BatteryStorage]
-			ViaBuffs
-			{
-				OutgoingBuffProviders = [BuffProvider]
-				ComponentID = BatteryStorage
-			}
-			AddMode = PrioritizeMostEmptyCapacity // DistributeEvenly
-			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
-		}
-
-		BatteryStorage
-		{
-			Type = ResourceStorage
-			ResourceType = battery
-			MaxResources = (&../CableSubstation/FromQuantity) * 2
-			IncludeWhenUnderConstruction = false
 		}
 
 		WallsBlend : <./Data/ships/terran/walls/walls.rules>
@@ -204,11 +166,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		}
 	}
 
-	Stats
+	Stats : ^/1/Stats
 	{
-		MMCTPowerBandwidth = 1 / (&~/Part/Components/CableSubstation/Interval) * (&~/Part/Components/CableSubstation/ToQuantity) / 1000
 		MMCTCableConnect = (&~/Part/Components/BuffProvider/GridDistance)
-		PowerCapacity = (&~/Part/Components/BatteryStorage/MaxResources) / 1000
 	}
 
 }

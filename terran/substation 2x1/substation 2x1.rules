@@ -10,7 +10,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[tristeel, 6]
 		[coil2, 18]
 	]
-	TypeCategories = [uses_power]
+	TypeCategories = [uses_power, cable_receptor]
 	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable]
 	Size = [1, 2]
 	MaxHealth = 1800

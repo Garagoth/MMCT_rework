@@ -1,4 +1,5 @@
 Part : <./Data/ships/terran/base_part_terran.rules>/Part
+       <../cables.rules>/Part
 {
 	NameKey = "Parts/CableAR2"
 	IconNameKey = "Parts/CableArIcon"
@@ -13,8 +14,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	]
 	AIValueFactor = 0
 	Size = [2, 1]
-	FlipHRotate = [0, 1, 2, 3] // Disable flipping UI.
-	FlipVRotate = [0, 1, 2, 3] // Disable flipping UI.
+	// FlipHRotate = [0, 1, 2, 3] // Disable flipping UI.
+	// FlipVRotate = [0, 1, 2, 3] // Disable flipping UI.
 	SelectionTypeID = "armor"
 	MaxHealth = 6600
 	ExplosiveDamageAbsorption = 100%
@@ -28,6 +29,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	CrewSpeedFactor = 0
 	Density = 3
 	IsRotateable = true
+	IsFlippable = false
 	IsWalled = true
 	IsSelfDestructible = false
 	AllowedDoorLocations = []
@@ -43,15 +45,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		Size = [64, 32]
 	}
 	Components : ^/0/Components
-	{
-		
-		IsOperational
-		{
-			Type = MultiToggle
-			Toggles = [BatteryStorage]
-			Mode = All
-		}
-		
+	             ^/1/Components
+	{	
 		EmpAbsorber
 		{
 			Type = ExplosiveResourceDrainSink
@@ -67,40 +62,15 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			BuffAmount = 100%
 			GridDistance = 1
 			OperationalToggle = IsOperational
-		}
-		
-		CableSubstation
-		{
-			Type = ResourceConverter
-			FromStorage = BatteryStorage
-			FromQuantity = 1000
-			ToStorage = CombinedBatteryStorage
-			ToQuantity = 1000
-			Interval = 0.0625
-			OperationalToggle = IsOperational
-		}
+		}	
 
-		CombinedBatteryStorage
-		{
-			Type = MultiResourceStorage
-			ResourceType = battery
-			ResourceStorages = [BatteryStorage]
-			ViaBuffs
-			{
-				OutgoingBuffProviders = [BuffProvider]
-				ComponentID = BatteryStorage
-			}
-			AddMode = PrioritizeMostEmptyCapacity // DistributeEvenly //
-			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
-		}
-
-		BatteryStorage
-		{
-			Type = ResourceStorage
-			ResourceType = battery
-			MaxResources = (&../CableSubstation/FromQuantity) * 3
-			IncludeWhenUnderConstruction = false
-		}
+		// Cable parts overrides
+        ProxyBatteryStorageRight : ^/1/ProxyBatteryStorageRight
+        {
+            Type = ResourceStorageProxy
+            ResourceType = battery
+            PartLocation = [2, 0] // 2x1, not 1x1
+        }
 
 		Graphics
 		{
@@ -213,12 +183,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		}
 	}
 
-	Stats
+	Stats : ^/1/Stats
 	{
 		EMPResist = (&~/Part/Components/EmpAbsorber/AbsorbsResourceDrain) / 1000
-		MMCTPowerBandwidth = 1 / (&~/Part/Components/CableSubstation/Interval) * (&~/Part/Components/CableSubstation/ToQuantity) / 1000
 		MMCTCableConnect = (&~/Part/Components/BuffProvider/GridDistance)
-		PowerCapacity = (&~/Part/Components/BatteryStorage/MaxResources) / 1000
 	}
 
 }

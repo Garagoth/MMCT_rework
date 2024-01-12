@@ -1,4 +1,5 @@
 Part : <./Data/ships/terran/base_part_terran.rules>/Part
+       <../cables.rules>/Part
 {
 	NameKey = "Parts/Substation"
 	IconNameKey = "Parts/SubstationIcon"
@@ -11,7 +12,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[coil2, 3]
 		[tristeel, 1]
 	]
-	TypeCategories = [uses_power]
+	TypeCategories = [uses_power, cable]
 	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable]
 	Size = [1, 1]
 	MaxHealth = 1000
@@ -29,6 +30,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		Size = [32, 32]
 	}
 	Components : ^/0/Components
+	             ^/1/Components
 	{
 
 		IsOperational
@@ -53,14 +55,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			CommandPoints = 1
 		}
 
-		BatteryStorage
-		{
-			Type = ResourceStorage
-			ResourceType = battery
-			MaxResources = (&../CableSubstation/FromQuantity) * 4
-			IncludeWhenUnderConstruction = false
-		}
-		
 		CombinedBatteryStorage
 		{
 			Type = MultiResourceStorage
@@ -68,10 +62,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceStorages = [BatteryStorage]
 			ViaBuffs
 			{
-				OutgoingBuffProviders = [BuffProvider, BuffProviderCables, BuffProviderPowerStorage]
+				OutgoingBuffProviders = [BuffProvider, BuffProviderPowerStorage]
 				ComponentID = BatteryStorage
 			}
-			AddMode = DistributeEvenly // Was: PrioritizeMostEmptyCapacity
+			AddMode = DistributeEvenly
 			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
 			IncludeWhenUnderConstruction = false
 		}
@@ -80,21 +74,21 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = ResourceConsumer
 			ResourceType = battery
-			Storage = CombinedBatteryStorage
+			Storage = BatteryStorage
 			DefaultPriority = &/PRIORITIES/Thruster_Supply
 			ResupplyThreshold = 500
 			OperationalToggle = PowerToggle
 		}
 		
-		CableSubstation
+		BuffBatteryStorages
 		{
 			Type = ResourceConverter
 			FromStorage = BatteryStorage
-			FromQuantity = 1000
+			FromQuantity = &~/Part/transferQuantity
 			ToStorage = CombinedBatteryStorage
-			ToQuantity = 1000
-			Interval = 0.0625
-			OperationalToggle = IsOperational
+			ToQuantity = &~/Part/transferQuantity
+			Interval = &~/Part/transferInterval
+			OperationalToggle = PowerToggle
 		}
 
 		BuffProvider
@@ -107,8 +101,13 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			    Category = uses_power
 			}
 		}
-		BuffProviderCables : &BuffProvider
+		// Not included in CombinedBatteryStorage intentinally.
+		BuffProviderCables
 		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableReceptor
+			GridDistance = 1
+			OperationalToggle = IsOperational
 			Criteria {
 			    Category = cable
 			}
@@ -249,9 +248,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 
 		OperationalAnimation
 		{
-		Type = Graphics
-		Location = [.5, .5]
-		OperationalToggle = IsOperational
+			Type = Graphics
+			Location = [.5, .5]
+			OperationalToggle = IsOperational
 			OperationalDoodad
 			{
 				Layer = "doodads_high"
@@ -331,11 +330,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		}
 	}
 
-	Stats
+	Stats : ^/1/Stats
 	{
-		MMCTPowerBandwidth = 1 / (&~/Part/Components/CableSubstation/Interval) * (&~/Part/Components/CableSubstation/ToQuantity) / 1000
 		MMCTSupplyDistanceA = (&~/Part/Components/BuffProvider/GridDistance)
-		PowerCapacity = (&~/Part/Components/BatteryStorage/MaxResources) / 1000
+		MMCTSupplyDistanceL = 1
 	}
 
 }
