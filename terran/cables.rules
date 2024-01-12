@@ -1,9 +1,10 @@
 Part
 {
     // Variables
-    batteryStorageMax = 2000
-    transferQuantity = 1000
-    transferInterval = 0.0625
+    batteryStorageMax = 2000 // This has to be kept small so PrioritizeMostEmptyCapacity works correctly and does not try to just feed self endlessly.
+                             // Please make PrioritizeMostEmptyCapacityPercentage, this would fix so many issues here...
+    transferQuantity = 1000 / 2 // Faster and smaller transfers perform better here.
+    transferInterval = 0.0625 / 2 // This means each cable procs 4*32 times every second and substations proc 5*32 times per second, each...
 
     Components
     {
