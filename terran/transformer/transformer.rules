@@ -11,7 +11,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[coil2, 3]
 		[tristeel, 2]
 	]
-	TypeCategories = [modular_reactor, mmct_transformer]
+	TypeCategories = [modular_reactor, mmct_transformer, provides_power]
 	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTReactorPower]
 	Size = [1, 2]
 	MaxHealth = 1800
@@ -260,6 +260,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		MMCTPowerBandwidth = 1 / (&~/Part/Components/RobotsInDisguise/Interval) * (&~/Part/Components/RobotsInDisguise/ToQuantity) / 1000
 		MMCTSupplyDistanceA = 1.5
 		PowerCapacity = (&~/Part/Components/BatteryStorageTrans/MaxResources) / 1000
+		PowerGeneration = &MMCTPowerBandwidth
 	}
 
 }
