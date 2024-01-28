@@ -45,6 +45,10 @@ Actions
                 ID = MMCTPowerBandwidth
                 FormatKey = "Stats/MMCTPowerBandwidth"
             }
+			{
+                ID = MMCTPowerGeneration
+                FormatKey = "Stats/MMCTPowerGeneration"
+            }
 			
             {
                 ID = MMCTSupplyDistanceA

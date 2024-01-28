@@ -551,7 +551,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		MMCTThermalCapacity = (&~/Part/Components/HeatStorage/MaxResources) / 100
 		MMCTThermalEfficiency = ((&~/Part/Components/SendHeatToWaste/FromQuantity) / ((&~/Part/Components/TurnHeatToPower/FromQuantity) + (&~/Part/Components/SendHeatToWaste/FromQuantity))) * 100
 		PowerCapacity = (&~/Part/Components/PowerStorage/MaxResources) / 1000 * (&../transformerRatio)
-		PowerGeneration = (1 / (&~/Part/Components/TurnHeatToPower/Interval) * (&~/Part/Components/TurnHeatToPower/ToQuantity) / 1000) * (&../transformerRatio)
+		MMCTPowerGeneration = (1 / (&~/Part/Components/TurnHeatToPower/Interval) * (&~/Part/Components/TurnHeatToPower/ToQuantity) / 1000) * (&../transformerRatio)
 		CrewRequired = &~/Part/Components/PartCrew/Crew
 	}
 }
