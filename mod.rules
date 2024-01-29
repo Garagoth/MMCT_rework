@@ -223,11 +223,12 @@ Actions
 			Type = GridBuffProvider
 			BuffType = MMCTCableCable
 			BuffAmount = 100%
-			GridDistance = 4
+			GridDistance = 1
 			OperationalToggle = IsOperational
 		}
 	}
-	
+	// TODO: Make it cable_receptor as well so cables can connect in and out.
+	// TODO: Charge directional storage in cables to avoid immediate loop and promote power flow.
 	{
 		Action = Add
 		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
@@ -236,31 +237,13 @@ Actions
 		{
 			Type = ResourceConverter
 			FromStorage = BatteryStorage
-			FromQuantity = 1000
+			FromQuantity = &<terran/cables.rules>/Part/transferQuantity
 			ToStorage = CombinedBatteryStorage
-			ToQuantity = 1000
-			Interval = 0.0625
+			ToQuantity = &<terran/cables.rules>/Part/transferQuantity
+			Interval = &<terran/cables.rules>/Part/transferInterval
 			OperationalToggle = IsOperational
 		}
 	}
-/*	//This setting broke MMCT Capacitor functionality and is thus disabled, if you want Capacitors to discharge as needed, keep this commented out
-	{
-		Action = Add
-		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
-		Name = BatteryConvert
-		ToAdd
-		{
-			Type = ResourceConverter
-			FromStorage = CombinedBatteryStorage
-			FromQuantity = 133
-			ToStorage = BatteryStorage
-			ToQuantity = 133
-			Interval = 0.0333
-			MinFromQuantityForConversion = 133
-			OperationalToggle = IsOperational
-		}
-	}
-*/
 	
 	{
 		Action = Add
@@ -276,7 +259,7 @@ Actions
 				OutgoingBuffProviders = [BuffProvider]
 				ComponentID = BatteryStorage
 			}
-			AddMode = DistributeEvenly // Was: DistributeRandomly
+			AddMode = PrioritizeLeastResources // Was: DistributeEvenly // Was: DistributeRandomly
 			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
 		}
 	}

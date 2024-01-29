@@ -52,6 +52,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			CommandPoints = 1
 		}
 
+		// This is not unified with substation (1x1) yet.
 		BatteryStorage
 		{
 			Type = ResourceStorage
@@ -219,9 +220,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		}
 		OperationalAnimation
 		{
-		Type = Graphics
-		Location = [.5, 1]
-		OperationalToggle = IsOperational
+			Type = Graphics
+			Location = [.5, 1]
+			OperationalToggle = IsOperational
 			OperationalDoodad
 			{
 				Layer = "doodads_high"

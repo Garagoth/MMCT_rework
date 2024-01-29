@@ -11,6 +11,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[coil, 80]
 		[coil2, 4]
 		[enriched_uranium, 16]
+		[tristeel, 2]
 	]
 	AIValueFactor = 5
 	Size = [1, 2]

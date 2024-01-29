@@ -56,12 +56,12 @@ Parts
 Stats
 {
 	MMCTPowerBandwidth = "<white>Power Bandwidth:</white> <good>{0:n0}</good><gray>/sec</gray>"
-	MMCTPowerGeneration = "<white>Power Generation:</white> <good>{0:n0}</good><gray>/sec (batteries equivalent)</gray>"
+	MMCTPowerGeneration = "<white>Maximum Power Generation:</white> <good>{0:n0}</good><gray>/sec (batteries equivalent)</gray>"
 	MMCTCableConnect = "<white>Connection Radius:</white> <good>{0:n0}</good> <gray>meters</gray>"
 	MMCTSupplyDistanceA = "<white>Supply Distance:</white> <good>{0:n1}</good> <gray>meters around</gray>"
 	MMCTSupplyDistanceL = "<white>Supply Distance:</white> <good>{0:n0}</good> <gray>meters forwards</gray>"
 	MMCTThermalCapacity = "<white>Thermal Energy Capacity:</white> <good>{0:n0}</good> <gray>heat</gray>"
 	MMCTThermalGeneration = "<white>Thermal Energy Generation:</white> <good>{0:n0}</good> <gray>heat/sec</gray>"
 	MMCTThermalUse = "<white>Thermal Energy Use:</white> <good>{0:n0}</good><gray>heat/sec</gray>"
-	MMCTThermalEfficiency = "<white>Thermal Energy Efficiency:</white> <good>{0:n0}</good><gray>% loss</gray>"
+	MMCTThermalEfficiency = "<white>Thermal Energy Efficiency:</white> <good>{0:n1}</good><gray>% loss</gray>"
 }

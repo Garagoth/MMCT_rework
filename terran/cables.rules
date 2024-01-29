@@ -23,39 +23,47 @@ Part
             MinAmount = 0
         }
 
-        IsProxyBatteryUpEmptyish
-        {
-            Type = ThresholdToggle
-            ValueFrom = CombinedBatteryStorageNotDown
-            MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-        }
-        IsProxyBatteryDownEmptyish
-        {
-            Type = ThresholdToggle
-            ValueFrom = CombinedBatteryStorageNotUp
-            MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-        }
-        IsProxyBatteryLeftEmptyish
-        {
-            Type = ThresholdToggle
-            ValueFrom = CombinedBatteryStorageNotRight
-            MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-        }
-        IsProxyBatteryRightEmptyish
-        {
-            Type = ThresholdToggle
-            ValueFrom = CombinedBatteryStorageNotLeft
-            MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-        }
+        // IsProxyBatteryUpEmptyish
+        // {
+        //     Type = ThresholdToggle
+        //     ValueFrom = CombinedBatteryStorageNotDown
+        //     MinAmount = 0
+        //     MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
+        // }
+        // IsProxyBatteryUpEmptyishMaxRef
+        // {
+        //     Type = ThresholdToggle
+        //     ValueFrom = CombinedBatteryStorageNotDown
+        //     MaxAmount = (&~/Part/Components/CombinedBatteryStorageNotDown/MaxResources) - (&~/Part/transferQuantity)
+        // }
+        // IsProxyBatteryDownEmptyish
+        // {
+        //     Type = ThresholdToggle
+        //     ValueFrom = CombinedBatteryStorageNotUp
+        //     MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
+        // }
+        // IsProxyBatteryLeftEmptyish
+        // {
+        //     Type = ThresholdToggle
+        //     ValueFrom = CombinedBatteryStorageNotRight
+        //     MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
+        // }
+        // IsProxyBatteryRightEmptyish
+        // {
+        //     Type = ThresholdToggle
+        //     ValueFrom = CombinedBatteryStorageNotLeft
+        //     MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
+        // }
 
-        IsBatteryEmptyish
-		{
-			Type = ThresholdToggle
-			ValueFrom = BatteryStorage
-			MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-		}
+        // IsBatteryEmptyish
+		// {
+		// 	Type = ThresholdToggle
+		// 	ValueFrom = BatteryStorage
+		// 	MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
+		// }
 
         // Proxies and combined storages
+        // Proxies are to connected storages, to be able to find them correctly. This has more options then viaBuff storages.
         ProxyBatteryStorageUp
         {
             Type = ResourceStorageProxy
@@ -101,7 +109,6 @@ Part
                         Category = cable_receptor
                     }
                     ComponentID = BatteryStorage
-                    IsOperational = IsBatteryEmptyish
                 }
             ]
         }
@@ -150,7 +157,6 @@ Part
                         Category = cable_receptor
                     }
                     ComponentID = BatteryStorage
-                    IsOperational = IsBatteryEmptyish
                 }
             ]
         }
@@ -191,7 +197,7 @@ Part
                         Category = cable
                         Rot = 3
                     }
-                    ComponentID = BatteryStorageLeftDown
+                    ComponentID = BatteryStorageDown
                 }
                 {
                     PartCriteria
@@ -199,7 +205,6 @@ Part
                         Category = cable_receptor
                     }
                     ComponentID = BatteryStorage
-                    IsOperational = IsBatteryEmptyish
                 }
             ]
         }
@@ -240,7 +245,7 @@ Part
                         Category = cable
                         Rot = 3
                     }
-                    ComponentID = BatteryStorageLeftUp
+                    ComponentID = BatteryStorageUp
                 }
                 {
                     PartCriteria
@@ -248,11 +253,11 @@ Part
                         Category = cable_receptor
                     }
                     ComponentID = BatteryStorage
-                    IsOperational = IsBatteryEmptyish
                 }
             ]
         }
 
+        // CombinedStorages are targets to be filled with power
         CombinedBatteryStorageNotUp
         {
             Type = MultiResourceStorage
@@ -260,6 +265,8 @@ Part
             AddMode = PrioritizeMostEmptyCapacity
             ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
             ResourceStorages = [ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
         CombinedBatteryStorageNotDown
         {
@@ -268,6 +275,8 @@ Part
             AddMode = PrioritizeMostEmptyCapacity
             ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
         CombinedBatteryStorageNotLeft
         {
@@ -276,6 +285,8 @@ Part
             AddMode = PrioritizeMostEmptyCapacity
             ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageRight]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
         CombinedBatteryStorageNotRight
         {
@@ -284,15 +295,19 @@ Part
             AddMode = PrioritizeMostEmptyCapacity
             ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageLeft]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
 
         BatteryStorage
         {
             Type = MultiResourceStorage
             ResourceType = battery
-            AddMode = DistributeEvenly
-            RemoveMode = DistributeEvenly
+            AddMode = PrioritizeMostEmptyCapacity // DistributeEvenly was here.
+            RemoveMode = PrioritizeMostResources
             ResourceStorages = [BatteryStorageUp, BatteryStorageDown, BatteryStorageLeft, BatteryStorageRight]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
 
         // Real storages		
@@ -302,6 +317,8 @@ Part
             ResourceType = battery
             MaxResources = &~/Part/batteryStorageMax
             IncludeWhenUnderConstruction = false
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
         BatteryStorageDown
         {
@@ -309,6 +326,8 @@ Part
             ResourceType = battery
             MaxResources = &~/Part/batteryStorageMax
             IncludeWhenUnderConstruction = false
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
         BatteryStorageLeft
         {
@@ -316,6 +335,8 @@ Part
             ResourceType = battery
             MaxResources = &~/Part/batteryStorageMax
             IncludeWhenUnderConstruction = false
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
         BatteryStorageRight
         {
@@ -323,6 +344,8 @@ Part
             ResourceType = battery
             MaxResources = &~/Part/batteryStorageMax
             IncludeWhenUnderConstruction = false
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
         }
 
         // Workers
@@ -334,7 +357,9 @@ Part
             ToStorage = CombinedBatteryStorageNotUp
             ToQuantity = &~/Part/transferQuantity
             Interval = &~/Part/transferInterval
-            OperationalToggle = IsProxyBatteryDownEmptyish
+            OperationalToggle = IsOperational
+            MinToQuantityForConversion = &~/Part/transferQuantity
+            MinFromQuantityForConversion = &~/Part/transferQuantity
         }
         MoveBatteryPowerFromDown
         {
@@ -344,7 +369,9 @@ Part
             ToStorage = CombinedBatteryStorageNotDown
             ToQuantity = &~/Part/transferQuantity
             Interval = &~/Part/transferInterval
-            OperationalToggle = IsProxyBatteryUpEmptyish
+            OperationalToggle = IsOperational
+            MinToQuantityForConversion = &~/Part/transferQuantity
+            MinFromQuantityForConversion = &~/Part/transferQuantity
         }
         MoveBatteryPowerFromLeft
         {
@@ -354,7 +381,9 @@ Part
             ToStorage = CombinedBatteryStorageNotLeft
             ToQuantity = &~/Part/transferQuantity
             Interval = &~/Part/transferInterval
-            OperationalToggle = IsProxyBatteryRightEmptyish
+            OperationalToggle = IsOperational
+            MinToQuantityForConversion = &~/Part/transferQuantity
+            MinFromQuantityForConversion = &~/Part/transferQuantity
         }
         MoveBatteryPowerFromRight
         {
@@ -364,7 +393,9 @@ Part
             ToStorage = CombinedBatteryStorageNotRight
             ToQuantity = &~/Part/transferQuantity
             Interval = &~/Part/transferInterval
-            OperationalToggle = IsProxyBatteryLeftEmptyish
+            OperationalToggle = IsOperational
+            MinToQuantityForConversion = &~/Part/transferQuantity
+            MinFromQuantityForConversion = &~/Part/transferQuantity
         }
     }
 

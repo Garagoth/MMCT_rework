@@ -69,7 +69,31 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
         {
             Type = ResourceStorageProxy
             ResourceType = battery
-            PartLocation = [2, 0] // 2x1, not 1x1
+            PartLocation = [2, 0] // this part is 2x1, not 1x1
+        }
+		ProxyBatteryStorageUp2 : &ProxyBatteryStorageUp
+        {
+            PartLocation = [1, -1]
+        }
+		ProxyBatteryStorageDown2 : &ProxyBatteryStorageDown
+        {
+            PartLocation = [1, 1]
+        }
+		CombinedBatteryStorageNotUp : ^/1/CombinedBatteryStorageNotUp
+        {
+            ResourceStorages = [ProxyBatteryStorageDown, ProxyBatteryStorageDown2, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
+        }
+        CombinedBatteryStorageNotDown : ^/1/CombinedBatteryStorageNotDown
+        {
+            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageUp2, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
+        }
+        CombinedBatteryStorageNotLeft : ^/1/CombinedBatteryStorageNotLeft
+        {
+            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageUp2, ProxyBatteryStorageDown, ProxyBatteryStorageDown2, ProxyBatteryStorageRight]
+        }
+        CombinedBatteryStorageNotRight : ^/1/CombinedBatteryStorageNotRight
+        {
+            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageUp2, ProxyBatteryStorageDown, ProxyBatteryStorageDown2, ProxyBatteryStorageLeft]
         }
 
 		Graphics
