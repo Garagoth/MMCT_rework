@@ -2,19 +2,21 @@ Parts
 {
 	Substation = "Power Substation"
 	SubstationIcon = "Substation"
-	SubstationDesc = "A substation capable of inserting or pulling power out of a cable network. It will automatically send power to all blocks around.\n\n"\
+	SubstationDesc = "A substation capable of inserting or pulling power out of a cable network. \n\n"\
+				"Cable must connect to substation directly, otherwise all power consumers in range are powered wirelessly.\n"\
 				"Substations must be used to send power to nearby blocks, as cables cannot do that naturally."
 
 	Substation2 = "Wireless Substation"
 	Substation2Icon = "Wireless Substation"
-	Substation2Desc = "A specialized form of wireless power projector capable of sending power to blocks (on the same ship) in a straight line from projector head."
+	Substation2Desc = "A specialized form of wireless power projector capable of sending power to blocks (on the same ship) in a straight line from projector head.\n\n"\
+				"Cables must be attached directly to substation to transfer power to and from substation, all other battery consumers are powered wirelessly."
 	
 	PowerStorageDesc = "Stores a limited cache of plasma batteries that may be used by nearby ship's systems or pushed to a cable network."
 	
 	Cable = "Cable (Corridor)"
 	CableIcon = "Cable (Corridor)"
 	CableDesc = "A length of cable that runs through a corridor, the thinner floor plate means crew have to be more careful walking over it. These transmit power from substations or capacitors to substations.\n\n"\
-				"Cables do not deliver power directly to parts, and must deliver to a substation next to those parts."
+				"Cables do not deliver power directly to parts, and must deliver to a substation next to those parts. Cables must connect to each other to transfer power between them."
 	
 	CableAR1 = "Cable (Armor 1x1)"
 	CableAR2 = "Cable (Armor 1x2)"
@@ -37,7 +39,8 @@ Parts
 	Turbine = "Steam Turbine"
 	TurbineIcon = "Turbine"
 	TurbineDesc = "A turbine that can convert high pressure steam into power, this system requires active supervision to function properly, and is notably not 100% efficient.\n\n"\
-				"This part is WIP and as such does not currently have all damage sprites, this will change in the future. Requires attached transformer to extract usable power."
+				"This part is WIP and as such does not currently have all damage sprites, this will change in the future.\n"\
+				"Requires attached steam pipe and at least one transformer to extract usable battery power."
 
 	ThermalLoop = "Steam-Water Loop Pipe"
 	ThermalLoopIcon = "Steam Pipe"
@@ -50,6 +53,7 @@ Parts
 	Transformer = "Power Transformer"
 	TransformerIcon = "Transformer"
 	TransformerDesc = "A high power electrical conversion system that can feed immense amounts of power into a grid, MMCT denies all allegations that this is a robot in disguise.\n\n"\
+				"Connects to turbine and can power connected cables and substations.\n"\
 				"This part is WIP and will change visually as MMCT is updated."
 }
 
