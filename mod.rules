@@ -181,7 +181,7 @@ Actions
 		AddTo = "<ships/base_part.rules>/Part/ReceivableBuffs"
 		Name = MMCTCableReceptor
 		ToAdd = MMCTCableReceptor
-		IgnoreTypeCategories = [Cable]
+		IgnoreTypeCategories = [cable]
 	}
 	
 //Reactor Backfeed Fix
@@ -209,81 +209,29 @@ Actions
 	
 //Capacitor Alterations
 	{
-		Action = Add
+		Action = AddMany
 		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/TypeCategories"
-		Name = power_storage
-		ToAdd = power_storage
+		ManyToAdd = [power_storage]
 	}
-	{
-		Action = Add
-		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
-		Name = BuffProvider
-		ToAdd
-		{
-			Type = GridBuffProvider
-			BuffType = MMCTCableCable
-			BuffAmount = 100%
-			GridDistance = 1
-			OperationalToggle = IsOperational
-		}
-	}
-	// TODO: Make it cable_receptor as well so cables can connect in and out.
-	// TODO: Charge directional storage in cables to avoid immediate loop and promote power flow.
-	{
-		Action = Add
-		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
-		Name = CableSubstation
-		ToAdd
-		{
-			Type = ResourceConverter
-			FromStorage = BatteryStorage
-			FromQuantity = &<terran/cables.rules>/Part/transferQuantity
-			ToStorage = CombinedBatteryStorage
-			ToQuantity = &<terran/cables.rules>/Part/transferQuantity
-			Interval = &<terran/cables.rules>/Part/transferInterval
-			OperationalToggle = IsOperational
-		}
-	}
-	
-	{
-		Action = Add
-		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
-		Name = CombinedBatteryStorage
-		ToAdd
-		{
-			Type = MultiResourceStorage
-			ResourceType = battery
-			ResourceStorages = [BatteryStorage]
-			ViaBuffs
-			{
-				OutgoingBuffProviders = [BuffProvider]
-				ComponentID = BatteryStorage
-			}
-			AddMode = PrioritizeLeastResources // Was: DistributeEvenly // Was: DistributeRandomly
-			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
-		}
-	}
-	
-	{
-		Action = Overrides
-		OverrideIn = "<ships/terran/power_storage/power_storage.rules>/Part"
-		Overrides
-		{
-			Stats
-			{
-				BatterySize = (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/BatteryStorage/MaxResourcesPickUp) / 1000
-				PowerCapacity = (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/BatteryStorage/MaxResources) / 1000
-				MMCTPowerBandwidth = 1 / (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/CableSubstation/Interval) * (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/CableSubstation/ToQuantity) / 1000
-				MMCTCableConnect = (&<./Data/ships/terran/power_storage/power_storage.rules>/Part/Components/BuffProvider/GridDistance)
-			}
-		}
-	}
-	
+	// Show visual aid for cables connecting TO capacitor
 	{
 		Action = Add
 		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/ReceivableBuffs"
 		Name = MMCTCableCable
 		ToAdd = MMCTCableCable
+	}
+	// Add necessary inherit with all new components for capacitor
+	{
+		Action = AddBase
+		AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
+		IgnoreIfNotExisting = false
+		BaseToAdd = &<terran/capacitor.rules>/Part/Components
+	}
+	{
+		Action = AddBase
+		AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Stats"
+		IgnoreIfNotExisting = false
+		BaseToAdd = &<terran/capacitor.rules>/Part/Stats
 	}
 
 //Hyperdrive Fix

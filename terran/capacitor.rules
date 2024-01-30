@@ -1,0 +1,75 @@
+Part
+{
+    Components
+    {
+        // Proxies to cables and substations so capacitor can power those properly.
+        ProxyBatteryStorageDown : <cables.rules>/Part/Components/ProxyBatteryStorageDown
+        {
+            PartLocation = [0, 2] // this part is 2x2
+        }
+        ProxyBatteryStorageDown2 : &ProxyBatteryStorageDown
+        {
+            PartLocation = [1, 2]
+        }
+        ProxyBatteryStorageUp : <cables.rules>/Part/Components/ProxyBatteryStorageUp
+        {}
+        ProxyBatteryStorageUp2 : &ProxyBatteryStorageUp
+        {
+            PartLocation = [1, -1]
+        }
+        ProxyBatteryStorageLeft : <cables.rules>/Part/Components/ProxyBatteryStorageLeft
+        {}
+        ProxyBatteryStorageLeft2 : &ProxyBatteryStorageLeft
+        {
+            PartLocation = [-1, 1]
+        }
+        ProxyBatteryStorageRight : <cables.rules>/Part/Components/ProxyBatteryStorageRight
+        {
+            PartLocation = [2, 0]
+        }
+        ProxyBatteryStorageRight2 : &ProxyBatteryStorageRight
+        {
+            PartLocation = [2, 1]
+        }
+
+        // This receives power from capacitor via CableSubstation
+        CombinedProxyStorages
+        {
+            Type = MultiResourceStorage
+            ResourceType = battery
+            ResourceStorages = [ProxyBatteryStorageDown, ProxyBatteryStorageDown2, ProxyBatteryStorageUp, ProxyBatteryStorageUp2, ProxyBatteryStorageRight, ProxyBatteryStorageRight2, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2]
+            AddMode = PrioritizeLeastResources
+            RemoveMode = PrioritizeMostResources
+        }
+
+        BuffProvider
+        {
+            Type = GridBuffProvider
+            BuffType = MMCTCableCable
+            BuffAmount = 100%
+            GridDistance = 1
+            OperationalToggle = IsOperational
+        }
+
+        CableSubstation
+		{
+			Type = ResourceConverter
+			FromStorage = BatteryStorage
+			FromQuantity = &<cables.rules>/Part/transferQuantity
+			ToStorage = CombinedProxyStorages
+			ToQuantity = &<cables.rules>/Part/transferQuantity
+			Interval = &<cables.rules>/Part/transferInterval
+			OperationalToggle = IsOperational
+            MinFromQuantityForConversion = &<cables.rules>/Part/transferQuantity
+            MinToQuantityForConversion = &<cables.rules>/Part/transferQuantity
+		}
+	    
+    }
+
+    Stats
+    {
+        MMCTPowerBandwidth = 1 / (&../Components/CableSubstation/Interval) * (&../Components/CableSubstation/ToQuantity) / 1000
+        MMCTCableConnect = (&../Components/BuffProvider/GridDistance)
+    }
+
+}
