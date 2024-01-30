@@ -247,7 +247,6 @@ Part
             Type = MultiResourceStorage
             ResourceType = battery
             AddMode = PrioritizeMostEmptyCapacity
-            ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
             ResourceStorages = [ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
@@ -257,7 +256,6 @@ Part
             Type = MultiResourceStorage
             ResourceType = battery
             AddMode = PrioritizeMostEmptyCapacity
-            ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
@@ -267,7 +265,6 @@ Part
             Type = MultiResourceStorage
             ResourceType = battery
             AddMode = PrioritizeMostEmptyCapacity
-            ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageRight]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
@@ -277,7 +274,6 @@ Part
             Type = MultiResourceStorage
             ResourceType = battery
             AddMode = PrioritizeMostEmptyCapacity
-            ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageLeft]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
@@ -292,6 +288,7 @@ Part
             ResourceStorages = [BatteryStorageUp, BatteryStorageDown, BatteryStorageLeft, BatteryStorageRight]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
         }
 
         // Real storages		

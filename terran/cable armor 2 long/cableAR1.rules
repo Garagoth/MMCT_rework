@@ -67,8 +67,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		// Cable parts overrides
         ProxyBatteryStorageRight : ^/1/ProxyBatteryStorageRight
         {
-            Type = ResourceStorageProxy
-            ResourceType = battery
             PartLocation = [2, 0] // this part is 2x1, not 1x1
         }
 		ProxyBatteryStorageUp2 : &ProxyBatteryStorageUp
