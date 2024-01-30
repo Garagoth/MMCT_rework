@@ -95,7 +95,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				OutgoingBuffProviders = [BuffProvider, BuffProviderPowerStorage]
 				ComponentID = BatteryStorage
 			}
-			AddMode = DistributeEvenly // PrioritizeMostEmptyCapacity
+			AddMode = DistributeRandomly //DistributeEvenly // PrioritizeMostEmptyCapacity
 			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
 			IncludeWhenUnderConstruction = false
 		}
@@ -111,7 +111,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			FromQuantity = &~/Part/transferQuantity
 			ToStorage = BuffedBatteryStorages
 			ToQuantity = &~/Part/transferQuantity
-			Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
+			Interval = (&~/Part/transferInterval) //- 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
 			OperationalToggle = PowerToggle
 			MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
