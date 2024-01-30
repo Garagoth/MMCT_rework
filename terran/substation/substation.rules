@@ -30,6 +30,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		Size = [32, 32]
 	}
 
+	// Make it slightly bigger then cable so priority works
+	batteryStorageMax = 2500
+
 	Components : ^/0/Components
 	             ^/1/Components
 	{
@@ -61,12 +64,30 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		// - BuffedBatteryStoragesNot{Up,Down,Left,Right}
 		// - BatteryStorage => Combined from [BatteryStorageUp, BatteryStorageDown, BatteryStorageLeft, BatteryStorageRight]
 
+		// Increase side storages to allow PrioritizeMostEmptyCapacity to work correctly
+		BatteryStorageUp : ^/1/BatteryStorageUp
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+        BatteryStorageDown : ^/1/BatteryStorageDown
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+		BatteryStorageLeft : ^/1/BatteryStorageLeft
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+		BatteryStorageRight : ^/1/BatteryStorageRight
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+
 		// This provides targets to be filled with power
 		BuffedBatteryStorages
 		{
 			Type = MultiResourceStorage
 			ResourceType = battery
-			ResourceStorages = [BatteryStorage]
+			//ResourceStorages = [BatteryStorage] // Do not feed power back to self
 			ViaBuffs
 			{
 				// Categories: uses_power, power_storage
@@ -82,7 +103,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		// Inherited from cables.rules:
 		// - MoveBatteryPowerFrom{Up,Down,Left,Right}
 
-		// Additional ResourceConverter to provide power to buff targets
+		// Additional ResourceConverter to provide power to buff targets (not cables)
 		BuffBatteryStorages
 		{
 			Type = ResourceConverter
@@ -90,8 +111,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			FromQuantity = &~/Part/transferQuantity
 			ToStorage = BuffedBatteryStorages
 			ToQuantity = &~/Part/transferQuantity
-			Interval = &~/Part/transferInterval
+			Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
 			OperationalToggle = PowerToggle
+			MinToQuantityForConversion = &~/Part/transferQuantity
+            MinFromQuantityForConversion = &~/Part/transferQuantity
 		}
 		
 		// Allow batteries to be delivered manually by crew to substation
@@ -112,7 +135,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Type = GridBuffProvider
 			BuffType = MMCTCableReceptor
 			GridDistance = 3
-			OperationalToggle = IsOperational
+			OperationalToggle = PowerToggle
 			Criteria {
 			    Category = uses_power
 			}
@@ -121,9 +144,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		BuffProviderCables
 		{
 			Type = GridBuffProvider
-			BuffType = MMCTCableReceptor
+			BuffType = MMCTCableCable
 			GridDistance = 1
-			OperationalToggle = IsOperational
+			OperationalToggle = PowerToggle
 			Criteria {
 			    Category = cable
 			}

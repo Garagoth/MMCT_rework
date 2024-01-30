@@ -20,46 +20,30 @@ Part
         {
             Type = ThresholdToggle
             ValueFrom = BatteryStorage
-            MinAmount = 0
+            MinAmount = 1
         }
 
-        // IsProxyBatteryUpEmptyish
-        // {
-        //     Type = ThresholdToggle
-        //     ValueFrom = CombinedBatteryStorageNotDown
-        //     MinAmount = 0
-        //     MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-        // }
-        // IsProxyBatteryUpEmptyishMaxRef
-        // {
-        //     Type = ThresholdToggle
-        //     ValueFrom = CombinedBatteryStorageNotDown
-        //     MaxAmount = (&~/Part/Components/CombinedBatteryStorageNotDown/MaxResources) - (&~/Part/transferQuantity)
-        // }
-        // IsProxyBatteryDownEmptyish
-        // {
-        //     Type = ThresholdToggle
-        //     ValueFrom = CombinedBatteryStorageNotUp
-        //     MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-        // }
-        // IsProxyBatteryLeftEmptyish
-        // {
-        //     Type = ThresholdToggle
-        //     ValueFrom = CombinedBatteryStorageNotRight
-        //     MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-        // }
-        // IsProxyBatteryRightEmptyish
-        // {
-        //     Type = ThresholdToggle
-        //     ValueFrom = CombinedBatteryStorageNotLeft
-        //     MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
-        // }
-
-        // IsBatteryEmptyish
+        // IsRequestingToLeft
 		// {
-		// 	Type = ThresholdToggle
-		// 	ValueFrom = BatteryStorage
-		// 	MaxAmount = (&~/Part/batteryStorageMax) - (&~/Part/transferQuantity)
+		// 	Type = ToggleProxy
+		// 	PartLocation = [-1, 0] //looking to the left
+		// 	ProxyableComponents
+		// 	[
+		// 		{
+		// 			PartCriteria
+		// 			{
+		// 				Category = cable_receptor
+		// 			}
+		// 			ComponentID = IsRequestingToLeft
+		// 		}
+		// 		{
+		// 			PartCriteria
+		// 			{
+		// 				Category = cable
+		// 			}
+		// 			ComponentID = IsRequestingToLeft
+		// 		}
+		// 	]
 		// }
 
         // Proxies and combined storages
@@ -74,7 +58,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 0
                     }
                     ComponentID = BatteryStorageDown
@@ -82,7 +66,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 1
                     }
                     ComponentID = BatteryStorageRight
@@ -90,7 +74,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 2
                     }
                     ComponentID = BatteryStorageUp
@@ -98,18 +82,18 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 3
                     }
                     ComponentID = BatteryStorageLeft
                 }
-                {
-                    PartCriteria
-                    {
-                        Category = cable_receptor
-                    }
-                    ComponentID = BatteryStorage
-                }
+                // {
+                //     PartCriteria
+                //     {
+                //         Category = cable_receptor
+                //     }
+                //     ComponentID = BatteryStorage
+                // }
             ]
         }
         ProxyBatteryStorageDown
@@ -122,7 +106,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 0
                     }
                     ComponentID = BatteryStorageUp
@@ -130,7 +114,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 1
                     }
                     ComponentID = BatteryStorageLeft
@@ -138,7 +122,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 2
                     }
                     ComponentID = BatteryStorageDown
@@ -146,18 +130,18 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 3
                     }
                     ComponentID = BatteryStorageRight
                 }
-                {
-                    PartCriteria
-                    {
-                        Category = cable_receptor
-                    }
-                    ComponentID = BatteryStorage
-                }
+                // {
+                //     PartCriteria
+                //     {
+                //         Category = cable_receptor
+                //     }
+                //     ComponentID = BatteryStorage
+                // }
             ]
         }
         ProxyBatteryStorageLeft
@@ -170,7 +154,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 0
                     }
                     ComponentID = BatteryStorageRight
@@ -178,7 +162,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 1
                     }
                     ComponentID = BatteryStorageUp
@@ -186,7 +170,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 2
                     }
                     ComponentID = BatteryStorageLeft
@@ -194,18 +178,18 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 3
                     }
                     ComponentID = BatteryStorageDown
                 }
-                {
-                    PartCriteria
-                    {
-                        Category = cable_receptor
-                    }
-                    ComponentID = BatteryStorage
-                }
+                // {
+                //     PartCriteria
+                //     {
+                //         Category = cable_receptor
+                //     }
+                //     ComponentID = BatteryStorage
+                // }
             ]
         }
         ProxyBatteryStorageRight
@@ -218,7 +202,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 0
                     }
                     ComponentID = BatteryStorageLeft
@@ -226,7 +210,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 1
                     }
                     ComponentID = BatteryStorageDown
@@ -234,7 +218,7 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 2
                     }
                     ComponentID = BatteryStorageRight
@@ -242,18 +226,18 @@ Part
                 {
                     PartCriteria
                     {
-                        Category = cable
+                        Categories = [cable, cable_receptor]
                         Rot = 3
                     }
                     ComponentID = BatteryStorageUp
                 }
-                {
-                    PartCriteria
-                    {
-                        Category = cable_receptor
-                    }
-                    ComponentID = BatteryStorage
-                }
+                // {
+                //     PartCriteria
+                //     {
+                //         Category = cable_receptor
+                //     }
+                //     ComponentID = BatteryStorage
+                // }
             ]
         }
 
@@ -303,7 +287,7 @@ Part
         {
             Type = MultiResourceStorage
             ResourceType = battery
-            AddMode = PrioritizeMostEmptyCapacity // DistributeEvenly was here.
+            AddMode = PrioritizeLeastResources // DistributeEvenly was here.
             RemoveMode = PrioritizeMostResources
             ResourceStorages = [BatteryStorageUp, BatteryStorageDown, BatteryStorageLeft, BatteryStorageRight]
             ToggleOnResources = (&~/Part/transferQuantity)

@@ -1,4 +1,5 @@
 Part : <./Data/ships/terran/base_part_terran.rules>/Part
+       <../cables.rules>/Part
 {
 	NameKey = "Parts/Substation2"
 	IconNameKey = "Parts/Substation2Icon"
@@ -27,7 +28,12 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		}
 		Size = [32, 64]
 	}
+
+	// Make it slightly bigger then cable so priority works
+	batteryStorageMax = 2500
+
 	Components : ^/0/Components
+	             ^/1/Components
 	{
 
 		IsOperational
@@ -52,19 +58,62 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			CommandPoints = 1
 		}
 
-		// This is not unified with substation (1x1) yet.
-		BatteryStorage
-		{
-			Type = ResourceStorage
-			ResourceType = battery
-			MaxResources = (&../CableSubstation/FromQuantity) * 6
-			IncludeWhenUnderConstruction = false
-		}
-		CombinedBatteryStorage
+		// Cable parts overrides
+		// this part is 1x2, not 1x1
+        ProxyBatteryStorageRight2 : &ProxyBatteryStorageRight
+        {
+            Type = ResourceStorageProxy
+            ResourceType = battery
+            PartLocation = [1, 1]
+        }
+		ProxyBatteryStorageLeft2 : &ProxyBatteryStorageLeft
+        {
+            PartLocation = [-1, 1]
+        }
+		ProxyBatteryStorageDown : ^/1/ProxyBatteryStorageDown
+        {
+            PartLocation = [2, 0]
+        }
+		CombinedBatteryStorageNotUp : ^/1/CombinedBatteryStorageNotUp
+        {
+            ResourceStorages = [ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
+        }
+        CombinedBatteryStorageNotDown : ^/1/CombinedBatteryStorageNotDown
+        {
+            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
+        }
+        CombinedBatteryStorageNotLeft : ^/1/CombinedBatteryStorageNotLeft
+        {
+            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
+        }
+        CombinedBatteryStorageNotRight : ^/1/CombinedBatteryStorageNotRight
+        {
+            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2]
+        }
+
+		// Increase side storages to allow PrioritizeMostEmptyCapacity to work correctly
+		BatteryStorageUp : ^/1/BatteryStorageUp
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+        BatteryStorageDown : ^/1/BatteryStorageDown
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+		BatteryStorageLeft : ^/1/BatteryStorageLeft
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+		BatteryStorageRight : ^/1/BatteryStorageRight
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+
+		BuffedBatteryStorages
 		{
 			Type = MultiResourceStorage
 			ResourceType = battery
-			ResourceStorages = [BatteryStorage]
+			//ResourceStorages = [BatteryStorage]
 			ViaBuffs
 			{
 				OutgoingBuffProviders = [BuffProvider]
@@ -78,21 +127,23 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = ResourceConsumer
 			ResourceType = battery
-			Storage = CombinedBatteryStorage
+			Storage = BatteryStorage
 			DefaultPriority = &/PRIORITIES/Thruster_Supply
-			ResupplyThreshold = 1500
+			ResupplyThreshold = 1
 			OperationalToggle = PowerToggle
 		}
 		
-		CableSubstation
+		BuffBatteryStorages
 		{
 			Type = ResourceConverter
 			FromStorage = BatteryStorage
-			FromQuantity = 1000
-			ToStorage = CombinedBatteryStorage
-			ToQuantity = 1000
-			Interval = 0.0625
-			OperationalToggle = IsOperational
+			FromQuantity = &~/Part/transferQuantity
+			ToStorage = BuffedBatteryStorages
+			ToQuantity = &~/Part/transferQuantity
+			Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
+			OperationalToggle = PowerToggle
+			MinToQuantityForConversion = &~/Part/transferQuantity
+            MinFromQuantityForConversion = &~/Part/transferQuantity
 		}
 		
 		BuffProvider
@@ -101,6 +152,16 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			BuffType = MMCTCableReceptor
 			BuffArea = [0, -10, 1, 10]
 			OperationalToggle = IsOperational
+		}
+		BuffProviderCables
+		{
+			Type = AreaBuffProvider
+			BuffType = MMCTCableCable
+			BuffArea = [-1, 0, 1, 2]
+			OperationalToggle = PowerToggle
+			Criteria {
+			    Category = cable
+			}
 		}
 
 		Graphics
@@ -298,11 +359,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		}
 	}
 
-	Stats
+	Stats : ^/1/Stats
 	{
-		MMCTPowerBandwidth = 1 / (&~/Part/Components/CableSubstation/Interval) * (&~/Part/Components/CableSubstation/ToQuantity) / 1000
 		MMCTSupplyDistanceL = 10
-		PowerCapacity = (&~/Part/Components/BatteryStorage/MaxResources) / 1000
 	}
 
 }
