@@ -213,13 +213,13 @@ Actions
 		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/TypeCategories"
 		ManyToAdd = [power_storage]
 	}
-	// Show visual aid for cables connecting TO capacitor
-	{
-		Action = Add
-		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/ReceivableBuffs"
-		Name = MMCTCableCable
-		ToAdd = MMCTCableCable
-	}
+	// // Show visual aid for cables connecting TO capacitor - sorry, not yet - too many loops can be created by accident.
+	// {
+	// 	Action = Add
+	// 	AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/ReceivableBuffs"
+	// 	Name = MMCTCableCable
+	// 	ToAdd = MMCTCableCable
+	// }
 	// Add necessary inherit with all new components for capacitor
 	{
 		Action = AddBase
