@@ -17,7 +17,10 @@ With heat the same, however I did tweak turbines a bit. Going with original valu
 ### Problems
 
 - This system is broken by loops in power grid.
+  
   ![mmct_rework_powergrid_loops](https://github.com/Garagoth/MMCT_rework/assets/916161/f8458fa1-8a7b-4e44-a61e-afbe80b3331e)
+- Loops of all kinds are possible, but they all divert power from where it needs to go. Eventually grid should saturate and power should flow where it is needed, but do not count on this to be efficient.
+  
   ![mmct_rework_fun_loop](https://github.com/Garagoth/MMCT_rework/assets/916161/0288b7b9-7587-483a-9bdc-4ccab2afe695)
 
 
