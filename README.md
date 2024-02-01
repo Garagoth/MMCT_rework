@@ -1,6 +1,6 @@
-This is a copy of yobeefyerky MMCT Cosmoteer mod.
+This is a copy of yobeefjerky MMCT Cosmoteer mod.
 
-### Chanes compared to original
+### Changes compared to original
 
 - Cables only connect with sides to each other.
 - Cables and substations must be touching to connect as well.
@@ -17,8 +17,11 @@ With heat the same, however I did tweak turbines a bit. Going with original valu
 ### Problems
 
 - This system is broken by loops in power grid.
+  ![mmct_rework_powergrid_loops](https://github.com/Garagoth/MMCT_rework/assets/916161/f8458fa1-8a7b-4e44-a61e-afbe80b3331e)
+  ![mmct_rework_fun_loop](https://github.com/Garagoth/MMCT_rework/assets/916161/0288b7b9-7587-483a-9bdc-4ccab2afe695)
 
-### Fixes
+
+### Various Fixes
 
 - Fixed larger hyperdrives to not be power black holes.
 - Added stats to most parts
