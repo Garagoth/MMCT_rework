@@ -100,9 +100,14 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		BuffProvider
 		{
 			Type = AreaBuffProvider
-			BuffType = MMCTCableCable
-			BuffArea = [-1, -2, 3, 6]
+			BuffType = MMCTCableReceptor
+			BuffArea = [-1, -1, 3, 2] // startx, starty, width, height
 			OperationalToggle = IsOperational
+			Criteria
+			{
+				// This will work a bit like substation, it can power most things directly.
+				Categories = [cable, cable_receptor, uses_power, power_storage]
+			}
 		}
 
 		Graphics
@@ -258,7 +263,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	Stats
 	{
 		MMCTPowerBandwidth = 1 / (&~/Part/Components/RobotsInDisguise/Interval) * (&~/Part/Components/RobotsInDisguise/ToQuantity) / 1000
-		MMCTSupplyDistanceA = 1.5
+		MMCTSupplyDistanceA = 1
 		PowerCapacity = (&~/Part/Components/BatteryStorageTrans/MaxResources) / 1000
 		PowerGeneration = &MMCTPowerBandwidth
 	}

@@ -53,7 +53,7 @@ Parts
 	Transformer = "Power Transformer"
 	TransformerIcon = "Transformer"
 	TransformerDesc = "A high power electrical conversion system that can feed immense amounts of power into a grid, MMCT denies all allegations that this is a robot in disguise.\n\n"\
-				"Connects to turbine and can power connected cables and substations.\n"\
+				"Connects to turbine and can power connected stuff around its head, mostly same as substations can.\n"\
 				"This part is WIP and will change visually as MMCT is updated."
 }
 
