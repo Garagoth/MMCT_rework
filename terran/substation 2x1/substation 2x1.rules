@@ -11,7 +11,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[tristeel, 6]
 		[coil2, 18]
 	]
-	TypeCategories = [uses_power, cable_receptor]
+	TypeCategories = [cable_receptor]
 	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable]
 	Size = [1, 2]
 	MaxHealth = 1800
@@ -72,7 +72,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
         }
 		ProxyBatteryStorageDown : ^/1/ProxyBatteryStorageDown
         {
-            PartLocation = [2, 0]
+            PartLocation = [0, 2]
         }
 		CombinedBatteryStorageNotUp : ^/1/CombinedBatteryStorageNotUp
         {
@@ -113,14 +113,12 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = MultiResourceStorage
 			ResourceType = battery
-			//ResourceStorages = [BatteryStorage]
 			ViaBuffs
 			{
 				OutgoingBuffProviders = [BuffProvider]
 				ComponentID = BatteryStorage
 			}
-			AddMode = PrioritizeMostEmptyCapacity
-			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+			AddMode = PrioritizeLeastResources
 			IncludeWhenUnderConstruction = false
 		}
 		BatteryConsumer
@@ -146,12 +144,16 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
             MinFromQuantityForConversion = &~/Part/transferQuantity
 		}
 		
+		// This powers everything. Fixme?
 		BuffProvider
 		{
 			Type = AreaBuffProvider
 			BuffType = MMCTCableReceptor
 			BuffArea = [0, -10, 1, 10]
-			OperationalToggle = IsOperational
+			OperationalToggle = PowerToggle
+			// Criteria {
+			//     Categories = [uses_power, power_receptor]
+			// }
 		}
 		BuffProviderCables
 		{

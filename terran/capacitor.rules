@@ -32,7 +32,25 @@ Part
             PartLocation = [2, 1]
         }
 
-        // This receives power from capacitor via CableSubstation
+        CapacitorBuffedStorages
+        {
+            Type = MultiResourceStorage
+			ResourceType = battery
+            // So this capacitor does not discharge into capacitors that have more power inside them - will feed self in that case.
+            ResourceStorages = [BatteryStorage]
+			ViaBuffs
+			{
+				// Categories: power_storage
+				OutgoingBuffProviders = [BuffProviderCapacitors]
+				ComponentID = BatteryStorage
+			}
+			AddMode = PrioritizeLeastResources
+			IncludeWhenUnderConstruction = false
+        }
+
+        // This receives power from capacitor via CableSubstation so it can distribute to connected cables.
+        // FIXME: How to prevent loop when substation is touching a capacitor?
+        //   - maybe introduce power extractor part (cable category) that can only feed cables and substations, but draws from power_storages on its own?
         CombinedProxyStorages
         {
             Type = MultiResourceStorage
@@ -50,6 +68,17 @@ Part
             GridDistance = 1
             OperationalToggle = IsOperational
         }
+        BuffProviderCapacitors
+        {
+            Type = GridBuffProvider
+            BuffType = MMCTCableReceptor
+            BuffAmount = 100%
+            GridDistance = 1
+            OperationalToggle = IsOperational
+            Criteria {
+			    Category = power_storage
+			}
+        }
 
         CableSubstation
 		{
@@ -61,6 +90,18 @@ Part
 			Interval = &<cables.rules>/Part/transferInterval
 			OperationalToggle = IsOperational
             MinFromQuantityForConversion = &<cables.rules>/Part/transferQuantity
+            MinToQuantityForConversion = &<cables.rules>/Part/transferQuantity
+		}
+        CapacitorBlockEqualizer
+		{
+			Type = ResourceConverter
+			FromStorage = BatteryStorage
+			FromQuantity = &<cables.rules>/Part/transferQuantity
+			ToStorage = CapacitorBuffedStorages
+			ToQuantity = &<cables.rules>/Part/transferQuantity
+			Interval = &<cables.rules>/Part/transferInterval
+			OperationalToggle = IsOperational
+            MinFromQuantityForConversion = (&<cables.rules>/Part/transferQuantity) * 2 // Only transfer to other capacitors when there is energy surplus.
             MinToQuantityForConversion = &<cables.rules>/Part/transferQuantity
 		}
 	    
