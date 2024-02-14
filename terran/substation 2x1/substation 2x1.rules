@@ -30,7 +30,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	}
 
 	// Make it slightly bigger then cable so priority works
-	batteryStorageMax = 2500
+	batteryStorageMax = 3000
 
 	Components : ^/0/Components
 	             ^/1/Components

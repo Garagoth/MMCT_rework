@@ -30,8 +30,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		Size = [32, 32]
 	}
 
-	// Make it slightly bigger then cable so priority works
-	batteryStorageMax = 2500
+	// Make it slightly bigger then cable so priority works, and so battery from large reactor fits.
+	batteryStorageMax = 3000
 
 	Components : ^/0/Components
 	             ^/1/Components
@@ -95,7 +95,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				OutgoingBuffProviders = [BuffProvider, BuffProviderPowerStorage]
 				ComponentID = BatteryStorage
 			}
-			AddMode = PrioritizeLeastResources //DistributeRandomly //DistributeEvenly
+			AddMode = PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
 			IncludeWhenUnderConstruction = false
 		}
 
@@ -123,7 +123,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceType = battery
 			Storage = BatteryStorage // This uses all side storages (BatteryStorage{Up,Down,Left,Right}) here.
 			DefaultPriority = &/PRIORITIES/Thruster_Supply
-			ResupplyThreshold = 1 // Resupply ASAP!
+			ResupplyThreshold = (&~/Part/transferQuantity) / 2 //1 // Resupply ASAP!
 			OperationalToggle = PowerToggle
 		}
 

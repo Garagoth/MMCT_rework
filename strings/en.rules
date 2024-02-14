@@ -13,7 +13,8 @@ Parts
 				"Cables must be attached directly to substation to transfer power to and from substation, all other battery consumers are powered wirelessly.\n"\
 				"Acts as cable connector as well."
 	
-	PowerStorageDesc = "Stores a limited cache of plasma batteries that may be used by nearby ship's systems or pushed to a cable network."
+	PowerStorageDesc = "Stores a limited cache of plasma batteries that may be used by nearby ship's systems or pushed to a cables attached.\n"\
+				"Will equalize power with other capacitors attached directly."
 	
 	Cable = "Cable (Corridor)"
 	CableIcon = "Cable (Corridor)"

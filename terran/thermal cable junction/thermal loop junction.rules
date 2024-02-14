@@ -61,6 +61,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Criteria {
 			    Rot = 0
 			}
+			BlueprintsOnly = true
 		}
 		BuffProviderH
 		{
@@ -71,6 +72,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Criteria {
 			    Rot = 1
 			}
+			BlueprintsOnly = true
 		}
 		BuffProviderV2
 		{
@@ -81,6 +83,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Criteria {
 			    Rot = 2
 			}
+			BlueprintsOnly = true
 		}
 		BuffProviderH2
 		{
@@ -91,6 +94,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Criteria {
 			    Rot = 3
 			}
+			BlueprintsOnly = true
 		}
 		BuffProviderH0JunctionExtra : &BuffProviderH
 		{
@@ -110,6 +114,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			    Left = -1
 			    Right = 1
 			}
+			BlueprintsOnly = true
 		}
 		
 		ProxyHeatStorageUp = &<../thermal.rules>/ProxyHeatStorageUp
