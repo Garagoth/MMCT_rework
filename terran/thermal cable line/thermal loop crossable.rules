@@ -36,6 +36,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	transferInterval = 0.1
 	heatStorageMax = 2000
 	Components : ^/0/Components
+				 <../thermal.rules>/Buffs
 	{
 
 		IsOperational
@@ -43,29 +44,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Type = MultiToggle
 			Toggles = [HeatStorageUp, HeatStorageDown]
 			Mode = Any
-		}
-
-		BuffProviderRot0
-		{
-			Type = AreaBuffProvider
-			BuffType = MMCTHeat
-			BuffArea = [0, -1, 1, 3]
-			Criteria {
-			    Rot = 0
-			    Category = thermal
-			}
-			BlueprintsOnly = true
-		}
-		BuffProviderRot2
-		{
-			Type = AreaBuffProvider
-			BuffType = MMCTHeat
-			BuffArea = [0, -1, 1, 3]
-			Criteria {
-			    Rot = 2
-			    Category = thermal
-			}
-			BlueprintsOnly = true
 		}
 
 		ProxyHeatStorageUp = &<../thermal.rules>/ProxyHeatStorageUp

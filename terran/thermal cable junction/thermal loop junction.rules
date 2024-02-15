@@ -104,18 +104,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			}
 		}
 	
-		BuffProviderTurbine
-		{
-			Type = GridBuffProvider
-			BuffType = MMCTHeat
-			GridDistance = 1
-			Criteria {
-			    Category = mmct_turbine
-			    Left = -1
-			    Right = 1
-			}
-			BlueprintsOnly = true
-		}
+		BuffProviderTurbine = &<../thermal.rules>/Buffs/BuffProviderTurbine
 		
 		ProxyHeatStorageUp = &<../thermal.rules>/ProxyHeatStorageUp
 		ProxyHeatStorageDown = &<../thermal.rules>/ProxyHeatStorageDown
@@ -155,32 +144,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceStorages = [ProxyHeatStorageUp, ProxyHeatStorageDown, ProxyHeatStorageLeft]
 		}
 
-		IsHeatUpEmptyish
-		{
-			Type = ThresholdToggle
-			ValueFrom = CombinedHeatStorageNotDown
-			MaxAmount = (&../../heatStorageMax) - (&../../transferQuantity)
-		}
-		IsHeatDownEmptyish
-		{
-			Type = ThresholdToggle
-			ValueFrom = CombinedHeatStorageNotUp
-			MaxAmount = (&../../heatStorageMax) - (&../../transferQuantity)
-		}
-		IsHeatLeftEmptyish
-		{
-			Type = ThresholdToggle
-			ValueFrom = CombinedHeatStorageNotRight
-			MaxAmount = (&../../heatStorageMax) - (&../../transferQuantity)
-		}
-		IsHeatRightEmptyish
-		{
-			Type = ThresholdToggle
-			ValueFrom = CombinedHeatStorageNotLeft
-			MaxAmount = (&../../heatStorageMax) - (&../../transferQuantity)
-		}
-
-
 		HeatStorage
 		{
 			Type = MultiResourceStorage
@@ -205,7 +168,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ToStorage = CombinedHeatStorageNotUp
 			ToQuantity = &../../transferQuantity
 			Interval = &../../transferInterval
-			OperationalToggle = IsHeatDownEmptyish
+			OperationalToggle = HeatStorageUp
+			MinToQuantityForConversion = &../../transferQuantity
+            MinFromQuantityForConversion = &../../transferQuantity
 		}
 		
 		HeatStorageDown
@@ -223,7 +188,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ToStorage = CombinedHeatStorageNotDown
 			ToQuantity = &../../transferQuantity
 			Interval = &../../transferInterval
-			OperationalToggle = IsHeatUpEmptyish
+			OperationalToggle = HeatStorageDown
+			MinToQuantityForConversion = &../../transferQuantity
+            MinFromQuantityForConversion = &../../transferQuantity
 		}
 
 		HeatStorageLeft
@@ -241,7 +208,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ToStorage = CombinedHeatStorageNotLeft
 			ToQuantity = &../../transferQuantity
 			Interval = &../../transferInterval
-			OperationalToggle = IsHeatRightEmptyish
+			OperationalToggle = HeatStorageLeft
+			MinToQuantityForConversion = &../../transferQuantity
+            MinFromQuantityForConversion = &../../transferQuantity
 		}
 
 		HeatStorageRight
@@ -259,7 +228,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ToStorage = CombinedHeatStorageNotRight
 			ToQuantity = &../../transferQuantity
 			Interval = &../../transferInterval
-			OperationalToggle = IsHeatLeftEmptyish //IsOperational
+			OperationalToggle = HeatStorageRight
+			MinToQuantityForConversion = &../../transferQuantity
+            MinFromQuantityForConversion = &../../transferQuantity
 		}
 		
 		Entropy
