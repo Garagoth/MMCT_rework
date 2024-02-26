@@ -54,16 +54,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			AbsorbsResourceDrain = 2000
 			RecoveryRate = (&AbsorbsResourceDrain) * 0.1
 		}
-		
-		BuffProvider
-		{
-			Type = GridBuffProvider
-			BuffType = MMCTCableCable
-			BuffAmount = 100%
-			GridDistance = 1
-			OperationalToggle = IsOperational
-			BlueprintsOnly = true
-		}	
 
 		// Cable parts overrides
         ProxyBatteryStorageRight : ^/1/ProxyBatteryStorageRight

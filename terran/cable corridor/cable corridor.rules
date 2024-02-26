@@ -43,16 +43,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Default = White
 		}
 
-		BuffProvider
-		{
-			Type = GridBuffProvider
-			BuffType = MMCTCableCable
-			BuffAmount = 100%
-			GridDistance = 1
-			OperationalToggle = IsOperational
-			BlueprintsOnly = true
-		}
-
 		WallsBlend : <./Data/ships/terran/walls/walls.rules>
 		{
 			Type = BlendSprite

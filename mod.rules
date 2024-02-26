@@ -208,11 +208,11 @@ Actions
 	}
 	
 //Capacitor Alterations
-	{
-		Action = AddMany
-		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/TypeCategories"
-		ManyToAdd = [power_storage]
-	}
+	// {
+	// 	Action = AddMany
+	// 	AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/TypeCategories"
+	// 	ManyToAdd = [power_storage]
+	// }
 	// // Show visual aid for cables connecting TO capacitor - sorry, not yet - too many loops can be created by accident.
 	// {
 	// 	Action = Add
@@ -221,18 +221,18 @@ Actions
 	// 	ToAdd = MMCTCableCable
 	// }
 	// Add necessary inherit with all new components for capacitor
-	{
-		Action = AddBase
-		AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
-		IgnoreIfNotExisting = false
-		BaseToAdd = &<terran/capacitor.rules>/Part/Components
-	}
-	{
-		Action = AddBase
-		AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Stats"
-		IgnoreIfNotExisting = false
-		BaseToAdd = &<terran/capacitor.rules>/Part/Stats
-	}
+	// {
+	// 	Action = AddBase
+	// 	AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
+	// 	IgnoreIfNotExisting = false
+	// 	BaseToAdd = &<terran/capacitor.rules>/Part/Components
+	// }
+	// {
+	// 	Action = AddBase
+	// 	AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Stats"
+	// 	IgnoreIfNotExisting = false
+	// 	BaseToAdd = &<terran/capacitor.rules>/Part/Stats
+	// }
 
 //Hyperdrive Fix
 	

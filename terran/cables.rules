@@ -386,6 +386,16 @@ Part
             MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
         }
+
+        BuffProvider
+		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableCable
+			BuffAmount = 100%
+			GridDistance = 1
+			OperationalToggle = IsOperational
+			BlueprintsOnly = true
+		}
     }
 
     Stats {
