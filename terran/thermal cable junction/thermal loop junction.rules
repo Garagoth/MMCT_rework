@@ -99,7 +99,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		BuffProviderH0JunctionExtra : &BuffProviderH
 		{
 			Criteria {
-			    Rot = 0
 			    Category = thermal_junction
 			}
 		}
