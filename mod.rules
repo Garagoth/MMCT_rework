@@ -208,6 +208,7 @@ Actions
 	}
 	
 //Capacitor Alterations
+	// Capacitor already has power_storage category.
 	// {
 	// 	Action = AddMany
 	// 	AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/TypeCategories"
@@ -221,6 +222,7 @@ Actions
 	// 	ToAdd = MMCTCableCable
 	// }
 	// Add necessary inherit with all new components for capacitor
+	// Needs to be removed to be easily compatibile with different mods.
 	// {
 	// 	Action = AddBase
 	// 	AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
