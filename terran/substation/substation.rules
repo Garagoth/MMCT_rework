@@ -65,19 +65,19 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		// - BatteryStorage => Combined from [BatteryStorageUp, BatteryStorageDown, BatteryStorageLeft, BatteryStorageRight]
 
 		// Increase side storages to allow PrioritizeMostEmptyCapacity to work correctly
-		BatteryStorageUp : ^/1/BatteryStorageUp
+		RealBatteryStorageUp : ^/1/RealBatteryStorageUp
         {
             MaxResources = &~/Part/batteryStorageMax
         }
-        BatteryStorageDown : ^/1/BatteryStorageDown
+        RealBatteryStorageDown : ^/1/RealBatteryStorageDown
         {
             MaxResources = &~/Part/batteryStorageMax
         }
-		BatteryStorageLeft : ^/1/BatteryStorageLeft
+		RealBatteryStorageLeft : ^/1/RealBatteryStorageLeft
         {
             MaxResources = &~/Part/batteryStorageMax
         }
-		BatteryStorageRight : ^/1/BatteryStorageRight
+		RealBatteryStorageRight : ^/1/RealBatteryStorageRight
         {
             MaxResources = &~/Part/batteryStorageMax
         }
@@ -95,7 +95,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				OutgoingBuffProviders = [BuffProvider, BuffProviderPowerStorage]
 				ComponentID = BatteryStorage
 			}
-			AddMode = PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
+			AddMode = DistributeRandomly //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
 			IncludeWhenUnderConstruction = false
 		}
 

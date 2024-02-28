@@ -80,18 +80,18 @@ Part
 			}
         }
 
-        CableSubstation
-		{
-			Type = ResourceConverter
-			FromStorage = BatteryStorage
-			FromQuantity = &<cables.rules>/Part/transferQuantity
-			ToStorage = CombinedProxyStorages
-			ToQuantity = &<cables.rules>/Part/transferQuantity
-			Interval = &<cables.rules>/Part/transferInterval
-			OperationalToggle = IsOperational
-            MinFromQuantityForConversion = &<cables.rules>/Part/transferQuantity
-            MinToQuantityForConversion = &<cables.rules>/Part/transferQuantity
-		}
+        // CableSubstation
+		// {
+		// 	Type = ResourceConverter
+		// 	FromStorage = BatteryStorage
+		// 	FromQuantity = &<cables.rules>/Part/transferQuantity
+		// 	ToStorage = CombinedProxyStorages
+		// 	ToQuantity = &<cables.rules>/Part/transferQuantity
+		// 	Interval = &<cables.rules>/Part/transferInterval
+		// 	OperationalToggle = IsOperational
+        //     MinFromQuantityForConversion = &<cables.rules>/Part/transferQuantity
+        //     MinToQuantityForConversion = &<cables.rules>/Part/transferQuantity
+		// }
         CapacitorBlockEqualizer
 		{
 			Type = ResourceConverter
@@ -109,7 +109,7 @@ Part
 
     Stats
     {
-        MMCTPowerBandwidth = 1 / (&../Components/CableSubstation/Interval) * (&../Components/CableSubstation/ToQuantity) / 1000
+        // MMCTPowerBandwidth = 1 / (&../Components/CableSubstation/Interval) * (&../Components/CableSubstation/ToQuantity) / 1000
         MMCTCableConnect = (&../Components/BuffProvider/GridDistance)
     }
 

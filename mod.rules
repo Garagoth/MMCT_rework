@@ -223,18 +223,18 @@ Actions
 	// }
 	// Add necessary inherit with all new components for capacitor
 	// Needs to be removed to be easily compatibile with different mods.
-	// {
-	// 	Action = AddBase
-	// 	AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
-	// 	IgnoreIfNotExisting = false
-	// 	BaseToAdd = &<terran/capacitor.rules>/Part/Components
-	// }
-	// {
-	// 	Action = AddBase
-	// 	AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Stats"
-	// 	IgnoreIfNotExisting = false
-	// 	BaseToAdd = &<terran/capacitor.rules>/Part/Stats
-	// }
+	{
+		Action = AddBase
+		AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Components"
+		IgnoreIfNotExisting = false
+		BaseToAdd = &<terran/capacitor.rules>/Part/Components
+	}
+	{
+		Action = AddBase
+		AddBaseTo = "<ships/terran/power_storage/power_storage.rules>/Part/Stats"
+		IgnoreIfNotExisting = false
+		BaseToAdd = &<terran/capacitor.rules>/Part/Stats
+	}
 
 //Hyperdrive Fix
 	
