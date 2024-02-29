@@ -6,7 +6,7 @@ ModifiesMultiplayer = true
 Author = "yobeefjerky, Garagoth"
 Logo = "logo.png"
 Description = 	"This mod adds a fully fledged power grid system, complete with cables/wires, substations and a slight change to capacitors.\n"\
-				"Original code and graphics: yobeefjerky.\n"
+				"Original code and graphics: yobeefjerky.\n"\
 				"Updated by Garagoth: mechanics of thermal pipes, cables, buffs."
 
 StringsFolder = "strings"
