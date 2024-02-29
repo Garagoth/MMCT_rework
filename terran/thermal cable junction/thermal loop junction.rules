@@ -38,7 +38,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		Size = [32, 32]
 	}
 
-	transferQuantity = 1500
+	transferQuantity = 500
 	transferInterval = 0.1
 	heatStorageMax = 2000
 
@@ -167,7 +167,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ToStorage = CombinedHeatStorageNotUp
 			ToQuantity = &../../transferQuantity
 			Interval = &../../transferInterval
-			OperationalToggle = HeatStorageUp
+			OperationalToggle = IsOperational
 			MinToQuantityForConversion = &../../transferQuantity
             MinFromQuantityForConversion = &../../transferQuantity
 		}
@@ -187,7 +187,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ToStorage = CombinedHeatStorageNotDown
 			ToQuantity = &../../transferQuantity
 			Interval = &../../transferInterval
-			OperationalToggle = HeatStorageDown
+			OperationalToggle = IsOperational
 			MinToQuantityForConversion = &../../transferQuantity
             MinFromQuantityForConversion = &../../transferQuantity
 		}
