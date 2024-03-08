@@ -67,6 +67,7 @@ Part
             BuffAmount = 100%
             GridDistance = 1
             OperationalToggle = IsOperational
+            BlueprintsOnly = true
         }
         BuffProviderCapacitors
         {

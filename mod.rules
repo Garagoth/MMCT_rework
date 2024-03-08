@@ -1,6 +1,6 @@
 ID = YBJ.MMCTMod.Rework
 Name = "MMCT rework - Power Rework, Cables and Stuff"
-Version = 1.3.16
+Version = 1.3.17
 CompatibleGameVersions = ["0.25.2"]
 ModifiesMultiplayer = true
 Author = "yobeefjerky, Garagoth"
@@ -24,6 +24,7 @@ Actions
 		[
 			&<terran/substation/substation.rules>/Part
 			&<terran/substation 2x1/substation 2x1.rules>/Part
+			&<terran/diode connector/connector.rules>/Part
 			&<terran/cable corridor/cable corridor.rules>/Part
 			&<terran/cable armor/cableAR.rules>/Part
 			&<terran/cable armor 2 long/cableAR1.rules>/Part
