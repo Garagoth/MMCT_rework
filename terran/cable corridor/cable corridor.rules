@@ -14,7 +14,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	Size = [1, 1]
 	MaxHealth = 800
 	CreatePartPerTileWhenGrabbed = ""
-	CrewSpeedFactor = .66
+	CrewSpeedFactor = .75
 	CrewCongestedSpeedFactor = .5
 	TypeCategories = [corridor, cable]
 	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableReceptor]
@@ -41,16 +41,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Type = UIColor
 			ColorID = "roof_light"
 			Default = White
-		}
-
-		BuffProvider
-		{
-			Type = GridBuffProvider
-			BuffType = MMCTCableCable
-			BuffAmount = 100%
-			GridDistance = 1
-			OperationalToggle = IsOperational
-			BlueprintsOnly = true
 		}
 
 		WallsBlend : <./Data/ships/terran/walls/walls.rules>

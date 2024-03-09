@@ -62,15 +62,25 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		// this part is 1x2, not 1x1
         ProxyBatteryStorageRight2 : &ProxyBatteryStorageRight
         {
-            Type = ResourceStorageProxy
-            ResourceType = battery
+            PartLocation = [1, 1]
+        }
+		ProxyCapacitorRight2 : &ProxyCapacitorRight
+        {
             PartLocation = [1, 1]
         }
 		ProxyBatteryStorageLeft2 : &ProxyBatteryStorageLeft
         {
             PartLocation = [-1, 1]
         }
+		ProxyCapacitorLeft2 : &ProxyCapacitorLeft
+        {
+            PartLocation = [-1, 1]
+        }
 		ProxyBatteryStorageDown : ^/1/ProxyBatteryStorageDown
+        {
+            PartLocation = [0, 2]
+        }
+		ProxyCapacitorDown : ^/1/ProxyCapacitorDown
         {
             PartLocation = [0, 2]
         }
@@ -92,22 +102,31 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
         }
 
 		// Increase side storages to allow PrioritizeMostEmptyCapacity to work correctly
-		BatteryStorageUp : ^/1/BatteryStorageUp
+		RealBatteryStorageUp : ^/1/RealBatteryStorageUp
         {
             MaxResources = &~/Part/batteryStorageMax
         }
-        BatteryStorageDown : ^/1/BatteryStorageDown
+        RealBatteryStorageDown : ^/1/RealBatteryStorageDown
         {
             MaxResources = &~/Part/batteryStorageMax
         }
+		RealBatteryStorageLeft : ^/1/RealBatteryStorageLeft
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+		RealBatteryStorageRight : ^/1/RealBatteryStorageRight
+        {
+            MaxResources = &~/Part/batteryStorageMax
+        }
+
 		BatteryStorageLeft : ^/1/BatteryStorageLeft
-        {
-            MaxResources = &~/Part/batteryStorageMax
-        }
+		{
+			ResourceStorages = [RealBatteryStorageLeft, ProxyCapacitorLeft, ProxyCapacitorLeft2]
+		}
 		BatteryStorageRight : ^/1/BatteryStorageRight
-        {
-            MaxResources = &~/Part/batteryStorageMax
-        }
+		{
+			ResourceStorages = [RealBatteryStorageRight, ProxyCapacitorRight, ProxyCapacitorRight2]
+		}
 
 		BuffedBatteryStorages
 		{

@@ -90,10 +90,26 @@ Part
                 // {
                 //     PartCriteria
                 //     {
-                //         Category = cable_receptor
+                //         Category = power_storage
                 //     }
                 //     ComponentID = BatteryStorage
                 // }
+            ]
+        }
+        ProxyCapacitorUp
+        {
+            Type = ResourceStorageProxy
+            ResourceType = battery
+            PartLocation = [0, -1]
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = power_storage
+                    }
+                    ComponentID = BatteryStorage
+                }
             ]
         }
         ProxyBatteryStorageDown
@@ -138,10 +154,26 @@ Part
                 // {
                 //     PartCriteria
                 //     {
-                //         Category = cable_receptor
+                //         Category = power_storage
                 //     }
                 //     ComponentID = BatteryStorage
                 // }
+            ]
+        }
+        ProxyCapacitorDown
+        {
+            Type = ResourceStorageProxy
+            ResourceType = battery
+            PartLocation = [0, 1]
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = power_storage
+                    }
+                    ComponentID = BatteryStorage
+                }
             ]
         }
         ProxyBatteryStorageLeft
@@ -186,10 +218,26 @@ Part
                 // {
                 //     PartCriteria
                 //     {
-                //         Category = cable_receptor
+                //         Category = power_storage
                 //     }
                 //     ComponentID = BatteryStorage
                 // }
+            ]
+        }
+        ProxyCapacitorLeft
+        {
+            Type = ResourceStorageProxy
+            ResourceType = battery
+            PartLocation = [-1, 0]
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = power_storage
+                    }
+                    ComponentID = BatteryStorage
+                }
             ]
         }
         ProxyBatteryStorageRight
@@ -234,10 +282,26 @@ Part
                 // {
                 //     PartCriteria
                 //     {
-                //         Category = cable_receptor
+                //         Category = power_storage
                 //     }
                 //     ComponentID = BatteryStorage
                 // }
+            ]
+        }
+        ProxyCapacitorRight
+        {
+            Type = ResourceStorageProxy
+            ResourceType = battery
+            PartLocation = [1, 0]
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = power_storage
+                    }
+                    ComponentID = BatteryStorage
+                }
             ]
         }
 
@@ -300,7 +364,24 @@ Part
         }
 
         // Real storages		
+        RealBatteryStorageUp
+        {
+            Type = ResourceStorage
+            ResourceType = battery
+            MaxResources = &~/Part/batteryStorageMax
+            IncludeWhenUnderConstruction = false
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
+        }
         BatteryStorageUp
+        {
+            Type = MultiResourceStorage
+            ResourceType = battery
+            AddMode = InOrder
+            RemoveMode = InOrder
+            ResourceStorages = [RealBatteryStorageUp, ProxyCapacitorUp]
+        }
+        RealBatteryStorageDown
         {
             Type = ResourceStorage
             ResourceType = battery
@@ -311,6 +392,14 @@ Part
         }
         BatteryStorageDown
         {
+            Type = MultiResourceStorage
+            ResourceType = battery
+            AddMode = InOrder
+            RemoveMode = InOrder
+            ResourceStorages = [RealBatteryStorageDown, ProxyCapacitorDown]
+        }
+        RealBatteryStorageLeft
+        {
             Type = ResourceStorage
             ResourceType = battery
             MaxResources = &~/Part/batteryStorageMax
@@ -319,6 +408,14 @@ Part
 			ToggleOffResources = (&ToggleOnResources) - 1
         }
         BatteryStorageLeft
+        {
+            Type = MultiResourceStorage
+            ResourceType = battery
+            AddMode = InOrder
+            RemoveMode = InOrder
+            ResourceStorages = [RealBatteryStorageLeft, ProxyCapacitorLeft]
+        }
+        RealBatteryStorageRight
         {
             Type = ResourceStorage
             ResourceType = battery
@@ -329,12 +426,11 @@ Part
         }
         BatteryStorageRight
         {
-            Type = ResourceStorage
+            Type = MultiResourceStorage
             ResourceType = battery
-            MaxResources = &~/Part/batteryStorageMax
-            IncludeWhenUnderConstruction = false
-            ToggleOnResources = (&~/Part/transferQuantity)
-			ToggleOffResources = (&ToggleOnResources) - 1
+            AddMode = InOrder
+            RemoveMode = InOrder
+            ResourceStorages = [RealBatteryStorageRight, ProxyCapacitorRight]
         }
 
         // Workers
@@ -386,6 +482,16 @@ Part
             MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
         }
+
+        BuffProvider
+		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableCable
+			BuffAmount = 100%
+			GridDistance = 1
+			OperationalToggle = IsOperational
+			BlueprintsOnly = true
+		}
     }
 
     Stats {

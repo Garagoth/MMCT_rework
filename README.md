@@ -1,4 +1,5 @@
-This is a copy of yobeefjerky MMCT Cosmoteer mod.
+This is a modified version of [yobeefjerky's MMCT Cosmoteer mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2885124288).
+Uses art assets and ideas from original mod, with permission from original author.
 
 ### Changes compared to original
 
@@ -6,7 +7,7 @@ This is a copy of yobeefjerky MMCT Cosmoteer mod.
 - Cables and substations must be touching to connect as well.
 - Substations can power everything in their radius, except for cables which have to be touching substations to exchange power.
 - Capacitors can connect to cables and substations and push power to them, but then again, must be touching sides to work.
-- Capacitors no longer exchange power between each other, subject to change in future maybe.
+- Capacitors exhange power with all power_storage parts.
 - Only wireless transfer is from substations (area around or line in front).
 
 With heat the same, however I did tweak turbines a bit. Going with original values (and lowering some), now it is possible to:
@@ -17,6 +18,8 @@ With heat the same, however I did tweak turbines a bit. Going with original valu
 ### Problems
 
 - This system is broken by loops in power grid.
+  To make it efficient, please make sure that there are no loops in cables (including most trivial case of four cables in a square)
+  and no substation is in range of another substation (with some exceptions that can be found by experimentation).
   
   ![mmct_rework_powergrid_loops](https://github.com/Garagoth/MMCT_rework/assets/916161/f8458fa1-8a7b-4e44-a61e-afbe80b3331e)
 - Loops of all kinds are possible, but they all divert power from where it needs to go. Eventually grid should saturate and power should flow where it is needed, but do not count on this to be efficient.
