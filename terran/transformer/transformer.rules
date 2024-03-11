@@ -266,6 +266,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		MMCTSupplyDistanceA = 1
 		PowerCapacity = (&~/Part/Components/BatteryStorageTrans/MaxResources) / 1000
 		PowerGeneration = &MMCTPowerBandwidth
+
+		RecCrew = -8 // This reduces recommended crew as it automates energy transfer. Empirical value.
 	}
 
 }

@@ -27,6 +27,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	[
 		[1, 1]
 	]
+	AllowedDoorLocations [] // No doors
 	EditorIcon
 	{
 		Texture
