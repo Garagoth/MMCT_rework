@@ -66,6 +66,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			ResourceStorages = [RealBatteryStorageDown, ProxyCapacitorDown, ProxyPowerSourceDown]
 		}
+		BatteryStorage : &BatteryStorageDown {} //This allows being powered by transformers and substations
         ProxyCapacitorDown = &<../cables.rules>/Part/Components/ProxyCapacitorDown
         ProxyCapacitorUp = &<../cables.rules>/Part/Components/ProxyCapacitorUp
         ProxyBatteryStorageUp = &<../cables.rules>/Part/Components/ProxyBatteryStorageUp
