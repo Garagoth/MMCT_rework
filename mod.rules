@@ -1,7 +1,7 @@
 ID = YBJ.MMCTMod.Rework
 Name = "MMCT rework - Power Rework, Cables and Stuff"
-Version = 1.3.17
-CompatibleGameVersions = ["0.25.2"]
+Version = 1.3.18
+CompatibleGameVersions = ["0.26.0"]
 ModifiesMultiplayer = true
 Author = "yobeefjerky, Garagoth"
 Logo = "logo.png"
