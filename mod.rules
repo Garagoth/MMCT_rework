@@ -1,6 +1,6 @@
 ID = YBJ.MMCTMod.Rework
 Name = "MMCT rework - Power Rework, Cables and Stuff"
-Version = 1.3.18
+Version = 1.3.19
 CompatibleGameVersions = ["0.26.0"]
 ModifiesMultiplayer = true
 Author = "yobeefjerky, Garagoth"
@@ -208,13 +208,13 @@ Actions
 		With = []
 	}
 	
-//Capacitor Alterations
-	// Capacitor already has power_storage category.
-	// {
-	// 	Action = AddMany
-	// 	AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/TypeCategories"
-	// 	ManyToAdd = [power_storage]
-	// }
+	//Capacitor Alterations
+	// Add TypeCategory to capacitor so all modded capacitors inheriting from base can be recognized
+	{
+		Action = AddMany
+		AddTo = "<ships/terran/power_storage/power_storage.rules>/Part/TypeCategories"
+		ManyToAdd = [power_storage]
+	}
 	// // Show visual aid for cables connecting TO capacitor - sorry, not yet - too many loops can be created by accident.
 	// {
 	// 	Action = Add
