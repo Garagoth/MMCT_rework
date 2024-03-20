@@ -31,6 +31,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 
 	// Make it slightly bigger then cable so priority works
 	batteryStorageMax = 3000
+	buffRange = 10
 
 	Components : ^/0/Components
 	             ^/1/Components
@@ -128,6 +129,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceStorages = [RealBatteryStorageRight, ProxyCapacitorRight, ProxyCapacitorRight2]
 		}
 
+		// TODO: Split into two buffs (parts and substations+cables) so power transfer can be InOrder, will make loops less visible.
 		BuffedBatteryStorages
 		{
 			Type = MultiResourceStorage
@@ -135,7 +137,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ViaBuffs
 			{
 				OutgoingBuffProviders = [BuffProvider]
-				ComponentID = BatteryStorage
+				ComponentIDs = [BatteryStorage, LocalBatteryStorage]
 			}
 			AddMode = PrioritizeLeastResources
 			IncludeWhenUnderConstruction = false
@@ -146,7 +148,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceType = battery
 			Storage = BatteryStorage
 			DefaultPriority = &/PRIORITIES/Thruster_Supply
-			ResupplyThreshold = 1
+			ResupplyThreshold = (&~/Part/transferQuantity) / 2
 			OperationalToggle = PowerToggle
 		}
 		
@@ -168,7 +170,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = AreaBuffProvider
 			BuffType = MMCTCableReceptor
-			BuffArea = [0, -10, 1, 10]
+			BuffArea = [0, -(&~/Part/buffRange), 1, (&~/Part/buffRange)]
 			OperationalToggle = PowerToggle
 			// Criteria {
 			//     Categories = [uses_power, power_receptor]
@@ -382,7 +384,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 
 	Stats : ^/1/Stats
 	{
-		MMCTSupplyDistanceL = 10
+		MMCTSupplyDistanceL = &~/Part/buffRange
 	}
 
 }

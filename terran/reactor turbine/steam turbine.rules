@@ -7,8 +7,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	DescriptionKey = "Parts/TurbineDesc"
 	Resources
 	[
-		[steel, 16]
-		[coil, 9]
+		[steel, 27]
+		[coil, 64]
 		[tristeel, 3]
 	]
 	AIValueFactor = 5
@@ -28,6 +28,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[0, 3]
 		[0, -1]
 		[0, 1]
+		[-1, 0]
+		[-1, 2]
 	]
 	EditorIcon
 	{

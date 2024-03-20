@@ -82,21 +82,87 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
             MaxResources = &~/Part/batteryStorageMax
         }
 
-		// This provides targets to be filled with power
+		BuffedSinks
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProvider]
+				ComponentIDs = [BatteryStorage, LocalBatteryStorage]
+			}
+			AddMode = DistributeRandomly
+			IncludeWhenUnderConstruction = false
+		}
+		BuffedSubstations : &BuffedSinks
+		{
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProviderSubstations]
+				ComponentID = BatteryStorage
+			}
+			AddMode = DistributeRandomly
+		}
+		BuffedPowerStorages : &BuffedSinks
+		{
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProviderPowerStorage]
+				ComponentID = BatteryStorage
+			}
+			AddMode = DistributeRandomly
+		}
+		// This provides targets to be filled with power. InOrder to prioritize some categories.
 		BuffedBatteryStorages
 		{
 			Type = MultiResourceStorage
 			ResourceType = battery
-			//ResourceStorages = [BatteryStorage] // Do not feed power back to self
+			//ResourceStorages = [BuffedSinks, BuffedPowerStorages, BuffedSubstations]
+			// Above does not work properly - https://discord.com/channels/314103695568666625/1217997698993754254
 			ViaBuffs
 			{
-				// Categories: uses_power, power_storage
-				// This excludes cables intentionally! Power to cables is delivered using ResourceConverters: MoveBatteryPowerFrom{Up,Down,Left,Right}
-				OutgoingBuffProviders = [BuffProvider, BuffProviderPowerStorage]
-				ComponentID = BatteryStorage
+				OutgoingBuffProviders = [BuffProvider, BuffProviderSubstations, BuffProviderPowerStorage]
+				ComponentIds = [BatteryStorage, LocalBatteryStorage]
 			}
-			AddMode = DistributeRandomly //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
+			AddMode = DistributeRandomly //Should be InOrder but... //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
 			IncludeWhenUnderConstruction = false
+		}
+
+		// Buffs
+		// Substation has categories: cable_receptor. Substations can power other substations, but that also creates power loops. Fixme?
+		BuffProvider
+		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableReceptor
+			GridDistance = 3
+			OperationalToggle = PowerToggle
+			Criteria {
+			    Category = uses_power
+			}
+		}
+		BuffProviderSubstations : &BuffProvider
+		{
+			Criteria {
+				Category = cable_receptor
+			}
+		}
+		// Not included in BuffedBatteryStorages intentionally.
+		BuffProviderCables
+		{
+			Type = GridBuffProvider
+			BuffType = MMCTCableCable
+			GridDistance = 1
+			OperationalToggle = PowerToggle
+			Criteria {
+			    Category = cable
+			}
+			BlueprintOnly = true
+		}
+		BuffProviderPowerStorage : &BuffProvider
+		{
+			Criteria {
+			    Category = power_storage
+			}
 		}
 
 		// Inherited from cables.rules:
@@ -110,7 +176,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			FromQuantity = &~/Part/transferQuantity
 			ToStorage = BuffedBatteryStorages
 			ToQuantity = &~/Part/transferQuantity
-			Interval = (&~/Part/transferInterval) //- 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
+			Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
 			OperationalToggle = PowerToggle
 			MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
@@ -123,38 +189,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceType = battery
 			Storage = BatteryStorage // This uses all side storages (BatteryStorage{Up,Down,Left,Right}) here.
 			DefaultPriority = &/PRIORITIES/Thruster_Supply
-			ResupplyThreshold = (&~/Part/transferQuantity) / 2 //1 // Resupply ASAP!
+			ResupplyThreshold = (&~/Part/transferQuantity) / 2
 			OperationalToggle = PowerToggle
-		}
-
-
-		// Substation has categories: cable_receptor. Substations can power other substations, but that also creates power loops. Fixme?
-		BuffProvider
-		{
-			Type = GridBuffProvider
-			BuffType = MMCTCableReceptor
-			GridDistance = 3
-			OperationalToggle = PowerToggle
-			Criteria {
-			    Categories = [uses_power, cable_receptor]
-			}
-		}
-		// Not included in BuffedBatteryStorages intentionally.
-		BuffProviderCables
-		{
-			Type = GridBuffProvider
-			BuffType = MMCTCableCable
-			GridDistance = 1
-			OperationalToggle = PowerToggle
-			Criteria {
-			    Category = cable
-			}
-		}
-		BuffProviderPowerStorage : &BuffProvider
-		{
-			Criteria {
-			    Category = power_storage
-			}
 		}
 
 		Graphics

@@ -1,10 +1,10 @@
 Part
 {
     // Variables
-    batteryStorageMax = 2000 // This has to be kept small so PrioritizeMostEmptyCapacity works correctly and does not try to just feed self endlessly.
-                             // Please make PrioritizeMostEmptyCapacityPercentage, this would fix so many issues here...
-    transferQuantity = 1000 / 2 // Faster and smaller transfers perform better here.
-    transferInterval = 0.0625 / 2 // This means each cable procs 4*32 times every second and substations proc 5*32 times per second, each...
+    transferInterval = 1/30 // This means each cable procs 4*30 times every second and substations proc 5*30 times per second, each... 1/30 is current PhysicsUpdatesPerSecond in game engine.
+    transferQuantity = ceil(15000 * (&transferInterval)) // should be 500 - Faster and smaller transfers perform better here.
+    batteryStorageMax = (&transferQuantity) * 4 // This has to be kept small so PrioritizeMostEmptyCapacity works correctly and does not try to just feed self endlessly.
+                                                // Please make PrioritizeMostEmptyCapacityPercentage, this would fix so many issues here...
 
     Components
     {
@@ -22,29 +22,6 @@ Part
             ValueFrom = BatteryStorage
             MinAmount = 1
         }
-
-        // IsRequestingToLeft
-		// {
-		// 	Type = ToggleProxy
-		// 	PartLocation = [-1, 0] //looking to the left
-		// 	ProxyableComponents
-		// 	[
-		// 		{
-		// 			PartCriteria
-		// 			{
-		// 				Category = cable_receptor
-		// 			}
-		// 			ComponentID = IsRequestingToLeft
-		// 		}
-		// 		{
-		// 			PartCriteria
-		// 			{
-		// 				Category = cable
-		// 			}
-		// 			ComponentID = IsRequestingToLeft
-		// 		}
-		// 	]
-		// }
 
         // Proxies and combined storages
         // Proxies are to connected storages, to be able to find them correctly. This has more options then viaBuff storages.
@@ -362,6 +339,7 @@ Part
 			ToggleOffResources = (&ToggleOnResources) - 1
             ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
         }
+        CombinedBatteryStorage = &BatteryStorage
 
         // Real storages		
         RealBatteryStorageUp
