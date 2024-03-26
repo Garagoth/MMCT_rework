@@ -1,0 +1,43 @@
+Techs
+[
+    {	
+		ID = YBJ.MMCTDiodeConnector
+		NameKey = &<terran/diode connector/connector.rules>/Part/NameKey
+		DescriptionKey = &<terran/diode connector/connector.rules>/Part/DescriptionKey
+		Icon = &<terran/diode connector/connector.rules>/Part/EditorIcon
+		EditorGroup = &<terran/diode connector/connector.rules>/Part/EditorGroup
+		PartsUnlocked = [&<terran/diode connector/connector.rules>/Part/ID]
+		Cost = 5000
+		Prerequisites = [cosmoteer.reactor_med]
+	}
+    {	
+		ID = YBJ.MMCTreactorcore
+		NameKey = &<terran/reactor turbine/steam turbine.rules>/Part/NameKey
+		DescriptionKey = &<terran/reactor turbine/steam turbine.rules>/Part/DescriptionKey
+		Icon = &<terran/reactor turbine/steam turbine.rules>/Part/EditorIcon
+		EditorGroup = &<terran/reactor turbine/steam turbine.rules>/Part/EditorGroup
+		PartsUnlocked = [&<terran/reactor turbine/steam turbine.rules>/Part/ID]
+		Cost = 30000
+		Prerequisites = [cosmoteer.reactor_large]
+	}
+    {	
+		ID = YBJ.MMCTturbine
+		NameKey = &<terran/reactor turbine/steam turbine.rules>/Part/NameKey
+		DescriptionKey = &<terran/reactor turbine/steam turbine.rules>/Part/DescriptionKey
+		Icon = &<terran/reactor turbine/steam turbine.rules>/Part/EditorIcon
+		EditorGroup = &<terran/reactor turbine/steam turbine.rules>/Part/EditorGroup
+		PartsUnlocked = [&<terran/reactor turbine/steam turbine.rules>/Part/ID]
+		Cost = 5000
+		Prerequisites = [YBJ.MMCTreactorcore]
+	}
+	{
+		ID = YBJ.MMCTTransformer
+		NameKey = &<terran/transformer/transformer.rules>/Part/NameKey
+		DescriptionKey = &<terran/transformer/transformer.rules>/Part/DescriptionKey
+		Icon = &<terran/transformer/transformer.rules>/Part/EditorIcon
+		EditorGroup = &<terran/transformer/transformer.rules>/Part/EditorGroup
+		PartsUnlocked = [&<terran/transformer/transformer.rules>/Part/ID]
+		Cost = 5000
+		Prerequisites = [YBJ.MMCTturbine]
+	}
+]

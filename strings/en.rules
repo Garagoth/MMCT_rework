@@ -69,3 +69,6 @@ Stats
 	MMCTThermalUse = "<white>Thermal Energy Use:</white> <good>{0:n0}</good><gray>heat/sec</gray>"
 	MMCTThermalEfficiency = "<white>Thermal Energy Efficiency:</white> <good>{0:n1}</good><gray>% loss</gray>"
 }
+
+MMCT_Ships = "MMCT:R Ships"
+MMCT_Ships_Tooltip = "Ships provided by MMCT:R mod"

@@ -88,8 +88,14 @@ Actions
         ]
     }
 
-//Buff Additions
+	//Tech tree
+	{
+		Action = AddMany
+		AddTo = "<modes/career/techs.rules>/Techs"
+		ManyToAdd = &<techs.rules>/Techs
+	}
 
+	//Buff Additions
 	{
 		Action = Add
 		AddTo = "<buffs/buffs.rules>"
@@ -175,8 +181,7 @@ Actions
 		}
 	}
 	
-//Base_Part Buff Additions
-
+	//Base_Part Buff Additions
 	{
 		Action = Add
 		AddTo = "<ships/base_part.rules>/Part/ReceivableBuffs"
@@ -185,8 +190,7 @@ Actions
 		IgnoreTypeCategories = [cable]
 	}
 	
-//Reactor Backfeed Fix
-
+	//Reactor Backfeed Fix
 	{
 		Action = Replace
 		Replace = "<ships/terran/reactor_small/reactor_small.rules>/Part/ReceivableBuffs"
@@ -237,8 +241,7 @@ Actions
 		BaseToAdd = &<terran/capacitor.rules>/Part/Stats
 	}
 
-//Hyperdrive Fix
-	
+	//Hyperdrive Fix
 	{
 		Action = Overrides
 		OverrideIn = "<ships/terran/hyperdrive_small/hyperdrive_small.rules>/Part/Components"
@@ -305,7 +308,7 @@ Actions
 		}
 	}
 
-// medium hyperdrive
+	// medium hyperdrive
 	{
 		Action = Add
 		AddTo = "<ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components"
@@ -365,7 +368,7 @@ Actions
 			ResourceStorage = BatteryStorageOnline
 		}
 	}
-// large hyperdrive
+	// large hyperdrive
 	{
 		Action = Add
 		AddTo = "<ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components"
@@ -425,6 +428,14 @@ Actions
 			ResourceStorage = BatteryStorageOnline
 		}
 	}
-	
+]
 
+// Ship library - Sub-folders will be automatically included.
+ShipLibraries
+[
+	{
+		Folder = "ships"
+		NameKey = "MMCT_Ships"
+		TooltipKey = "MMCT_Ships_Tooltip"
+	}
 ]
