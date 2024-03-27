@@ -7,15 +7,16 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	DescriptionKey = "Parts/TurbineDesc"
 	Resources
 	[
-		[steel, 27]
+		[steel, 40]
 		[coil, 64]
-		[tristeel, 3]
+		[coil2, 8]
+		[tristeel, 11]
 	]
-	AIValueFactor = 5
+	AIValueFactor = 7
 	TypeCategories = [modular_reactor, mmct_turbine, is_crewed, thermal_sink]
 	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTHeat]
 	Size = [2, 3]
-	MaxHealth = 1000
+	MaxHealth = 2000
 	IsFlippable = true
 	BlockedTravelCells
 	[
