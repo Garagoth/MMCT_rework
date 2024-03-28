@@ -12,11 +12,11 @@ Techs
 	}
     {	
 		ID = YBJ.MMCTreactorcore
-		NameKey = &<terran/reactor turbine/steam turbine.rules>/Part/NameKey
-		DescriptionKey = &<terran/reactor turbine/steam turbine.rules>/Part/DescriptionKey
-		Icon = &<terran/reactor turbine/steam turbine.rules>/Part/EditorIcon
-		EditorGroup = &<terran/reactor turbine/steam turbine.rules>/Part/EditorGroup
-		PartsUnlocked = [&<terran/reactor turbine/steam turbine.rules>/Part/ID]
+		NameKey = &<terran/reactor core/reactor core.rules>/Part/NameKey
+		DescriptionKey = &<terran/reactor core/reactor core.rules>/Part/DescriptionKey
+		Icon = &<terran/reactor core/reactor core.rules>/Part/EditorIcon
+		EditorGroup = &<terran/reactor core/reactor core.rules>/Part/EditorGroup
+		PartsUnlocked = [&<terran/reactor core/reactor core.rules>/Part/ID]
 		Cost = 30000
 		Prerequisites = [cosmoteer.reactor_large]
 	}
