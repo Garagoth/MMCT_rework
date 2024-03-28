@@ -7,11 +7,11 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	DescriptionKey = "Parts/ReactorCoreDesc"
 	Resources
 	[
-		[steel, 32]
+		[steel, 60]
 		[coil, 80]
-		[coil2, 4]
-		[enriched_uranium, 20]
-		[tristeel, 8]
+		[coil2, 5]
+		[enriched_uranium, 32]
+		[tristeel, 25]
 	]
 	AIValueFactor = 10
 	Size = [1, 2]

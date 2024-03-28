@@ -1,5 +1,6 @@
 This is a modified version of [yobeefjerky's MMCT Cosmoteer mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2885124288).
 Uses art assets and ideas from original mod, with permission from original author.
+Published as [Steam Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3170178280).
 
 ### Changes compared to original
 
@@ -9,6 +10,7 @@ Uses art assets and ideas from original mod, with permission from original autho
 - Capacitors can connect to cables and substations and push power to them, but then again, must be touching sides to work.
 - Capacitors exhange power with all power_storage parts.
 - Only wireless transfer is from substations (area around or line in front).
+- Added tech tree unlocks
 
 With heat the same, however I did tweak turbines a bit. Going with original values (and lowering some), now it is possible to:
 - One core can produce heat to power 3 turbines fully loaded (previously impossible due to how heat was distributed)
@@ -31,4 +33,9 @@ With heat the same, however I did tweak turbines a bit. Going with original valu
 
 - Fixed larger hyperdrives to not be power black holes.
 - Added stats to most parts
+
+### New parts
+
+- One way connector - acts as a diode AND a power pump, can suck power from capacitors and storages or feed power to parts in front of it.
+
 
