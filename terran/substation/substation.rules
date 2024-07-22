@@ -13,7 +13,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[tristeel, 1]
 	]
 	TypeCategories = [cable_receptor]
-	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable]
+	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableCableFlood, ElectronDebuff, ElectronNebula]
 	Size = [1, 1]
 	MaxHealth = 1000
 	AllowedDoorLocations
@@ -89,7 +89,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ViaBuffs
 			{
 				OutgoingBuffProviders = [BuffProvider]
-				ComponentIDs = [BatteryStorage, LocalBatteryStorage]
+				ComponentIDs = [BatteryStorage, LocalBatteryStorage] // CombinedBatteryStorage, ExtendableBatteryStorage can be added when this is fixed: https://discord.com/channels/314103695568666625/1217997698993754254
 			}
 			AddMode = DistributeRandomly
 			IncludeWhenUnderConstruction = false
@@ -112,19 +112,33 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			}
 			AddMode = DistributeRandomly
 		}
+		BuffedEngines : &BuffedSinks
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProvider]
+				ComponentIDs = [CombinedBatteryStorage, ExtendableBatteryStorage] // can be added when this is fixed: https://discord.com/channels/314103695568666625/1217997698993754254
+			}
+			AddMode = DistributeRandomly
+		}
 		// This provides targets to be filled with power. InOrder to prioritize some categories.
 		BuffedBatteryStorages
 		{
 			Type = MultiResourceStorage
 			ResourceType = battery
-			//ResourceStorages = [BuffedSinks, BuffedPowerStorages, BuffedSubstations]
+			//ResourceStorages = [BuffedSinks, BuffedEngines, BuffedPowerStorages, BuffedSubstations]
 			// Above does not work properly - https://discord.com/channels/314103695568666625/1217997698993754254
-			ViaBuffs
-			{
-				OutgoingBuffProviders = [BuffProvider, BuffProviderSubstations, BuffProviderPowerStorage]
-				ComponentIds = [BatteryStorage, LocalBatteryStorage]
-			}
-			AddMode = DistributeRandomly //Should be InOrder but... //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
+			ResourceStorages = [BuffedSinks, BuffedPowerStorages, BuffedSubstations] // Could add maybe Cables before BuffedSubstations?
+			AddMode = InOrder
+			// Bellow does work:
+			// ViaBuffs
+			// {
+			// 	OutgoingBuffProviders = [BuffProvider, BuffProviderSubstations, BuffProviderPowerStorage]
+			// 	ComponentIds = [BatteryStorage, LocalBatteryStorage]
+			// }
+			// AddMode = DistributeRandomly //InOrder //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
 			IncludeWhenUnderConstruction = false
 		}
 
@@ -165,6 +179,24 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			}
 		}
 
+		// // XXX: Experimental
+		// BuffProviderFlood
+        // {
+        //     Type = FloodFillBuffProvider
+        //     BuffType = MMCTCableCableFlood
+        //     BuffRegion {
+        //         Type = Grid
+        //         GridDistance = 1
+        //         AllowDiaginals = false
+        //     }
+        //     OperationalToggle = IsOperational
+        //     BlueprintsOnly = false
+        //     Criteria
+        //     {
+        //         TypeCategories = [cable, cable_receptor]
+        //     }
+        // }
+
 		// Inherited from cables.rules:
 		// - MoveBatteryPowerFrom{Up,Down,Left,Right}
 
@@ -176,7 +208,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			FromQuantity = &~/Part/transferQuantity
 			ToStorage = BuffedBatteryStorages
 			ToQuantity = &~/Part/transferQuantity
-			Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
+			Interval = { BaseValue=(&~/Part/transferInterval); BuffType=ElectronDebuff; BuffMode=Divide; }
+			// Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
 			OperationalToggle = PowerToggle
 			MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
@@ -189,7 +222,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceType = battery
 			Storage = BatteryStorage // This uses all side storages (BatteryStorage{Up,Down,Left,Right}) here.
 			DefaultPriority = &/PRIORITIES/Thruster_Supply
-			ResupplyThreshold = (&~/Part/transferQuantity) / 2
+			ResupplyThreshold = (&~/Part/transferQuantity)
 			OperationalToggle = PowerToggle
 		}
 
@@ -346,6 +379,38 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 					}
 				]
 			}
+		}
+
+		ElectronDebuffToggle
+		{
+			Type = BuffToggle
+			BuffType = ElectronDebuff
+		}
+		ElectronDebuffEffectsToggle
+		{
+			Type = MultiToggle
+			Toggles = [ElectronDebuffToggle, BatteryStorage]
+			Mode = All
+		}
+
+		ElectronNebulaEffects
+		{
+			Type = ContinuousEffects
+			OperationalToggle = ElectronDebuffEffectsToggle
+			Location = [0.5, 0.5]
+			MediaEffectsIntensityFactor = { BaseValue=0.5; BuffType=ElectronNebula; BuffMode=Multiply; }
+			MediaEffects
+			[
+				&<./Data/nebulas/electron/particles/electron_reactor_sizzle.rules>
+
+				: /BASE_SOUNDS/AudioExterior
+				{
+					Sound = "./Data/nebulas/electron/sounds/electron_cloud_reactor_weaken.wav"
+					Volume = 20%
+					MaxConcurrentVolume = &Volume
+					MaxConcurrent = 1
+				}
+			]
 		}
 
 		DestroyedEffects
