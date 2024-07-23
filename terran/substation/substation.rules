@@ -128,17 +128,16 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = MultiResourceStorage
 			ResourceType = battery
-			//ResourceStorages = [BuffedSinks, BuffedEngines, BuffedPowerStorages, BuffedSubstations]
-			// Above does not work properly - https://discord.com/channels/314103695568666625/1217997698993754254
-			ResourceStorages = [BuffedSinks, BuffedPowerStorages, BuffedSubstations] // Could add maybe Cables before BuffedSubstations?
-			AddMode = InOrder
-			// Bellow does work:
-			// ViaBuffs
-			// {
-			// 	OutgoingBuffProviders = [BuffProvider, BuffProviderSubstations, BuffProviderPowerStorage]
-			// 	ComponentIds = [BatteryStorage, LocalBatteryStorage]
-			// }
-			// AddMode = DistributeRandomly //InOrder //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
+			// ResourceStorages = [BuffedSinks, BuffedEngines, BuffedPowerStorages, BuffedSubstations]
+			// AddMode = InOrder
+			// // Above does not work properly - https://discord.com/channels/314103695568666625/1217997698993754254
+			// // Bellow does work:
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProvider, BuffProviderSubstations, BuffProviderPowerStorage]
+				ComponentIds = [BatteryStorage, LocalBatteryStorage]
+			}
+			AddMode = DistributeRandomly //InOrder //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
 			IncludeWhenUnderConstruction = false
 		}
 
