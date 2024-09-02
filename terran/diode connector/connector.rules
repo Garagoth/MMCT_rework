@@ -137,7 +137,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				//CombinedBatteryStorage in EngineRoom, ExtendableBatteryStorage in modular rocket thrusters
 				//Otherwise just BatteryStorage
 				OutgoingBuffProviders = [BuffProviderSinks, BuffProviderPowerStorage]
-				ComponentIDs = [BatteryStorage, LocalBatteryStorage] //, CombinedBatteryStorage, ExtendableBatteryStorage] //CombinedBatteryStorage, ExtendableBatteryStorage can be added when this is fixed: https://discord.com/channels/314103695568666625/1217997698993754254
+				ComponentIDs = [BatteryStorage, LocalBatteryStorage, CombinedBatteryStorage, ExtendableBatteryStorage] //CombinedBatteryStorage, ExtendableBatteryStorage can be added when this is fixed: https://discord.com/channels/314103695568666625/1217997698993754254
 			}
             ResourceStorages = [ProxyBatteryStorageUp, ProxyCapacitorUp]
 			AllowExternalPickupAndDelivery = false

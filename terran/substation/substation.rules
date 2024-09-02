@@ -128,16 +128,17 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = MultiResourceStorage
 			ResourceType = battery
-			// ResourceStorages = [BuffedSinks, BuffedEngines, BuffedPowerStorages, BuffedSubstations]
-			// AddMode = InOrder
+			ResourceStorages = [BuffedSinks, BuffedEngines, BuffedPowerStorages, BuffedSubstations]
+			AddMode = InOrder
 			// // Above does not work properly - https://discord.com/channels/314103695568666625/1217997698993754254
+			// // Seems to be fixed in 0.27.1_rc1!
 			// // Bellow does work:
-			ViaBuffs
-			{
-				OutgoingBuffProviders = [BuffProvider, BuffProviderSubstations, BuffProviderPowerStorage]
-				ComponentIds = [BatteryStorage, LocalBatteryStorage]
-			}
-			AddMode = DistributeRandomly //InOrder //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
+			// ViaBuffs
+			// {
+			// 	OutgoingBuffProviders = [BuffProvider, BuffProviderSubstations, BuffProviderPowerStorage]
+			// 	ComponentIds = [BatteryStorage, LocalBatteryStorage]
+			// }
+			// AddMode = DistributeRandomly //InOrder //PrioritizeLeastResources //PrioritizeMostEmptyCapacity //DistributeRandomly //DistributeEvenly
 			IncludeWhenUnderConstruction = false
 		}
 
