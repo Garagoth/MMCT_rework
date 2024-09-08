@@ -89,7 +89,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ViaBuffs
 			{
 				OutgoingBuffProviders = [BuffProvider]
-				ComponentIDs = [BatteryStorage, LocalBatteryStorage] // CombinedBatteryStorage, ExtendableBatteryStorage can be added when this is fixed: https://discord.com/channels/314103695568666625/1217997698993754254
+				ComponentIDs = [BatteryStorage, LocalBatteryStorage]
 			}
 			AddMode = DistributeRandomly
 			IncludeWhenUnderConstruction = false
