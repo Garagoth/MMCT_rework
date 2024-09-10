@@ -13,7 +13,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[tristeel, 1]
 	]
 	TypeCategories = [cable_receptor]
-	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableCableFlood, ElectronDebuff, ElectronNebula]
+	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, ElectronDebuff, ElectronNebula]
 	Size = [1, 1]
 	MaxHealth = 1000
 	AllowedDoorLocations
