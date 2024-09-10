@@ -293,6 +293,7 @@ Part
             ResourceStorages = [ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            SuppliesResources = false
         }
         CombinedBatteryStorageNotDown
         {
@@ -304,6 +305,7 @@ Part
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            SuppliesResources = false
         }
         CombinedBatteryStorageNotLeft
         {
@@ -315,6 +317,7 @@ Part
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageRight]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            SuppliesResources = false
         }
         CombinedBatteryStorageNotRight
         {
@@ -326,6 +329,7 @@ Part
             ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageLeft]
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            SuppliesResources = false
         }
 
         BatteryStorage
@@ -338,6 +342,7 @@ Part
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
             ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
+            SuppliesResources = false
         }
         CombinedBatteryStorage = &BatteryStorage
 
@@ -350,6 +355,7 @@ Part
             IncludeWhenUnderConstruction = false
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            SuppliesResources = false
         }
         BatteryStorageUp
         {
@@ -358,6 +364,7 @@ Part
             AddMode = InOrder
             RemoveMode = InOrder
             ResourceStorages = [RealBatteryStorageUp, ProxyCapacitorUp]
+            SuppliesResources = false
         }
         RealBatteryStorageDown
         {
@@ -367,6 +374,7 @@ Part
             IncludeWhenUnderConstruction = false
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            SuppliesResources = false
         }
         BatteryStorageDown
         {
@@ -375,6 +383,7 @@ Part
             AddMode = InOrder
             RemoveMode = InOrder
             ResourceStorages = [RealBatteryStorageDown, ProxyCapacitorDown]
+            SuppliesResources = false
         }
         RealBatteryStorageLeft
         {
@@ -384,6 +393,7 @@ Part
             IncludeWhenUnderConstruction = false
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            SuppliesResources = false
         }
         BatteryStorageLeft
         {
@@ -392,6 +402,7 @@ Part
             AddMode = InOrder
             RemoveMode = InOrder
             ResourceStorages = [RealBatteryStorageLeft, ProxyCapacitorLeft]
+            SuppliesResources = false
         }
         RealBatteryStorageRight
         {
@@ -401,6 +412,7 @@ Part
             IncludeWhenUnderConstruction = false
             ToggleOnResources = (&~/Part/transferQuantity)
 			ToggleOffResources = (&ToggleOnResources) - 1
+            SuppliesResources = false
         }
         BatteryStorageRight
         {
@@ -409,6 +421,7 @@ Part
             AddMode = InOrder
             RemoveMode = InOrder
             ResourceStorages = [RealBatteryStorageRight, ProxyCapacitorRight]
+            SuppliesResources = false
         }
 
         // Workers
@@ -469,6 +482,7 @@ Part
 			GridDistance = 1
 			OperationalToggle = IsOperational
 			BlueprintsOnly = true
+            // This buffs all parts that can receive this buff. See actual cable implementation, Part/ReceivableBuffs
 		}
     }
 
