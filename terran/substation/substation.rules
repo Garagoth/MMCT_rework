@@ -108,7 +108,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ViaBuffs
 			{
 				OutgoingBuffProviders = [BuffProviderPowerStorage]
-				ComponentID = BatteryStorage
+				ComponentIDs = [BatteryReceiverStorage, BatteryStorage]
 			}
 			AddMode = DistributeRandomly
 		}
@@ -119,7 +119,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ViaBuffs
 			{
 				OutgoingBuffProviders = [BuffProvider]
-				ComponentIDs = [CombinedBatteryStorage, ExtendableBatteryStorage] // can be added when this is fixed: https://discord.com/channels/314103695568666625/1217997698993754254
+				ComponentIDs = [CombinedBatteryStorage, ExtendableBatteryStorage]
 			}
 			AddMode = DistributeRandomly
 		}

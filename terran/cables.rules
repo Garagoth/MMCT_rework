@@ -80,10 +80,24 @@ Part
             PartLocation = [0, -1]
             ProxyableComponents
             [
-                {
+                { // Vanilla capacitors with overclock
                     PartCriteria
                     {
                         Category = power_storage
+                    }
+                    ComponentID = BatteryReceiverStorage
+                },
+                { // Other power storages
+                    PartCriteria
+                    {
+                        Category = power_storage
+                    }
+                    ComponentID = BatteryStorage
+                },
+                { // ETT capacitors
+                    PartCriteria
+                    {
+                        Category = storage
                     }
                     ComponentID = BatteryStorage
                 }
@@ -149,6 +163,20 @@ Part
                     {
                         Category = power_storage
                     }
+                    ComponentID = BatteryReceiverStorage
+                },
+                {
+                    PartCriteria
+                    {
+                        Category = power_storage
+                    }
+                    ComponentID = BatteryStorage
+                },
+                { // ETT capacitors
+                    PartCriteria
+                    {
+                        Category = storage
+                    }
                     ComponentID = BatteryStorage
                 }
             ]
@@ -213,6 +241,20 @@ Part
                     {
                         Category = power_storage
                     }
+                    ComponentID = BatteryReceiverStorage
+                },
+                {
+                    PartCriteria
+                    {
+                        Category = power_storage
+                    }
+                    ComponentID = BatteryStorage
+                },
+                { // ETT capacitors
+                    PartCriteria
+                    {
+                        Category = storage
+                    }
                     ComponentID = BatteryStorage
                 }
             ]
@@ -276,6 +318,20 @@ Part
                     PartCriteria
                     {
                         Category = power_storage
+                    }
+                    ComponentID = BatteryReceiverStorage
+                },
+                {
+                    PartCriteria
+                    {
+                        Category = power_storage
+                    }
+                    ComponentID = BatteryStorage
+                },
+                { // ETT capacitors
+                    PartCriteria
+                    {
+                        Category = storage
                     }
                     ComponentID = BatteryStorage
                 }

@@ -5,18 +5,19 @@ Parts
 	SubstationDesc = "A substation capable of inserting or pulling power out of a cable network. \n\n"\
 				"Cable must connect to substation directly, otherwise all power consumers in range are powered wirelessly.\n"\
 				"Substations must be used to send power to nearby blocks, as cables cannot do that naturally.\n"\
-				"Acts as cable connector as well."
+				"Acts as cable connector as well and accepts batteries deliveried by crew."
 
 	Substation2 = "Wireless Substation"
 	Substation2Icon = "Wireless Substation"
 	Substation2Desc = "A specialized form of wireless power projector capable of sending power to blocks (on the same ship) in a straight line from projector head.\n\n"\
 				"Cables must be attached directly to substation to transfer power to and from substation, all other battery consumers are powered wirelessly.\n"\
-				"Acts as cable connector as well."
+				"Acts as cable connector as well and accepts batteries deliveried by crew."
 	
 	DiodeConnector = "One-way cable connector"
 	DiodeConnectorIcon = "Connector"
 	DiodeConnectorDesc = "A specialized cable connector that works only one way, like a diode.\n\n"\
-				"Connects to any two things that cable and substation can and transports power from one to another.\n"
+				"Connects to any two things that cable and substation can and transports power from one to another.\n"\
+				"Can extract power directly from reactors and capacitors."
 
 	PowerStorageDesc = "Stores a limited cache of plasma batteries that may be used by nearby ship's systems or pushed to a cables attached.\n"\
 				"Will equalize power with other capacitors attached directly."
@@ -24,13 +25,15 @@ Parts
 	Cable = "Cable (Corridor)"
 	CableIcon = "Cable (Corridor)"
 	CableDesc = "A length of cable that runs through a corridor, the thinner floor plate means crew have to be more careful walking over it. These transmit power from substations or capacitors to substations.\n\n"\
-				"Cables do not deliver power directly to parts, and must deliver to a substation next to those parts. Cables must connect to each other to transfer power between them."
+				"Cables do not deliver power directly to parts, and must deliver to a substation next to those parts. Cables must connect to each other to transfer power between them.\n"\
+				"Can extract power from attached capacitors directly."
 	
 	CableAR1 = "Cable (Armor 1x1)"
 	CableAR2 = "Cable (Armor 1x2)"
 	CableARIcon = "Cable (Armor)"
 	CableARDesc = "A length of cable that runs through some armor, reducing the ability to absorb damage. These transmit power from substations or capacitors to substations.\n\n"\
-				"Cables do not deliver power directly to parts, and must deliver to a substation next to those parts."
+				"Cables do not deliver power directly to parts, and must deliver to a substation next to those parts."\
+				"Can extract power from attached capacitors directly."
 
 	ReactorCore = "Modular Reactor Core"
 	ReactorCoreIcon = "Nuclear Core"
@@ -41,6 +44,11 @@ Parts
 	TurbineDesc = "A turbine that can convert high pressure steam into power, this system requires active supervision to function properly, and is notably not 100% efficient.\n\n"\
 				"This part is WIP and as such does not currently have all damage sprites, this will change in the future.\n"\
 				"Requires attached steam pipe and at least one transformer to extract usable battery power."
+	TurbineHeat = "Heat powered Turbine"
+	TurbineDescHeat = "A turbine that can convert ship heat into power by boiling water and using steam to run turbines and dynamos.\n"\
+				"This system requires active supervision to function properly, and is notably not 100% efficient.\n\n"\
+				"This part is WIP and as such does not currently have all damage sprites or correct connector graphicd, this will change in the future.\n"\
+				"Requires attached heatpipe and at least one transformer to extract usable battery power."
 
 	ThermalLoop = "Steam-Water Loop Pipe"
 	ThermalLoopIcon = "Steam Pipe"

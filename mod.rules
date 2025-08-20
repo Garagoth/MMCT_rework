@@ -1,7 +1,7 @@
 ID = YBJ.MMCTMod.Rework
 Name = "MMCT rework - Power Rework, Cables and Stuff"
-Version = 1.3.21
-CompatibleGameVersions = ["0.27.1"]
+Version = 1.3.22
+CompatibleGameVersions = ["0.30.0"]
 ModifiesMultiplayer = true
 Author = "yobeefjerky, Garagoth"
 Logo = "logo.png"
@@ -30,6 +30,8 @@ Actions
 			&<terran/cable armor 2 long/cableAR1.rules>/Part
 			&<terran/reactor core/reactor core.rules>/Part
 			&<terran/reactor turbine/steam turbine.rules>/Part
+			//&<terran/reactor turbine heat/heat turbine.rules>/Part
+			//&<terran/reactor heat boiler/boiler.rules>/Part
 			&<terran/transformer/transformer.rules>/Part
 			&<terran/thermal cable line/thermal loop I piece.rules>/Part
 			&<terran/thermal cable line/thermal loop crossable.rules>/Part

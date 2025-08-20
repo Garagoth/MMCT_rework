@@ -30,6 +30,26 @@ Techs
 		Cost = 5000
 		Prerequisites = [YBJ.MMCTreactorcore]
 	}
+	// {	
+	// 	ID = YBJ.MMCTturbineHeat
+	// 	NameKey = &<terran/reactor turbine heat/heat turbine.rules>/Part/NameKey
+	// 	DescriptionKey = &<terran/reactor turbine heat/heat turbine.rules>/Part/DescriptionKey
+	// 	Icon = &<terran/reactor turbine heat/heat turbine.rules>/Part/EditorIcon
+	// 	EditorGroup = &<terran/reactor turbine heat/heat turbine.rules>/Part/EditorGroup
+	// 	PartsUnlocked = [&<terran/reactor turbine heat/heat turbine.rules>/Part/ID]
+	// 	Cost = 5000
+	// 	Prerequisites = [YBJ.MMCTreactorcore, cosmoteer.thermal_tank]
+	// }
+	// {	
+	// 	ID = YBJ.MMCTheatboiler
+	// 	NameKey = &<terran/reactor heat boiler/boiler.rules>/Part/NameKey
+	// 	DescriptionKey = &<terran/reactor heat boiler/boiler.rules>/Part/DescriptionKey
+	// 	Icon = &<terran/reactor heat boiler/boiler.rules>/Part/EditorIcon
+	// 	EditorGroup = &<terran/reactor heat boiler/boiler.rules>/Part/EditorGroup
+	// 	PartsUnlocked = [&<terran/reactor heat boiler/boiler.rules>/Part/ID]
+	// 	Cost = 5000
+	// 	Prerequisites = [YBJ.MMCTreactorcore, cosmoteer.thermal_tank]
+	// }
 	{
 		ID = YBJ.MMCTTransformer
 		NameKey = &<terran/transformer/transformer.rules>/Part/NameKey

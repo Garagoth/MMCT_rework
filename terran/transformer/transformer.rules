@@ -81,7 +81,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ViaBuffs
 			{
 				OutgoingBuffProviders = [BuffProvider]
-				ComponentID = BatteryStorage
+				ComponentIDs = [BatteryReceiverStorage, BatteryStorage]
 			}
 			AddMode = PrioritizeMostEmptyCapacity
 			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
