@@ -161,6 +161,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			}
 		}
 		// Not included in BuffedBatteryStorages intentionally.
+		// Visual only.
 		BuffProviderCables
 		{
 			Type = GridBuffProvider
@@ -179,41 +180,40 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			}
 		}
 
-		// // XXX: Experimental
-		// BuffProviderFlood
-        // {
-        //     Type = FloodFillBuffProvider
-        //     BuffType = MMCTCableCableFlood
-        //     BuffRegion {
-        //         Type = Grid
-        //         GridDistance = 1
-        //         AllowDiaginals = false
-        //     }
-        //     OperationalToggle = IsOperational
-        //     BlueprintsOnly = false
-        //     Criteria
-        //     {
-        //         TypeCategories = [cable, cable_receptor]
-        //     }
-        // }
-
 		// Inherited from cables.rules:
 		// - MoveBatteryPowerFrom{Up,Down,Left,Right}
 
+		CombinedBatteryStorageNotUp : ^/1/CombinedBatteryStorageNotUp
+        {
+            ResourceStorages = [BuffedBatteryStorages, ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
+        }
+        CombinedBatteryStorageNotDown : ^/1/CombinedBatteryStorageNotDown
+        {
+            ResourceStorages = [BuffedBatteryStorages, ProxyBatteryStorageUp, ProxyBatteryStorageLeft, ProxyBatteryStorageRight]
+        }
+        CombinedBatteryStorageNotLeft : ^/1/CombinedBatteryStorageNotLeft
+        {
+            ResourceStorages = [BuffedBatteryStorages, ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageRight]
+        }
+        CombinedBatteryStorageNotRight : ^/1/CombinedBatteryStorageNotRight
+        {
+            ResourceStorages = [BuffedBatteryStorages, ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageLeft]
+        }
+
 		// Additional ResourceConverter to provide power to buff targets (not cables)
-		BuffBatteryStorages
-		{
-			Type = ResourceConverter
-			FromStorage = BatteryStorage
-			FromQuantity = &~/Part/transferQuantity
-			ToStorage = BuffedBatteryStorages
-			ToQuantity = &~/Part/transferQuantity
-			Interval = { BaseValue=(&~/Part/transferInterval); BuffType=ElectronDebuff; BuffMode=Divide; }
-			// Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
-			OperationalToggle = PowerToggle
-			MinToQuantityForConversion = &~/Part/transferQuantity
-            MinFromQuantityForConversion = &~/Part/transferQuantity
-		}
+		// BuffBatteryStorages
+		// {
+		// 	Type = ResourceConverter
+		// 	FromStorage = BatteryStorage
+		// 	FromQuantity = &~/Part/transferQuantity
+		// 	ToStorage = BuffedBatteryStorages
+		// 	ToQuantity = &~/Part/transferQuantity
+		// 	Interval = { BaseValue=(&~/Part/transferInterval); BuffType=ElectronDebuff; BuffMode=Divide; }
+		// 	// Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
+		// 	OperationalToggle = PowerToggle
+		// 	MinToQuantityForConversion = &~/Part/transferQuantity
+        //     MinFromQuantityForConversion = &~/Part/transferQuantity
+		// }
 		
 		// Allow batteries to be delivered manually by crew to substation
 		BatteryConsumer
@@ -222,7 +222,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceType = battery
 			Storage = BatteryStorage // This uses all side storages (BatteryStorage{Up,Down,Left,Right}) here.
 			DefaultPriority = &/PRIORITIES/Thruster_Supply
-			ResupplyThreshold = (&~/Part/transferQuantity)
+			ResupplyThreshold = (&~/Part/transferQuantity) / 2
 			OperationalToggle = PowerToggle
 		}
 

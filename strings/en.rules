@@ -1,3 +1,8 @@
+Resources
+{
+	Steam = "A superheated steam from boiling water under high pressure."
+	Plasma = "Contents of batteries."
+}
 Parts
 {
 	Substation = "Power Substation"
@@ -39,6 +44,25 @@ Parts
 	ReactorCoreIcon = "Nuclear Core"
 	ReactorCoreDesc = "Controlled fission of enriched uranium allows the reactor to heat up water into steam, which can then be sent via pipes to systems capable of using it."
 	
+	HeatSteamBoiler = "Steam Boiler"
+	HeatSteamBoilerIcon = "Steam Boiler"
+	HeatSteamBoilerDesc = "Boiler that converts heat (delivered via heatpipes) into steam. Excess heat is transferred to the heatpipe port on right side.\n"\
+				"Make sure to connect main heat input to big heatpipe; small heatpipes have low capacity and usually are used to transport excess heat to different heat network.\n"\
+				"More effective heat to steam conversion then its smaller version. Steam can be sent via pipes to systems capable of using it.\n"\
+				"Includes build-in networked heat storage.\n"\
+				"Warning: excess heat port is output only and will actively pump excess heat to connected network!"
+	HeatSteamBoilerSmall = "Small Steam Boiler"
+	HeatSteamBoilerSmallIcon = "Small Steam Boiler"
+	HeatSteamBoilerSmallDesc = "Boiler that converts heat (delivered via heatpipes) into steam.\n"\
+				"Steam can be sent via pipes to systems capable of using it.\n"\
+				"Includes build-in networked small heat storage."
+	
+	HeatResistor = "Heatpipe resistor"
+	HeatResistorIcon = "Heatpipe resistor"
+	HeatResistorDesc = "Heatpipe fragment that has resistance to heat transfer.\n"\
+				"Heat will transfer from hotter side to cooler at speed depending on heat level difference, starting at 10% difference.\n"\
+				"Can be used to make sure then one side always has some heat stored for use."
+
 	Turbine = "Steam Turbine"
 	TurbineIcon = "Turbine"
 	TurbineDesc = "A turbine that can convert high pressure steam into power, this system requires active supervision to function properly, and is notably not 100% efficient.\n\n"\

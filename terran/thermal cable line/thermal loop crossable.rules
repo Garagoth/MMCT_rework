@@ -52,7 +52,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		CombinedHeatStorageUp
 		{
 			Type = MultiResourceStorage
-			ResourceType = battery
+			ResourceType = MMCTSteam
 			AddMode = InOrder
 			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
 			ResourceStorages = [ProxyHeatStorageUp]
@@ -60,7 +60,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		CombinedHeatStorageDown
 		{
 			Type = MultiResourceStorage
-			ResourceType = battery
+			ResourceType = MMCTSteam
 			AddMode = InOrder
 			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
 			ResourceStorages = [ProxyHeatStorageDown]
@@ -69,7 +69,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		HeatStorage
 		{
 			Type = MultiResourceStorage
-			ResourceType = battery
+			ResourceType = MMCTSteam
 			AddMode = DistributeEvenly
 			RemoveMode = DistributeEvenly
 			ResourceStorages = [HeatStorageUp, HeatStorageDown]
@@ -78,7 +78,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		HeatStorageUp
 		{
 			Type = ResourceStorage
-			ResourceType = battery
+			ResourceType = MMCTSteam
 			MaxResources = &../../heatStorageMax
 			IncludeWhenUnderConstruction = false
 		}
@@ -97,7 +97,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		HeatStorageDown
 		{
 			Type = ResourceStorage
-			ResourceType = battery
+			ResourceType = MMCTSteam
 			MaxResources = &../../heatStorageMax
 			IncludeWhenUnderConstruction = false
 		}

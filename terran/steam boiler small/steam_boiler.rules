@@ -1,0 +1,396 @@
+Part : <./Data/ships/terran/base_part_terran.rules>/Part
+{
+	NameKey = "Parts/HeatSteamBoilerSmall"
+	IconNameKey = "Parts/HeatSteamBoilerSmallIcon"
+	ID = YBJ.MMCTHeatSteamBoilerSmall
+	EditorGroup = "Power"
+	DescriptionKey = "Parts/HeatSteamBoilerSmallDesc"
+	Resources
+	[
+		[steel, 40]
+		[coil, 64]
+		[tristeel, 11]
+	]
+	AIValueFactor = 7
+	TypeCategories = [modular_reactor, is_crewed, heat_management, thermal_source]
+	Size = [2, 2]
+	MaxHealth = 2000
+	IsFlippable = true
+	BlockedTravelCells
+	[
+		[0, 0]
+        [1, 0]
+		[0, 1]
+		[1, 1]
+	]
+	ForceManhattanPathInPart = true
+	AllowedDoorLocations
+	[
+		[2, 1]
+	]
+	EditorIcon
+	{
+		Texture
+		{
+			File = "icon.png"
+			SampleMode = Linear
+		}
+		Size = [48, 48]
+	}
+	
+	Components : ^/0/Components
+	{
+
+		IsOperational
+		{
+			Type = MultiToggle
+			Toggles = [PowerToggle, ScorchedToggle, Port_HeatDown]
+			Mode = All
+		}
+
+		PowerToggle
+		{
+			Type = UIToggle
+			ToggleID = "on_off"
+			Default = 1
+			RequiresCommand = false
+		}
+
+		ScorchedToggle
+		{
+			Type = StatusToggle
+			StatusType = cosmoteer.scorched
+			MinStatusValue = 1
+			Invert = true
+		}
+
+		CommandConsumer
+		{
+			Type = CommandConsumer
+			OperationalToggle = PowerToggle
+			CommandPoints = 1
+		}
+
+		Port_HeatDown
+		{
+			Type = NetworkPort
+			Location = [0, 1]
+			Direction = Down
+			Types = [ thermal ]
+            OperationalToggle = PowerToggle
+            BlueprintOperationalToggle = &OperationalToggle
+			RouteSource = NetworkedHeatStorageDown
+			RouteEndpoint = NetworkedHeatStorageDown
+			BlueprintRouteSource = BlueprintNetworkNode1
+			BlueprintRouteEndpoint = BlueprintNetworkNode1
+			Overlay
+			{
+				OverlayIcon = "ThermalPort"
+				RouteLine = "Thermal"
+				DrawRouteHub = false
+				ConnectedEdgeIcon = "ThermalDot"
+				HighlightPartOnPrimaryConnection = true
+    			PartHighlightColor = [255, 217, 0, 61]
+			}
+		}
+        
+        BlueprintNetworkNode1
+		{
+			Type = NetworkBasicNode
+			IncludeInBlueprints = true
+		}
+        
+		NetworkedHeatStorageDown
+		{
+			Type = NetworkResourceStore
+			ResourceType = heat
+			ResourceStorage = HeatStorageDown
+			Categories = [ thermal_storage ]
+		}
+
+        HeatStorageDown
+		{
+			Type = ResourceStorage
+			ResourceType = heat
+			OperationalToggle = PowerToggle
+			MaxResources = (6000) * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
+			InitToMaxResources = 0
+			IgnoreResourcesForInitToMax = true
+		}
+
+        NetworkHeatOutput
+		{
+			Type = NetworkResourceOutput
+			ResourceType = heat
+			Mode = DistributeProportionallyByAvailable
+			ProvidedValueRange = 0
+			ProvidedValuePerResource = 1
+			Categories = [ thermal_storage ]
+		}
+
+		NetworkRouter
+		{
+			Type = NetworkRouter
+			RouteGenerators
+			[
+				{
+					Type = Bidirectional
+					Routes
+					[
+						[NetworkedHeatStorageDown, NetworkHeatOutput, 0]
+					]
+				}
+			]
+		}
+
+        SteamStorage
+		{
+			Type = ResourceStorage
+			ResourceType = battery
+			MaxResources = (&../SteamGeneration/ToQuantity) * 5
+			StartingResources = &MaxResources
+			IncludeWhenUnderConstruction = false
+		}
+		
+        SteamGeneration
+		{
+			Type = ResourceConverter
+			FromStorage = NetworkHeatOutput
+			FromQuantity = 1000 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO) // FIXME: Ile to jest?
+			ToStorage = SteamStorage
+			ToQuantity = 1000
+			Interval = 0.1
+            OperationalToggle = IsOperational
+            MinToQuantityForConversion = 500
+            MinFromQuantityForConversion = 500
+		}
+
+        ProxySteamOutputUp : &<../thermal.rules>/ProxyHeatStorageUp
+        {
+            PartLocation = [1, -1]
+        }
+
+		ThermalDelivery
+		{
+			Type = ResourceConverter
+			FromStorage = SteamStorage
+			FromQuantity = 1000
+			ToStorage = ProxySteamOutputUp
+			ToQuantity = 1000
+			Interval = 0.1
+            OperationalToggle = IsOperational
+            MinToQuantityForConversion = 500
+            MinFromQuantityForConversion = 500
+		}
+
+		BuffProvider
+		{
+			Type = AreaBuffProvider
+			BuffType = MMCTHeat
+			BuffArea = [1, -1, 1, 1]
+		}
+
+        Graphics
+		{
+			Type = Graphics
+			Location = [1, 1]
+			Floor
+			{
+				Layer = "floors"
+				DamageLevels
+				[
+					{
+						File = "floor.png"
+						Size = [2, 2]
+					}
+                ]
+            }
+            Walls
+			{
+				Layer = "walls"
+				DamageLevels
+				[
+					{
+						File = "walls.png"
+						Size = [2, 2]
+					}
+				]
+			}
+			Roof
+			{
+				layer = "roofs"
+                DamageLevels
+                [
+                    {
+						File = "roof.png"
+						NormalsFile = "roof normals.png"
+						Size = [2, 2]
+					}
+                ]
+			}
+        }
+
+		BoilerSprite
+		{
+			Type = Sprite
+			Location = [1, 1]
+			Layer = "floors"
+			DamageLevels
+			[
+				{
+					File = "bojler.png"
+					Size = [2, 2]
+				}
+			]
+		}
+
+		Blueprints
+		{
+			Type = BlueprintSprite
+			File = "blueprint.png"
+			Size = [2, 2]
+		}
+
+		Dont_Draw_Pipe_Connector_Into_This_Part { Type = Graphics }
+        
+        // Pipe_Up_Components
+		// {
+		// 	Type = ToggledComponents
+		// 	Toggle = Port_HeatDown
+		// 	Components
+		// 	{
+		// 		Pipe_Up_Graphics
+		// 		{
+		// 			Type = Graphics
+		// 			Location = [0.5, 0.25]
+		// 			// OperationalToggle = IsOperational
+		// 			Floor
+		// 			{
+		// 				Layer = "doodads_low"
+        //                 DamageLevels
+		// 				[
+		// 					{
+		// 						File = "pipe_up_doodad.png"
+		// 						Size = [1, 0.5]
+		// 					}
+		// 				]
+		// 			}
+		// 			WallsStencil
+		// 			{
+		// 				Layer = "walls_stencil"
+		// 				DamageLevels
+		// 				[
+		// 					{
+		// 						File = "./Data/ships/terran/heat_pipe_adaptive/pipe_connector/pipe_connector_wall_stencil.png"
+		// 						Size = [1, 1]
+		// 					}
+		// 				]
+		// 			}
+		// 			Roof
+		// 			{
+		// 				Layer = "roof_doodads"
+		// 				Offset = [0, 0]
+		// 				Rotation = 180d
+		// 				DamageLevels
+		// 				[
+		// 					{
+		// 						File = "./Data/ships/terran/heat_pipe_adaptive/pipe_connector/pipe_connector_roof.png"
+		// 						NormalsFile = "./Data/ships/terran/heat_pipe_adaptive/pipe_connector/pipe_connector_roof_normals.png"
+		// 						Size = [1, 1]
+		// 					}
+		// 					{
+		// 						File = "./Data/ships/terran/heat_pipe_adaptive/pipe_connector/pipe_connector_roof_33.png"
+		// 						NormalsFile = "./Data/ships/terran/heat_pipe_adaptive/pipe_connector/pipe_connector_roof_normals.png"
+		// 						Size = [1, 1]
+		// 					}
+		// 					{
+		// 						File = "./Data/ships/terran/heat_pipe_adaptive/pipe_connector/pipe_connector_roof_66.png"
+		// 						NormalsFile = "./Data/ships/terran/heat_pipe_adaptive/pipe_connector/pipe_connector_roof_normals.png"
+		// 						Size = [1, 1]
+		// 					}
+		// 				]
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+        HeatIndicator
+        {
+            Type = ResourceSprites
+			Location = [57/64 + 15/2, 96/64 + 18/2]
+			ResourceStorage = HeatStorageDown
+			Layer = "lights_add"
+			HasZeroResourceSprite = false
+			ResourceLevels
+            [
+                {
+					File = "lights thermal 1.png"
+					Size = [15/64, 18/64]
+				}
+                {
+					File = "lights thermal 2.png"
+					Size = [15/64, 18/64]
+				}
+                {
+					File = "lights thermal 3.png"
+					Size = [15/64, 18/64]
+				}
+                {
+					File = "lights thermal 4.png"
+					Size = [15/64, 18/64]
+				}
+                {
+					File = "lights thermal 5.png"
+					Size = [15/64, 18/64]
+				}
+				{
+					File = "lights thermal 6.png"
+					Size = [15/64, 18/64]
+				}
+            ]
+        }
+
+        SteamIndicator
+        {
+            Type = ResourceSprites
+			Location = [10/64 + 5/2, 56/64 + 19/2]
+			ResourceStorage = SteamStorage
+			Layer = "lights_add"
+			HasZeroResourceSprite = false
+			ResourceLevels
+            [
+                {
+					File = "lights steam 1.png"
+					Size = [5/64, 19/64]
+				}
+                {
+					File = "lights steam 2.png"
+					Size = [5/64, 19/64]
+				}
+                {
+					File = "lights steam 3.png"
+					Size = [5/64, 19/64]
+				}
+                {
+					File = "lights steam 4.png"
+					Size = [5/64, 19/64]
+				}
+                {
+					File = "lights steam 5.png"
+					Size = [5/64, 19/64]
+				}
+				{
+					File = "lights steam 6.png"
+					Size = [5/64, 19/64]
+				}
+            ]
+        }
+    }
+    Stats
+	{
+        HeatCapacity = (&~/Part/Components/HeatStorageDown/MaxResources) / (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
+		MMCTThermalGeneration = 1 / (&~/Part/Components/SteamGeneration/Interval) * (&~/Part/Components/SteamGeneration/ToQuantity) / 100
+		MMCTThermalCapacity = (&~/Part/Components/SteamStorage/MaxResources) / 100
+		MMCTPowerBandwidth = 1/ (&~/Part/Components/ThermalDelivery/Interval) * (&~/Part/Components/ThermalDelivery/ToQuantity) / 100
+	}
+}

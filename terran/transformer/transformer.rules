@@ -55,6 +55,17 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			CommandPoints = 1
 		}
 
+		Port_Up : &<../cables.rules>/Part/Components/Port_Up
+		{
+			RouteSource = NetworkNode
+			RouteEndpoint = NetworkNode
+			BlueprintRouteSource = NetworkNode
+			BlueprintRouteEndpoint = NetworkNode
+			Types = [ plasma, plasma_out ]
+            IncompatibleTypes = [ plasma_out ]
+		}
+		NetworkNode : &<../cables.rules>/Part/Components/NetworkNode {}
+
 		// This receives ReactorPower via Buff
 		// Shows power lights from this
 		PowerStorage
@@ -80,10 +91,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceStorages = [BatteryStorageTrans]
 			ViaBuffs
 			{
-				OutgoingBuffProviders = [BuffProvider]
+				OutgoingBuffProviders = [BuffProviderCables, BuffProvider]
 				ComponentIDs = [BatteryReceiverStorage, BatteryStorage]
 			}
-			AddMode = PrioritizeMostEmptyCapacity
+			AddMode = InOrder //PrioritizeMostEmptyCapacity
 			ReceiveResourceMediaEffects = &/COMMON_EFFECTS/PowerDeliver
 		}
 		
@@ -109,7 +120,19 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Criteria
 			{
 				// This will work a bit like substation, it can power most things directly.
-				Categories = [cable, cable_receptor, uses_power, power_storage]
+				Categories = [cable_receptor, uses_power, power_storage]
+			}
+		}
+		BuffProviderCables
+		{
+			Type = AreaBuffProvider
+			BuffType = MMCTCableCable
+			BuffArea = [-1, -1, 3, 2] // startx, starty, width, height
+			OperationalToggle = IsOperational
+			Criteria
+			{
+				// This will work a bit like substation, it can power most things directly.
+				Categories = [cable]
 			}
 		}
 

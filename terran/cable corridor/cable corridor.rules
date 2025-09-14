@@ -10,14 +10,15 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[steel, 4]
 		[coil, 2]
 	]
-	AIValueFactor = 0
+	AIValueFactor = 1
 	Size = [1, 1]
 	MaxHealth = 800
 	CreatePartPerTileWhenGrabbed = ""
 	CrewSpeedFactor = .75
 	CrewCongestedSpeedFactor = .5
 	TypeCategories = [corridor, cable]
-	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableReceptor]
+	//ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableReceptor]
+	ReceivableBuffs : [MMCTCableCable]
 	IsRotateable = false
 	IsFlippable = false
 	IsWalled = false
@@ -35,7 +36,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	}
 	Components : ^/0/Components
 	             ^/1/Components
-	{	
+	{
 		ColorPicker
 		{
 			Type = UIColor
@@ -50,7 +51,23 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			BlendsWithCategories = [corridor]
 		}
 
-		Graphics
+		FloorBlendSprites : <cable_corridor_blend_sprites.rules>/FloorBlendSprites {}
+		//RoofBlendSprites : <cable_corridor_blend_sprites.rules>/RoofBlendSprites {}
+		BlueprintBlendSprites : <cable_corridor_blend_sprites.rules>/BlueprintBlendSprites {}
+
+		TestBuffableValue
+		{
+			Type = BuffableValue
+			IncludeInBlueprints = true
+			IncludeInPhysical = true
+			Value
+			{
+				BaseValue = 1
+				BuffType = MMCTCableCable
+			}
+		}
+
+		RoofGraphics
 		{
 			Type = Graphics
 			Location = [.5, .5]
@@ -79,7 +96,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			}
 		}
 		
-		ColoredGraphics
+		FloorGraphics
 		{
 			Type = Graphics
 			Location = [.5, .5]
@@ -106,35 +123,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			}
 		}
 		
-		AmmoSprites
-		{
-			Type = ResourceSprites
-			Location = [.5, .5]
-			ResourceStorage = BatteryStorage
-			Layer = "doodads_low"
-			ResourceLevels
-			[
-				{
-					File = "batteries1.png"
-					Size = [1, 1]
-				}
-				
-				{
-					File = "batteries2.png"
-					Size = [1, 1]
-				}
-				
-				{
-					File = "batteries3.png"
-					Size = [1, 1]
-				}
-				
-				{
-					File = "batteries4.png"
-					Size = [1, 1]
-				}
-			]
-		}
+		IndicatorBlendUp : <cable_corridor_blend_sprites.rules>/IndicatorBlendUpS {}
+		IndicatorBlendDown : <cable_corridor_blend_sprites.rules>/IndicatorBlendDownS {}
+		IndicatorBlendLeft : <cable_corridor_blend_sprites.rules>/IndicatorBlendLeftS {}
+		IndicatorBlendRight : <cable_corridor_blend_sprites.rules>/IndicatorBlendRightS {}
 
 		DestroyedEffects
 		{
@@ -146,7 +138,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		Blueprints
 		{
 			Type = BlueprintSprite
-			File = "blueprints.png"
+			File = "img/blueprint-floor blueprint.png"
 			Size = [1, 1]
 		}
 

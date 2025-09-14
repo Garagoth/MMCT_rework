@@ -87,20 +87,25 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
         }
 		CombinedBatteryStorageNotUp : ^/1/CombinedBatteryStorageNotUp
         {
-            ResourceStorages = [ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
+            ResourceStorages = [BuffedBatteryStorages, ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
         }
         CombinedBatteryStorageNotDown : ^/1/CombinedBatteryStorageNotDown
         {
-            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
+            ResourceStorages = [BuffedBatteryStorages, ProxyBatteryStorageUp, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
         }
         CombinedBatteryStorageNotLeft : ^/1/CombinedBatteryStorageNotLeft
         {
-            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
+            ResourceStorages = [BuffedBatteryStorages, ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageRight, ProxyBatteryStorageRight2]
         }
         CombinedBatteryStorageNotRight : ^/1/CombinedBatteryStorageNotRight
         {
-            ResourceStorages = [ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2]
+            ResourceStorages = [BuffedBatteryStorages, ProxyBatteryStorageUp, ProxyBatteryStorageDown, ProxyBatteryStorageLeft, ProxyBatteryStorageLeft2]
         }
+
+		Port_Up2 : &Port_Up { Location = [0, 1] }
+		Port_Down2 : &Port_Down { Location = [0, 1] }
+		Port_Right2 : ^/1/Port_Right { Location = [0, 1] }
+		Port_Left2 : ^/1/Port_Left { Location = [0, 1] }
 
 		// Increase side storages to allow PrioritizeMostEmptyCapacity to work correctly
 		RealBatteryStorageUp : ^/1/RealBatteryStorageUp
@@ -129,8 +134,16 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceStorages = [RealBatteryStorageRight, ProxyCapacitorRight, ProxyCapacitorRight2]
 		}
 
-		// TODO: Split into two buffs (parts and substations+cables) so power transfer can be InOrder, will make loops less visible.
+		// This is to prioritize power sinks instead of cables.
 		BuffedBatteryStorages
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			AddMode = InOrder
+			ResourceStorages = [BuffedBatteryStoragesSinks, BuffedLongRangeCables]
+			IncludeWhenUnderConstruction = false
+		}
+		BuffedBatteryStoragesSinks
 		{
 			Type = MultiResourceStorage
 			ResourceType = battery
@@ -142,29 +155,41 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			AddMode = PrioritizeLeastResources
 			IncludeWhenUnderConstruction = false
 		}
+		BuffedLongRangeCables
+		{
+			Type = MultiResourceStorage
+			ResourceType = battery
+			ViaBuffs
+			{
+				OutgoingBuffProviders = [BuffProviderLongRangeCables]
+				ComponentIDs = [BatteryStorage]
+			}
+			AddMode = PrioritizeLeastResources
+			IncludeWhenUnderConstruction = false
+		}
 		BatteryConsumer
 		{
 			Type = ResourceConsumer
 			ResourceType = battery
 			Storage = BatteryStorage
 			DefaultPriority = &/PRIORITIES/Thruster_Supply
-			ResupplyThreshold = (&~/Part/transferQuantity)
+			ResupplyThreshold = (&~/Part/transferQuantity) / 2
 			OperationalToggle = PowerToggle
 		}
 		
-		BuffBatteryStorages
-		{
-			Type = ResourceConverter
-			FromStorage = BatteryStorage
-			FromQuantity = &~/Part/transferQuantity
-			ToStorage = BuffedBatteryStorages
-			ToQuantity = &~/Part/transferQuantity
-			Interval = { BaseValue=(&~/Part/transferInterval); BuffType=ElectronDebuff; BuffMode=Divide; }
-			// Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
-			OperationalToggle = PowerToggle
-			MinToQuantityForConversion = &~/Part/transferQuantity
-            MinFromQuantityForConversion = &~/Part/transferQuantity
-		}
+		// BuffBatteryStorages
+		// {
+		// 	Type = ResourceConverter
+		// 	FromStorage = BatteryStorage
+		// 	FromQuantity = &~/Part/transferQuantity
+		// 	ToStorage = BuffedBatteryStorages
+		// 	ToQuantity = &~/Part/transferQuantity
+		// 	Interval = { BaseValue=(&~/Part/transferInterval); BuffType=ElectronDebuff; BuffMode=Divide; }
+		// 	// Interval = (&~/Part/transferInterval) - 0.001 // Dirty hack here to make it happen before MoveBatteryPowerFrom*
+		// 	OperationalToggle = PowerToggle
+		// 	MinToQuantityForConversion = &~/Part/transferQuantity
+        //     MinFromQuantityForConversion = &~/Part/transferQuantity
+		// }
 		
 		// Buffs all parts in area (line in this case) that has proper type category.
 		BuffProvider
@@ -175,38 +200,32 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			OperationalToggle = PowerToggle
 			BlueprintOnly = false // This is used in ViaBuffs
 			Criteria {
-			    Categories = [uses_power, power_storage, cable_receptor, cable]
+			    Categories = [uses_power, power_storage, cable_receptor]
 			}
 		}
+		BuffProviderLongRangeCables
+		{
+			Type = AreaBuffProvider
+			BuffType = MMCTCableCable
+			BuffArea = [0, -(&~/Part/buffRange), 1, (&~/Part/buffRange)]
+			OperationalToggle = PowerToggle
+			BlueprintOnly = false // This is used in ViaBuffs
+			Criteria {
+			    Categories = [cable]
+			}
+		}
+		// This is visual only
 		BuffProviderCables
 		{
 			Type = GridBuffProvider
 			BuffType = MMCTCableCable
 			GridDistance = 1
 			OperationalToggle = PowerToggle
-			BlueprintOnly = true // This is visual only
+			BlueprintOnly = true
 			Criteria {
 			    Category = cable
 			}
 		}
-
-		// // XXX: Experimental
-		// BuffProviderFlood
-        // {
-        //     Type = FloodFillBuffProvider
-        //     BuffType = MMCTCableCableFlood
-        //     BuffRegion {
-        //         Type = Grid
-        //         GridDistance = 1
-        //         AllowDiaginals = false
-        //     }
-        //     OperationalToggle = IsOperational
-        //     BlueprintsOnly = false
-        //     Criteria
-        //     {
-        //         TypeCategories = [cable, cable_receptor]
-        //     }
-        // }
 
 		Graphics
 		{

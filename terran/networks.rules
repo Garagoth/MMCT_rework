@@ -1,0 +1,72 @@
+OverlayIcons
+{
+        PlasmaPort
+        {
+                Sprite
+                {
+                        File = "./Data/gui/game/parts/networks/port_thermal.png"
+                        VertexColor = [180, 255, 61, 200]
+                        Size = [0.3, 0.3]
+                }
+                EdgeOffset = -(&Sprite/Size/0) * 24/64
+                RouteLineOffset = (&EdgeOffset) - (&Sprite/Size/0) * 16/64
+                DrawLineToEdgeWhenConnected = true
+                UnroutableColorFactor = [255, 255, 255, 170]
+        }
+        PlasmaDot
+        {
+                Sprite
+                {
+                        File = "./Data/gui/game/parts/networks/thermal_circle.png"
+                        Size = [0.54, 0.54]
+                }
+                UnroutableColorFactor = [255, 255, 255, 170]
+        }
+}
+
+RouteLines
+{
+    Plasma
+    {
+        Type = CappedLine
+        RenderToSeparateTexture = true
+        LineSprite
+        {
+                Texture
+                {
+                        File = "./Data/gui/line_split_channel.png"
+                        SampleMode = Linear
+                        MipLevels = max
+                        UMode = Wrap
+                }
+                Shader = "./Data/gui/line_split_channel.shader"
+                _baseColor = [180, 255, 61, 200]
+                _glowColor = [200, 255, 90, 200]
+                TargetBlendMode = Max
+        }
+        BeginCapSprite : LineSprite
+        {
+                Texture
+                {
+                        File = "./Data/gui/line_split_channel_endcap_flipped.png"
+                        SampleMode = Linear
+                        MipLevels = max
+                }
+        }
+        BeginCapSize = [(&../LineThickness) / 2, (&../LineThickness)]
+        EndCapSprite : LineSprite
+        {
+                Texture
+                {
+                        File = "./Data/gui/line_split_channel_endcap.png"
+                        SampleMode = Linear
+                        MipLevels = max
+                }
+        }
+        EndCapSize = &BeginCapSize
+        LineThickness = 0.4
+        LineUPerLength = 0.8 / (&LineThickness)
+        ColorFactor = [255, 255, 255, 255]
+        UnroutableColorFactor = [255, 255, 255, 170]
+    }
+}

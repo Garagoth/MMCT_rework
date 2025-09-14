@@ -11,8 +11,9 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[coil, 3]
 		[steel, 6]
 	]
-	TypeCategories = [cable, cable_receptor]
-	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable]
+	TypeCategories = [cable, cable_receptor, cable_diode, non_flammable]
+	//ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable]
+	ReceivableBuffs : [MMCTCableCable] // No MMCTCableReceptor
 	Size = [1, 1]
 	MaxHealth = 1000
     EditorIcon
@@ -82,36 +83,23 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
         ProxyCapacitorUp = &<../cables.rules>/Part/Components/ProxyCapacitorUp
         ProxyBatteryStorageUp = &<../cables.rules>/Part/Components/ProxyBatteryStorageUp
 
-		// // Unused. Replaced by Buff for simplicity.
-        // ProxyPowerThrusters : &<../cables.rules>/Part/Components/ProxyBatteryStorageUp
-        // {
-        //     ProxyableComponents
-        //     [
-		// 		//CombinedBatteryStorage in EngineRoom, ExtendableBatteryStorage in modular rocket thrusters
-		// 		//Otherwise just BatteryStorage
-        //         {
-        //             PartCriteria
-        //             {
-        //                 Category = engine_room
-        //             }
-        //             ComponentID = CombinedBatteryStorage
-        //         },
-		// 		{
-		// 			PartCriteria
-		// 			{
-        //                 Category = thruster
-        //             }
-        //             ComponentID = ExtendableBatteryStorage
-		// 		},
-		// 		{
-		// 			PartCriteria
-		// 			{
-        //                 Category = thruster
-        //             }
-        //             ComponentID = BatteryStorage
-		// 		}
-		// 	]
-		// }
+		Port_Up : &<../cables.rules>/Part/Components/Port_Up
+		{
+			RouteSource = NetworkNodeUp
+			RouteEndpoint = NetworkNodeUp
+			BlueprintRouteSource = NetworkNodeUp
+			BlueprintRouteEndpoint = NetworkNodeUp
+			Types = [ plasma, plasma_out ]
+            IncompatibleTypes = [ plasma_out ]
+		}
+		Port_Down : &<../cables.rules>/Part/Components/Port_Down
+		{
+			Types = [ plasma, plasma_in ]
+            IncompatibleTypes = [ plasma_in ]
+		}
+		NetworkNode : &<../cables.rules>/Part/Components/NetworkNode {}
+		NetworkNodeUp : &NetworkNode {}
+		
 		ProxyPowerSourceDown : &<../cables.rules>/Part/Components/ProxyBatteryStorageDown
         {
             ProxyableComponents

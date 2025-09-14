@@ -19,8 +19,14 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	MaxHealth = 3300
 	ExplosiveDamageAbsorption = 100%
 	ExplosiveDamageResistance = 50%
-	TypeCategories = [armor, cable]
-	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableReceptor]
+	DamageResistances
+	{
+		explosive = 50%
+		thermal = -25%
+	}
+	TypeCategories = [armor, non_flammable, cable]
+	//ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable, MMCTCableReceptor]
+	ReceivableBuffs : [MMCTCableCable]
 	Flammable = false
 	InitialPenetrationResistance = 7
 	ContinuingPenetrationResistance = &InitialPenetrationResistance
@@ -67,38 +73,38 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				DamageLevels
 				[
 					{
-						File = "armor.png"
+						File = "./Data/ships/terran/armor/armor.png"
 						Size = [1, 1]
 					}
 					{
-						File = "armor_33.png"
+						File = "./Data/ships/terran/armor/armor_33.png"
 						Size = [1, 1]
 					}
 					{
-						File = "armor_66.png"
+						File = "./Data/ships/terran/armor/armor_66.png"
 						Size = [1, 1]
 					}
 				]
 			}
-			Walls
-			{
-				Layer = "walls"
-				DamageLevels
-				[
-					{
-						File = "armor.png"
-						Size = [1, 1]
-					}
-					{
-						File = "armor_33.png"
-						Size = [1, 1]
-					}
-					{
-						File = "armor_66.png"
-						Size = [1, 1]
-					}
-				]
-			}
+			// Walls
+			// {
+			// 	Layer = "walls"
+			// 	DamageLevels
+			// 	[
+			// 		{
+			// 			File = "armor.png"
+			// 			Size = [1, 1]
+			// 		}
+			// 		{
+			// 			File = "armor_33.png"
+			// 			Size = [1, 1]
+			// 		}
+			// 		{
+			// 			File = "armor_66.png"
+			// 			Size = [1, 1]
+			// 		}
+			// 	]
+			// }
 			Roof
 			{
 				Layer = "roofs"
@@ -123,35 +129,12 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			}
 		}
 		
-		AmmoSprites
-		{
-			Type = ResourceSprites
-			Location = [.5, .5]
-			ResourceStorage = BatteryStorage
-			Layer = "doodads_high"
-			ResourceLevels
-			[
-				{
-					File = "batteries1.png"
-					Size = [1, 1]
-				}
-				
-				{
-					File = "batteries2.png"
-					Size = [1, 1]
-				}
-				
-				{
-					File = "batteries3.png"
-					Size = [1, 1]
-				}
-				
-				{
-					File = "batteries4.png"
-					Size = [1, 1]
-				}
-			]
-		}
+		FloorBlendSprites : <../cable corridor/cable_corridor_blend_sprites.rules>/FloorBlendSprites {}
+
+		IndicatorBlendUp : <../cable corridor/cable_corridor_blend_sprites.rules>/IndicatorBlendUpS {}
+		IndicatorBlendDown : <../cable corridor/cable_corridor_blend_sprites.rules>/IndicatorBlendDownS {}
+		IndicatorBlendLeft : <../cable corridor/cable_corridor_blend_sprites.rules>/IndicatorBlendLeftS {}
+		IndicatorBlendRight : <../cable corridor/cable_corridor_blend_sprites.rules>/IndicatorBlendRightS {}
 
 		DestroyedEffects
 		{
@@ -166,11 +149,13 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			File = "blueprints.png"
 			Size = [1, 1]
 		}
+		BlueprintBlendSprites : <../cable corridor/cable_corridor_blend_sprites.rules>/BlueprintBlendSprites {}
 	}
 
 	Stats : ^/1/Stats
 	{
 		EMPResist = (&~/Part/Components/EmpAbsorber/AbsorbsResourceDrain) / 1000
+		AOEResist = (&~/Part/DamageResistances/explosive) * 100
 		MMCTCableConnect = (&~/Part/Components/BuffProvider/GridDistance)
 	}
 

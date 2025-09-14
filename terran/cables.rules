@@ -540,6 +540,132 @@ Part
 			BlueprintsOnly = true
             // This buffs all parts that can receive this buff. See actual cable implementation, Part/ReceivableBuffs
 		}
+
+        HasProxyBatteryStorageUp : &ProxyBatteryStorageUp { Type = ComponentPresenceToggle }
+        HasConnectorUp
+        {
+            Type = ComponentPresenceToggle
+            PartLocation = [0, -1]
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = cable_diode
+                        Rot = 2
+                    }
+                    ComponentID = BatteryStorageDown
+                }
+            ]
+        }
+		Draw_Cable_Connector_Up
+		{
+            Type = MultiToggle
+			Toggles = [HasProxyBatteryStorageUp, HasConnectorUp]
+			Mode = Any
+		}
+
+		HasProxyBatteryStorageDown : &ProxyBatteryStorageDown { Type = ComponentPresenceToggle }
+        HasConnectorDown
+        {
+            Type = ComponentPresenceToggle
+            PartLocation = [0, 1]
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = cable_diode
+                        Rot = 0
+                    }
+                    ComponentID = BatteryStorageDown
+                }
+            ]
+        }
+		Draw_Cable_Connector_Down
+		{
+            Type = MultiToggle
+			Toggles = [HasProxyBatteryStorageDown, HasConnectorDown]
+			Mode = Any
+		}
+
+		HasProxyBatteryStorageLeft : &ProxyBatteryStorageLeft { Type = ComponentPresenceToggle }
+        HasConnectorLeft
+        {
+            Type = ComponentPresenceToggle
+            PartLocation = [-1, 0]
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = cable_diode
+                        Rot = 1
+                    }
+                    ComponentID = BatteryStorageDown
+                }
+            ]
+        }
+		Draw_Cable_Connector_Left
+		{
+            Type = MultiToggle
+			Toggles = [HasProxyBatteryStorageLeft, HasConnectorLeft]
+			Mode = Any
+		}
+
+		HasProxyBatteryStorageRight : &ProxyBatteryStorageRight { Type = ComponentPresenceToggle }
+        HasConnectorRight
+        {
+            Type = ComponentPresenceToggle
+            PartLocation = [1, 0]
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = cable_diode
+                        Rot = 3
+                    }
+                    ComponentID = BatteryStorageDown
+                }
+            ]
+        }
+		Draw_Cable_Connector_Right
+		{
+            Type = MultiToggle
+			Toggles = [HasProxyBatteryStorageRight, HasConnectorRight]
+			Mode = Any
+		}
+
+        Port_Up
+		{
+			Type = NetworkPort
+			Location = [0, 0]
+			Direction = Up
+			Types = [ plasma ]
+			RouteSource = NetworkNode
+			RouteEndpoint = NetworkNode
+			BlueprintRouteSource = NetworkNode
+			BlueprintRouteEndpoint = NetworkNode
+			Overlay
+			{
+				OverlayIcon = "PlasmaPort"
+				IconDrawMode = Never
+				RouteDrawMode = Connected
+				RouteLine = "Plasma"
+				DrawRouteHub = false
+			}
+		}
+		Port_Down : Port_Up { Direction = Down }
+		Port_Left : Port_Up { Direction = Left }
+		Port_Right : Port_Up { Direction = Right }
+
+		NetworkNode
+		{
+			Type = NetworkBasicNode
+			IncludeInBlueprints = true
+            IncludeInPhysical = true
+		}
     }
 
     Stats {

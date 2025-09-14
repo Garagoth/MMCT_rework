@@ -1,0 +1,30 @@
+BatteryStorageOnlineSmall
+{
+    Type = ResourceStorage
+    ResourceType = battery
+    MaxResources = (&<./Data/ships/terran/hyperdrive_small/hyperdrive_small.rules>/Part/Components/BatteryStorage/MaxResources)
+}
+BatteryStorageOnlineMedium
+{
+    Type = ResourceStorage
+    ResourceType = battery
+    MaxResources = (&<./Data/ships/terran/hyperdrive_med/hyperdrive_med.rules>/Part/Components/BatteryStorage/MaxResources)
+}
+BatteryStorageOnlineLarge
+{
+    Type = ResourceStorage
+    ResourceType = battery
+    MaxResources = (&<./Data/ships/terran/hyperdrive_large/hyperdrive_large.rules>/Part/Components/BatteryStorage/MaxResources)
+}
+
+BatteryOnlineConverter
+{
+    Type = ResourceConverter
+    FromStorage = BatteryStorage
+    FromQuantity = 1000
+    ToStorage = BatteryStorageOnline
+    ToQuantity = 1000
+    Interval = 0.5
+    MinFromQuantityForConversion = 1000
+    OperationalToggle = FtlDrive
+}

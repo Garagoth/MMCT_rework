@@ -1,0 +1,212 @@
+Part : <./Data/ships/terran/base_part_terran.rules>/Part
+{
+	NameKey = "Parts/HeatResistor"
+	IconNameKey = "Parts/HeatResistorIcon"
+	ID = YBJ.MMCTHeatResistor
+	EditorGroup = "Thermal"
+	DescriptionKey = "Parts/HeatResistorDesc"
+	Resources
+	[
+		[steel, 4]
+		[coil, 2]
+        [carbon, 2]
+	]
+	Size = [1, 1]
+	IsRotateable = true
+	IsFlippable = false
+	SelectionPriority = 0
+	MaxHealth = 1000
+	TypeCategories = [ heat_management ]
+	ReceivableBuffs : ^/0/ReceivableBuffs [ HeatDissipation ]
+	AllowedDoorLocations = []
+	GeneratorRequiresDoor = false
+	CrewSpeedFactor = 0
+	EditorIcon
+	{
+		Texture
+		{
+			File = "opornik 1.png"
+			SampleMode = Linear
+		}
+		Size = [32, 32]
+	}
+	Components : ^/0/Components
+	{
+		Port_Up
+		{
+			Type = NetworkPort
+			Location = [0, 0]
+			Direction = Up
+			Types = [ thermal ]
+			RouteSource = BlueprintNetworkNode1
+			RouteEndpoint = BlueprintNetworkNode1
+			BlueprintRouteSource = BlueprintNetworkNode1
+			BlueprintRouteEndpoint = BlueprintNetworkNode1
+			Overlay
+			{
+				OverlayIcon = "ThermalPort"
+				IconDrawMode = Never
+				RouteDrawMode = Connected
+				RouteLine = "Thermal"
+				DrawRouteHub = false
+			}
+		}
+		Port_Down : Port_Up
+		{
+			Direction = Down
+            RouteSource = BlueprintNetworkNode2
+			RouteEndpoint = BlueprintNetworkNode2
+			BlueprintRouteSource = BlueprintNetworkNode2
+			BlueprintRouteEndpoint = BlueprintNetworkNode2
+		}
+        BlueprintNetworkNode1
+		{
+			Type = NetworkBasicNode
+			IncludeInBlueprints = true
+            IncludeInPhysical = true
+		}
+        BlueprintNetworkNode2
+		{
+			Type = NetworkBasicNode
+			IncludeInBlueprints = true
+            IncludeInPhysical = true
+		}
+        PortUpOutput
+		{
+			Type = NetworkResourceOutput
+			ResourceType = heat
+			Mode = DistributeProportionallyByAvailable
+			Categories = [ thermal_storage ]
+		}
+        PortUpInput
+		{
+			Type = NetworkResourceInput
+			ResourceType = heat
+			Mode = DistributeProportionallyByAvailable
+			Categories = [ thermal_storage ]
+		}
+        PortDownOutput : PortUpOutput {}
+        PortDownInput : PortUpInput {}
+
+        NetworkRouter
+		{
+			Type = NetworkRouter
+			RouteGenerators
+			[
+				{
+					Type = Bidirectional
+					Routes
+					[
+						[BlueprintNetworkNode1, PortUpOutput, 0]
+                        [BlueprintNetworkNode1, PortUpInput, 0]
+                        [BlueprintNetworkNode2, PortDownOutput, 0]
+                        [BlueprintNetworkNode2, PortDownInput, 0]
+					]
+				}
+            ]
+        }
+
+        HeatUpDownDiff
+        {
+            Type = ValueOperation
+			Operator = Subtract
+			ValueOne = PortUpOutput
+			ValueTwo = PortDownOutput
+        }
+
+        PumpFromUpToggle
+        {
+            Type = ThresholdToggle
+            ValueFrom = HeatUpDownDiff
+            MinAmount = 0.1
+        }
+        PumpFromDownToggle
+        {
+            Type = ThresholdToggle
+            ValueFrom = HeatUpDownDiff
+            MaxAmount = -0.1
+        }
+
+        HeatUpDownMultiplier
+        {
+            Type = ValueLerp
+            InputValue = HeatUpDownDiff
+            InputRange = [-1.0, 1.0]
+            OutputRange = [-2000, 2000]
+        }
+        PumpMoreBuff
+		{
+			Type = SelfBuffProvider
+			BuffType = HeatDissipation
+			BuffAmount = 1
+			BuffMultiplier = HeatUpDownMultiplier
+		}
+
+        HeatPumpFromUp
+		{
+			Type = ResourceConverter
+			OperationalToggle = PumpFromUpToggle
+			FromStorage = PortUpOutput
+            ToStorage = PortDownInput
+			MinFromQuantityForConversion = 1
+			FromQuantity {
+                BaseValue = 1 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
+                BuffType = HeatDissipation
+                BuffMode = Multiply
+            }
+            ToQuantity = &FromQuantity
+			Interval = 0.1
+		}
+        HeatPumpFromDown
+		{
+			Type = ResourceConverter
+			OperationalToggle = PumpFromDownToggle
+			FromStorage = PortDownOutput
+            ToStorage = PortUpInput
+			MinFromQuantityForConversion = 1
+			FromQuantity {
+                BaseValue = -1 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
+                BuffType = HeatDissipation
+                BuffMode = Multiply
+            }
+            ToQuantity = &FromQuantity
+			Interval = 0.1
+		}
+
+        Dont_Draw_Pipe_Connector_Into_This_Part { Type = Graphics }
+        Blueprints
+		{
+			Type = BlueprintSprite
+			File = "blueprint-opornik 1.png"
+			Size = [1, 1]
+		}
+        Graphics
+        {
+            Type = Graphics
+            Location = [0.5, 0.5]
+            Floor
+			{
+				Layer = "floors"
+				DamageLevels
+				[
+					{
+						File = "opornik 1.png"
+						Size = [1, 1]
+					}
+                ]
+            }
+            Roof
+            {
+                layer = "roofs"
+                DamageLevels
+                [
+                    {
+						File = "roof opornik 1.png"
+						NormalsFile = "roof normals opornik 1.png"
+						Size = [1, 1]
+					}
+                ]
+            }
+        }
+    }
+}

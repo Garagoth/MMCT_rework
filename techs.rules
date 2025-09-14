@@ -40,16 +40,26 @@ Techs
 	// 	Cost = 5000
 	// 	Prerequisites = [YBJ.MMCTreactorcore, cosmoteer.thermal_tank]
 	// }
-	// {	
-	// 	ID = YBJ.MMCTheatboiler
-	// 	NameKey = &<terran/reactor heat boiler/boiler.rules>/Part/NameKey
-	// 	DescriptionKey = &<terran/reactor heat boiler/boiler.rules>/Part/DescriptionKey
-	// 	Icon = &<terran/reactor heat boiler/boiler.rules>/Part/EditorIcon
-	// 	EditorGroup = &<terran/reactor heat boiler/boiler.rules>/Part/EditorGroup
-	// 	PartsUnlocked = [&<terran/reactor heat boiler/boiler.rules>/Part/ID]
-	// 	Cost = 5000
-	// 	Prerequisites = [YBJ.MMCTreactorcore, cosmoteer.thermal_tank]
-	// }
+	{	
+		ID = YBJ.MMCTHeatSteamBoiler
+		NameKey = &<terran/steam boiler/steam_boiler.rules>/Part/NameKey
+		DescriptionKey = &<terran/steam boiler/steam_boiler.rules>/Part/DescriptionKey
+		Icon = &<terran/steam boiler/steam_boiler.rules>/Part/EditorIcon
+		EditorGroup = &<terran/steam boiler/steam_boiler.rules>/Part/EditorGroup
+		PartsUnlocked = [&<terran/steam boiler/steam_boiler.rules>/Part/ID]
+		Cost = 5000
+		Prerequisites = [YBJ.MMCTreactorcore, cosmoteer.thermal_tank]
+	}
+	{
+		ID = YBJ.MMCTHeatResistor
+		NameKey = &<terran/heat resistor/resistor.rules>/Part/NameKey
+		DescriptionKey = &<terran/heat resistor/resistor.rules>/Part/DescriptionKey
+		Icon = &<terran/heat resistor/resistor.rules>/Part/EditorIcon
+		EditorGroup = &<terran/heat resistor/resistor.rules>/Part/EditorGroup
+		PartsUnlocked = [&<terran/heat resistor/resistor.rules>/Part/ID]
+		Cost = 500
+		Prerequisites = [cosmoteer.thermal_tank]
+	}
 	{
 		ID = YBJ.MMCTTransformer
 		NameKey = &<terran/transformer/transformer.rules>/Part/NameKey
