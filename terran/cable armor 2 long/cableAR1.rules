@@ -111,6 +111,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceStorages = [RealBatteryStorageDown, ProxyCapacitorDown, ProxyCapacitorDown2]
 		}
 
+		/* //No longer needed
 		HasProxyBatteryStorageUp2 : &ProxyBatteryStorageUp2 { Type = ComponentPresenceToggle }
 		HasConnectorUp2 : &HasConnectorUp { PartLocation = &../HasProxyBatteryStorageUp2/PartLocation }
 		Draw_Cable_Connector_Up2 : &Draw_Cable_Connector_Up { Toggles = [HasProxyBatteryStorageUp2, HasConnectorUp2]}
@@ -120,6 +121,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		HasProxyBatteryStorageLeft : &ProxyBatteryStorageLeft { Type = ComponentPresenceToggle }
 		HasProxyBatteryStorageRight : &ProxyBatteryStorageRight { Type = ComponentPresenceToggle }
 		HasConnectorRight : ^/1/HasConnectorRight {PartLocation = &../HasProxyBatteryStorageRight/PartLocation }
+		*/
 
 		Port_Up2 : &Port_Up { Location = [1, 0] }
 		Port_Down2 : &Port_Down { Location = [1, 0] }

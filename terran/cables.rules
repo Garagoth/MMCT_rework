@@ -541,6 +541,7 @@ Part
             // This buffs all parts that can receive this buff. See actual cable implementation, Part/ReceivableBuffs
 		}
 
+        /* // This is not needed anymore
         HasProxyBatteryStorageUp : &ProxyBatteryStorageUp { Type = ComponentPresenceToggle }
         HasConnectorUp
         {
@@ -636,7 +637,8 @@ Part
 			Toggles = [HasProxyBatteryStorageRight, HasConnectorRight]
 			Mode = Any
 		}
-
+        */
+        
         Port_Up
 		{
 			Type = NetworkPort

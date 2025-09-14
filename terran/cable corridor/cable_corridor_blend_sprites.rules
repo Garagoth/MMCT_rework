@@ -45,7 +45,7 @@ BASE_BLEND_SPRITES
 FloorBlendSprites : BASE_BLEND_SPRITES
 {
 	// Possible layers: asteroid asteroid_roof_lights_fancy construction construction_delta doodads_high doodads_low doors external_walls fire floors indicators lights_add roof_doodads roof_lights_fancy roofs roof_turrets structure structure_construction turrets walls walls_stencil weapons
-	Layer = "floors"
+	Layer = "doodads_low"
 	AmbiguousSprites
 	[
 		: ~/HUB
@@ -288,7 +288,7 @@ RoofBlendSprites : BASE_BLEND_SPRITES
 BlueprintBlendSprites : BASE_BLEND_SPRITES
 {
 	Type = BlueprintToggledBlendSprites
-	Layer = "floors"
+	Layer = "doodads_low"
 	SituationToggles
 	[
 		Port_Up
