@@ -113,6 +113,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Type = ResourceStorage
 			ResourceType = heat
 			OperationalToggle = PowerToggle
+			// About half of what thermal battery has
 			MaxResources = (6000) * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
 			InitToMaxResources = 0
 			IgnoreResourcesForInitToMax = true
@@ -156,13 +157,13 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = ResourceConverter
 			FromStorage = NetworkHeatOutput
-			FromQuantity = 1000 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO) // FIXME: Ile to jest?
+			FromQuantity = 1000 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
 			ToStorage = SteamStorage
-			ToQuantity = 1000
+			ToQuantity = 1000 //TODO: Adjust quantities to be meaningfull
 			Interval = 0.1
             OperationalToggle = IsOperational
-            MinToQuantityForConversion = 500
-            MinFromQuantityForConversion = 500
+			MinToQuantityForConversion = (&ToQuantity)
+            MinFromQuantityForConversion = (&FromQuantity)
 		}
 
         ProxySteamOutputUp : &<../thermal.rules>/ProxyHeatStorageUp
@@ -179,8 +180,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ToQuantity = 1000
 			Interval = 0.1
             OperationalToggle = IsOperational
-            MinToQuantityForConversion = 500
-            MinFromQuantityForConversion = 500
+			MinToQuantityForConversion = (&ToQuantity)
+            MinFromQuantityForConversion = (&FromQuantity)
 		}
 
 		BuffProvider
@@ -317,7 +318,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
         HeatIndicator
         {
             Type = ResourceSprites
-			Location = [57/64 + 15/2, 96/64 + 18/2]
+			Location = [(57+15/2)/64, (96+18/2)/64] // This is: (part_x + sprite_x/2)/cell_x, (part_y + sprite_y/2)/cell_y
 			ResourceStorage = HeatStorageDown
 			Layer = "lights_add"
 			HasZeroResourceSprite = false
@@ -353,7 +354,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
         SteamIndicator
         {
             Type = ResourceSprites
-			Location = [10/64 + 5/2, 56/64 + 19/2]
+			Location = [(10+5/2)/64, (56+19/2)/64]
 			ResourceStorage = SteamStorage
 			Layer = "lights_add"
 			HasZeroResourceSprite = false
@@ -385,6 +386,50 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				}
             ]
         }
+		Indicators
+		{
+			Type = IndicatorSprites
+			Location = [1, 1]
+			Layer = "indicators"
+			Indicators
+			[
+				// Scorched
+				{
+					Toggle = ScorchedToggle
+					AtlasSprite = &/INDICATORS/Scorched
+					HidesIndicators = [1,2]
+				}
+				// Turned off.
+				{
+					Toggle = PowerToggle
+					AtlasSprite
+					{
+						File = &/INDICATORS/PowerOff
+						Size = [1, 1]
+					}
+					HidesIndicators = [0,2]
+				}
+				// Out of heat
+				{
+					Toggle = NetworkHeatOutput
+					AtlasSprite
+					{
+						File = &/INDICATORS/NoHeat/FIle
+						Size = [1, 1]
+					}
+				}
+				// No heat port
+				{
+					Toggle = Port_HeatDown
+					AtlasSprite
+					{
+						File = &/INDICATORS/NoHeat/File
+						Size = [1, 1]
+						VertexColor = [255, 38, 0]
+					}
+				}
+			]
+		}
     }
     Stats
 	{

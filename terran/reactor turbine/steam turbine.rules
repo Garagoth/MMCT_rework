@@ -14,7 +14,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	]
 	AIValueFactor = 7
 	TypeCategories = [modular_reactor, mmct_turbine, is_crewed, thermal_sink]
-	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTHeat]
+	ReceivableBuffs : ^/0/ReceivableBuffs [MMCTHeat, HeatDissipation]
 	Size = [2, 3]
 	MaxHealth = 2000
 	IsFlippable = true
@@ -196,6 +196,27 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Interval = 0.1
 		}
 		
+		HeatUpDownMultiplier
+        {
+            Type = ValueLerp
+            InputValue = PowerStorage
+            InputRange = [0.3, 1.0]
+            OutputRange = [10, 1]
+        }
+		HeatUpDownMultiplierSmothed
+		{
+			Type = SmoothedValue
+			ValueSource = HeatUpDownMultiplier
+			MaxDelta = 0.2 // Every game tick move value by MaxDelta * timeDelta (in seconds)
+			StartValue = 1
+		}
+        PumpMoreBuff
+		{
+			Type = SelfBuffProvider
+			BuffType = HeatDissipation
+			BuffAmount = 1
+			BuffMultiplier = HeatUpDownMultiplierSmothed
+		}
 		TurnHeatToPower
 		{
 			Type = ResourceConverter
@@ -203,8 +224,15 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			FromQuantity = 300
 			ToStorage = PowerStorage
 			ToQuantity = 6400 / (&../../transformerRatio)
-			Interval = 0.1
-			MinFromQuantityForConversion = 150
+			Interval //= 0.1
+			{
+				// Selfbuff wydłużający ten czas jeśli PowerStorage jest pełne, żeby turbina się "rozpędzała", czyli żeby zmieniało się płynnie a nie skokowo i od razu
+				BaseValue = 1
+                BuffType = HeatDissipation
+                BuffMode = Divide
+			}
+			MinFromQuantityForConversion = &FromQuantity
+			MinToQuantityForConversion = ceil((&ToQuantity) / 2) // If PowerStorage is full, there are steam losses.
 			OperationalToggle = PowerToggle
 		}
 
@@ -545,29 +573,38 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				{
 					Toggle = ScorchedToggle
 					AtlasSprite = &/INDICATORS/Scorched
-					HidesIndicators = [1,2,3]
+					HidesIndicators = [1,2,3,4]
 				}
 				// Turned off.
 				{
-						Toggle = PowerToggle
-						AtlasSprite
-						{
-								File = &/INDICATORS/PowerOff
-								Size = [1, 1]
-						} 
+					Toggle = PowerToggle
+					AtlasSprite
+					{
+						File = &/INDICATORS/PowerOff
+						Size = [1, 1]
+					}
 				}
 				// No crew present
 				{
 					Toggle = PartCrew
 					AtlasSprite
 					{
-							File = &/INDICATORS/NoCrew
-							Size = [1, 1]
+						File = &/INDICATORS/NoCrew
+						Size = [1, 1]
 					}
 				}
-				// Out of power.
+				// Out of heat (steam).
 				{
 					Toggle = HeatStorage
+					AtlasSprite
+					{
+						File = &/INDICATORS/NoHeat/File
+						Size = [1, 1]
+					}
+				}
+				// Out of stored power
+				{
+					Toggle = PowerStorage
 					AtlasSprite
 					{
 						File = &/INDICATORS/NoPower
@@ -581,11 +618,11 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	Stats
 	{
 		MMCTPowerBandwidth = (1 / (&~/Part/Components/SendPowerToPoint/Interval) * (&~/Part/Components/SendPowerToPoint/ToQuantity) / 1000) * (&../transformerRatio)
-		MMCTThermalUse = ((1 / (&~/Part/Components/TurnHeatToPower/Interval) * (&~/Part/Components/TurnHeatToPower/FromQuantity)) + (1 / (&~/Part/Components/SendHeatToWaste/Interval) * (&~/Part/Components/SendHeatToWaste/FromQuantity))) / 100
+		MMCTThermalUse = ((1 / ((&~/Part/Components/TurnHeatToPower/Interval/BaseValue) / (&~/Part/Components/HeatUpDownMultiplier/OutputRange/0)) * (&~/Part/Components/TurnHeatToPower/FromQuantity)) + (1 / (&~/Part/Components/SendHeatToWaste/Interval) * (&~/Part/Components/SendHeatToWaste/FromQuantity))) / 100
 		MMCTThermalCapacity = (&~/Part/Components/HeatStorage/MaxResources) / 100
 		MMCTThermalEfficiency = ((&~/Part/Components/SendHeatToWaste/FromQuantity) / ((&~/Part/Components/TurnHeatToPower/FromQuantity) + (&~/Part/Components/SendHeatToWaste/FromQuantity))) * 100
 		PowerCapacity = (&~/Part/Components/PowerStorage/MaxResources) / 1000 * (&../transformerRatio)
-		MMCTPowerGeneration = (1 / (&~/Part/Components/TurnHeatToPower/Interval) * (&~/Part/Components/TurnHeatToPower/ToQuantity) / 1000) * (&../transformerRatio)
+		MMCTPowerGeneration = (1 / ((&~/Part/Components/TurnHeatToPower/Interval/BaseValue) / (&~/Part/Components/HeatUpDownMultiplier/OutputRange/0)) * (&~/Part/Components/TurnHeatToPower/ToQuantity) / 1000) * (&../transformerRatio)
 		CrewRequired = &~/Part/Components/PartCrew/Crew
 	}
 }
