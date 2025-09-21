@@ -51,7 +51,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		IsOperational
 		{
 			Type = MultiToggle
-			Toggles = [PowerToggle, PartCrew, HasThermalInPlace, ScorchedToggle]
+			Toggles = [PowerToggle, PartCrew, Port_Up, ScorchedToggle]
 			Mode = All
 		}
 
@@ -91,10 +91,19 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		IsRequestingHeat
 		{
 			Type = MultiToggle
-			Toggles = [{Toggle = IsFullyHeated, Invert = true}, HasThermalInPlace]
+			Toggles = [{Toggle = IsFullyHeated, Invert = true}, Port_Up]
 			Mode = All
 		}
 		
+		Port_Up : &<../thermal.rules>/Port_Steam
+		{
+			Location = [1, 0]
+			Direction = Up
+			Types = [ steam, steam_in ]
+            IncompatibleTypes = [ steam_in ]
+		}
+		NetworkNodeSteam : &<../thermal.rules>/NetworkNodeSteam {}
+
 		HasThermalInPlace
 		{
 			Type = ToggleProxy

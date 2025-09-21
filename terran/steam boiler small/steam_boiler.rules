@@ -12,7 +12,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		[tristeel, 11]
 	]
 	AIValueFactor = 7
-	TypeCategories = [modular_reactor, is_crewed, heat_management, thermal_source]
+	TypeCategories = [modular_reactor, heat_management, thermal_source]
 	Size = [2, 2]
 	MaxHealth = 2000
 	IsFlippable = true
@@ -70,6 +70,15 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			OperationalToggle = PowerToggle
 			CommandPoints = 1
 		}
+
+ 		Port_Steam_Up : &<../thermal.rules>/Port_Steam
+		{
+			Direction = Up
+			Location = [1, 0]
+			Types = [ steam, steam_out ]
+			IncompatibleTypes = [ steam_out ]
+		}
+		NetworkNodeSteam : &<../thermal.rules>/NetworkNodeSteam {}
 
 		Port_HeatDown
 		{

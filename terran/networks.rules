@@ -22,6 +22,28 @@ OverlayIcons
                 }
                 UnroutableColorFactor = [255, 255, 255, 170]
         }
+        SteamPort
+        {
+                Sprite
+                {
+                        File = "./Data/gui/game/parts/networks/port_thermal.png"
+                        VertexColor = [200, 200, 200, 200]
+                        Size = [0.3, 0.3]
+                }
+                EdgeOffset = -(&Sprite/Size/0) * 24/64
+                RouteLineOffset = (&EdgeOffset) - (&Sprite/Size/0) * 16/64
+                DrawLineToEdgeWhenConnected = true
+                UnroutableColorFactor = [255, 255, 255, 170]
+        }
+        SteamDot
+        {
+                Sprite
+                {
+                        File = "./Data/gui/game/parts/networks/thermal_circle.png"
+                        Size = [0.54, 0.54]
+                }
+                UnroutableColorFactor = [255, 255, 255, 170]
+        }
 }
 
 RouteLines
@@ -68,5 +90,13 @@ RouteLines
         LineUPerLength = 0.8 / (&LineThickness)
         ColorFactor = [255, 255, 255, 255]
         UnroutableColorFactor = [255, 255, 255, 170]
+    }
+    Steam : &Plasma
+    {
+        LineSprite : ^/0/LineSprite
+        {
+                _baseColor = [200, 200, 200, 200]
+                _glowColor = [250, 250, 250, 200]
+        }
     }
 }

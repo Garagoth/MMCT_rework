@@ -76,12 +76,47 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
         RealBatteryStorageDown = &<../cables.rules>/Part/Components/RealBatteryStorageDown
         BatteryStorageDown : &<../cables.rules>/Part/Components/BatteryStorageDown
 		{
-			ResourceStorages = [RealBatteryStorageDown, ProxyCapacitorDown, ProxyPowerSourceDown]
+			ResourceStorages = [RealBatteryStorageDown, ProxyCapacitorDown, ProxyPowerSourceDown, ProxyConnectorExtenderSource]
 		}
 		BatteryStorage : &BatteryStorageDown {} //This allows being powered by transformers and substations
         ProxyCapacitorDown = &<../cables.rules>/Part/Components/ProxyCapacitorDown
         ProxyCapacitorUp = &<../cables.rules>/Part/Components/ProxyCapacitorUp
         ProxyBatteryStorageUp = &<../cables.rules>/Part/Components/ProxyBatteryStorageUp
+
+		ProxyConnectorExtenderSource
+		{
+			Type = ResourceStorageProxy
+            ResourceType = battery
+            PartLocation = [0, 1]
+            ProxyableComponents
+            [
+				{
+                    PartCriteria
+                    {
+                        Categories = [cable_extender]
+                        Rot = 0
+                    }
+                    ComponentID = BatteryStorageSource
+                }
+			]
+		}
+		ProxyConnectorExtenderSink
+		{
+			Type = ResourceStorageProxy
+            ResourceType = battery
+            PartLocation = [0, -1]
+            ProxyableComponents
+            [
+				{
+                    PartCriteria
+                    {
+                        Categories = [cable_extender]
+                        Rot = 0
+                    }
+                    ComponentID = BatteryStorageSink
+                }
+			]
+		}
 
 		Port_Up : &<../cables.rules>/Part/Components/Port_Up
 		{
@@ -130,7 +165,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 					LocalBatteryStorage       // Some parts have this instead (MRT?)
 				]
 			}
-            ResourceStorages = [ProxyBatteryStorageUp, ProxyCapacitorUp]
+            ResourceStorages = [ProxyBatteryStorageUp, ProxyCapacitorUp, ProxyConnectorExtenderSink]
 			AllowExternalPickupAndDelivery = false
 			SuppliesResources = false
         }

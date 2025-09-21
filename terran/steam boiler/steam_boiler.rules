@@ -99,6 +99,15 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			]
 		}
 
+		Port_Steam_Up : &<../thermal.rules>/Port_Steam
+		{
+			Direction = Up
+			Location = [2, 0]
+			Types = [ steam, steam_out ]
+			IncompatibleTypes = [ steam_out ]
+		}
+		NetworkNodeSteam : &<../thermal.rules>/NetworkNodeSteam {}
+
 		Port_HeatAnyIn
 		{
 			Type = MultiToggle

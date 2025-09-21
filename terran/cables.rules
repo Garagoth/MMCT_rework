@@ -420,6 +420,8 @@ Part
             AddMode = InOrder
             RemoveMode = InOrder
             ResourceStorages = [RealBatteryStorageUp, ProxyCapacitorUp]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
             SuppliesResources = false
         }
         RealBatteryStorageDown
@@ -428,8 +430,6 @@ Part
             ResourceType = battery
             MaxResources = &~/Part/batteryStorageMax
             IncludeWhenUnderConstruction = false
-            ToggleOnResources = (&~/Part/transferQuantity)
-			ToggleOffResources = (&ToggleOnResources) - 1
             SuppliesResources = false
         }
         BatteryStorageDown
@@ -439,6 +439,8 @@ Part
             AddMode = InOrder
             RemoveMode = InOrder
             ResourceStorages = [RealBatteryStorageDown, ProxyCapacitorDown]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
             SuppliesResources = false
         }
         RealBatteryStorageLeft
@@ -447,8 +449,6 @@ Part
             ResourceType = battery
             MaxResources = &~/Part/batteryStorageMax
             IncludeWhenUnderConstruction = false
-            ToggleOnResources = (&~/Part/transferQuantity)
-			ToggleOffResources = (&ToggleOnResources) - 1
             SuppliesResources = false
         }
         BatteryStorageLeft
@@ -458,6 +458,8 @@ Part
             AddMode = InOrder
             RemoveMode = InOrder
             ResourceStorages = [RealBatteryStorageLeft, ProxyCapacitorLeft]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
             SuppliesResources = false
         }
         RealBatteryStorageRight
@@ -477,6 +479,8 @@ Part
             AddMode = InOrder
             RemoveMode = InOrder
             ResourceStorages = [RealBatteryStorageRight, ProxyCapacitorRight]
+            ToggleOnResources = (&~/Part/transferQuantity)
+			ToggleOffResources = (&ToggleOnResources) - 1
             SuppliesResources = false
         }
 
@@ -489,7 +493,7 @@ Part
             ToStorage = CombinedBatteryStorageNotUp
             ToQuantity = &~/Part/transferQuantity
             Interval = &~/Part/transferInterval
-            OperationalToggle = IsOperational
+            OperationalToggle = BatteryStorageUp
             MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
         }
@@ -501,7 +505,7 @@ Part
             ToStorage = CombinedBatteryStorageNotDown
             ToQuantity = &~/Part/transferQuantity
             Interval = &~/Part/transferInterval
-            OperationalToggle = IsOperational
+            OperationalToggle = BatteryStorageDown
             MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
         }
@@ -513,7 +517,7 @@ Part
             ToStorage = CombinedBatteryStorageNotLeft
             ToQuantity = &~/Part/transferQuantity
             Interval = &~/Part/transferInterval
-            OperationalToggle = IsOperational
+            OperationalToggle = BatteryStorageLeft
             MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
         }
@@ -525,7 +529,7 @@ Part
             ToStorage = CombinedBatteryStorageNotRight
             ToQuantity = &~/Part/transferQuantity
             Interval = &~/Part/transferInterval
-            OperationalToggle = IsOperational
+            OperationalToggle = BatteryStorageRight
             MinToQuantityForConversion = &~/Part/transferQuantity
             MinFromQuantityForConversion = &~/Part/transferQuantity
         }
@@ -541,104 +545,6 @@ Part
             // This buffs all parts that can receive this buff. See actual cable implementation, Part/ReceivableBuffs
 		}
 
-        /* // This is not needed anymore
-        HasProxyBatteryStorageUp : &ProxyBatteryStorageUp { Type = ComponentPresenceToggle }
-        HasConnectorUp
-        {
-            Type = ComponentPresenceToggle
-            PartLocation = [0, -1]
-            ProxyableComponents
-            [
-                {
-                    PartCriteria
-                    {
-                        Category = cable_diode
-                        Rot = 2
-                    }
-                    ComponentID = BatteryStorageDown
-                }
-            ]
-        }
-		Draw_Cable_Connector_Up
-		{
-            Type = MultiToggle
-			Toggles = [HasProxyBatteryStorageUp, HasConnectorUp]
-			Mode = Any
-		}
-
-		HasProxyBatteryStorageDown : &ProxyBatteryStorageDown { Type = ComponentPresenceToggle }
-        HasConnectorDown
-        {
-            Type = ComponentPresenceToggle
-            PartLocation = [0, 1]
-            ProxyableComponents
-            [
-                {
-                    PartCriteria
-                    {
-                        Category = cable_diode
-                        Rot = 0
-                    }
-                    ComponentID = BatteryStorageDown
-                }
-            ]
-        }
-		Draw_Cable_Connector_Down
-		{
-            Type = MultiToggle
-			Toggles = [HasProxyBatteryStorageDown, HasConnectorDown]
-			Mode = Any
-		}
-
-		HasProxyBatteryStorageLeft : &ProxyBatteryStorageLeft { Type = ComponentPresenceToggle }
-        HasConnectorLeft
-        {
-            Type = ComponentPresenceToggle
-            PartLocation = [-1, 0]
-            ProxyableComponents
-            [
-                {
-                    PartCriteria
-                    {
-                        Category = cable_diode
-                        Rot = 1
-                    }
-                    ComponentID = BatteryStorageDown
-                }
-            ]
-        }
-		Draw_Cable_Connector_Left
-		{
-            Type = MultiToggle
-			Toggles = [HasProxyBatteryStorageLeft, HasConnectorLeft]
-			Mode = Any
-		}
-
-		HasProxyBatteryStorageRight : &ProxyBatteryStorageRight { Type = ComponentPresenceToggle }
-        HasConnectorRight
-        {
-            Type = ComponentPresenceToggle
-            PartLocation = [1, 0]
-            ProxyableComponents
-            [
-                {
-                    PartCriteria
-                    {
-                        Category = cable_diode
-                        Rot = 3
-                    }
-                    ComponentID = BatteryStorageDown
-                }
-            ]
-        }
-		Draw_Cable_Connector_Right
-		{
-            Type = MultiToggle
-			Toggles = [HasProxyBatteryStorageRight, HasConnectorRight]
-			Mode = Any
-		}
-        */
-        
         Port_Up
 		{
 			Type = NetworkPort

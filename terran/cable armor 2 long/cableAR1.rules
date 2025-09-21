@@ -4,7 +4,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	NameKey = "Parts/CableAR2"
 	IconNameKey = "Parts/CableArIcon"
 	ID = YBJ.MMCTCableAR1 // Part IDs must always be in the form of "author_name.part_name". If making your own mod, do *not* use "cosmoteer" as your author name, because it may conflict with future vanilla parts.
-	EditorGroups = ["Defenses", "Power"]
+	EditorGroups = ["Defenses", "Power", "Structure"]
 	EditorReplacementPartID = YBJ.MMCTCableAR
 	DescriptionKey = "Parts/CableARDesc"
 	Resources
@@ -111,18 +111,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			ResourceStorages = [RealBatteryStorageDown, ProxyCapacitorDown, ProxyCapacitorDown2]
 		}
 
-		/* //No longer needed
-		HasProxyBatteryStorageUp2 : &ProxyBatteryStorageUp2 { Type = ComponentPresenceToggle }
-		HasConnectorUp2 : &HasConnectorUp { PartLocation = &../HasProxyBatteryStorageUp2/PartLocation }
-		Draw_Cable_Connector_Up2 : &Draw_Cable_Connector_Up { Toggles = [HasProxyBatteryStorageUp2, HasConnectorUp2]}
-		HasProxyBatteryStorageDown2 : &ProxyBatteryStorageDown2 { Type = ComponentPresenceToggle }
-		HasConnectorDown2 : &HasConnectorDown { PartLocation = &../HasProxyBatteryStorageDown2/PartLocation }
-		Draw_Cable_Connector_Down2 : &Draw_Cable_Connector_Down { Toggles = [HasProxyBatteryStorageDown2, HasConnectorDown2]}
-		HasProxyBatteryStorageLeft : &ProxyBatteryStorageLeft { Type = ComponentPresenceToggle }
-		HasProxyBatteryStorageRight : &ProxyBatteryStorageRight { Type = ComponentPresenceToggle }
-		HasConnectorRight : ^/1/HasConnectorRight {PartLocation = &../HasProxyBatteryStorageRight/PartLocation }
-		*/
-
 		Port_Up2 : &Port_Up { Location = [1, 0] }
 		Port_Down2 : &Port_Down { Location = [1, 0] }
 		Port_Right : ^/1/Port_Right { Location = [1, 0] }
@@ -197,6 +185,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = StaticToggle
 			ToggleOn = true
+			IncludeWhenUnderConstruction = true
+			IncludeInLightweightBlueprintUpdates = true
 		}
 
 		FloorBlendSprites1 : &<../cable corridor/cable_corridor_blend_sprites.rules>/FloorBlendSprites
@@ -208,10 +198,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				On
 				Port_Down
 				Port_Left
-				// Draw_Cable_Connector_Up
-				// On //Draw_Cable_Connector_Right
-				// Draw_Cable_Connector_Down
-				// Draw_Cable_Connector_Left
 			]
 		}
 		FloorBlendSprites2 : &<../cable corridor/cable_corridor_blend_sprites.rules>/FloorBlendSprites
@@ -223,10 +209,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				Port_Right
 				Port_Down2
 				On
-				// Draw_Cable_Connector_Up2
-				// Draw_Cable_Connector_Right
-				// Draw_Cable_Connector_Down2
-				// On //Draw_Cable_Connector_Left
 			]
 		}
 
@@ -249,13 +231,14 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Size = [2, 1]
 		}
 		// Problem with blueprint sprites rotation: https://discord.com/channels/314103695568666625/1416347707756249182
+		// Problem with `On` not being available on destroyed/red parts: https://discord.com/channels/314103695568666625/1418689759261491240
 		BlueprintBlendSprites1 : &<../cable corridor/cable_corridor_blend_sprites.rules>/BlueprintBlendSprites
 		{
 			Location = [0.5, 0.5]
 			SituationToggles
 			[
 				Port_Up
-				On
+				Port_Right //On
 				Port_Down
 				Port_Left
 			]
@@ -268,7 +251,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 				Port_Up2
 				Port_Right
 				Port_Down2
-				On
+				Port_Left //On
 			]
 		}
 	}

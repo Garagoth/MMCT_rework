@@ -103,9 +103,27 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			    Category = thermal_junction
 			}
 		}
-	
+
 		BuffProviderTurbine = &<../thermal.rules>/Buffs/BuffProviderTurbine
 		
+		Port_Up : &<../thermal.rules>/Port_Steam
+		{
+			Direction = Up
+		}
+		Port_Down : &Port_Up
+		{
+			Direction = Down
+		}
+		Port_Right : &Port_Up
+		{
+			Direction = Right
+		}
+		Port_Left : &Port_Up
+		{
+			Direction = Left
+		}
+		NetworkNodeSteam : &<../thermal.rules>/NetworkNodeSteam {}
+
 		ProxyHeatStorageUp = &<../thermal.rules>/ProxyHeatStorageUp
 		ProxyHeatStorageDown = &<../thermal.rules>/ProxyHeatStorageDown
 		ProxyHeatStorageLeft = &<../thermal.rules>/ProxyHeatStorageLeft

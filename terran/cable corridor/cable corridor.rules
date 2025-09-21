@@ -55,15 +55,36 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		//RoofBlendSprites : <cable_corridor_blend_sprites.rules>/RoofBlendSprites {}
 		BlueprintBlendSprites : <cable_corridor_blend_sprites.rules>/BlueprintBlendSprites {}
 
-		TestBuffableValue
+		// TestBuffableValue
+		// {
+		// 	Type = BuffableValue
+		// 	IncludeInBlueprints = true
+		// 	IncludeInPhysical = true
+		// 	Value
+		// 	{
+		// 		BaseValue = 1
+		// 		BuffType = MMCTCableCable
+		// 	}
+		// }
+
+		IsOperational
 		{
-			Type = BuffableValue
-			IncludeInBlueprints = true
-			IncludeInPhysical = true
-			Value
+			Type = CommandToggle
+		}
+
+		Darkness_Components
+		{
+			Type = ToggledComponents
+			Toggle = IsOperational
+			Invert = true
+			Components
 			{
-				BaseValue = 1
-				BuffType = MMCTCableCable
+				DarknessBlend : <./Data/ships/terran/corridor/darkness/darkness.rules>
+				{
+					Type = BlendSprite
+					Location = [.5, .5]
+					BlendsWithCategories = [corridor]
+				}
 			}
 		}
 

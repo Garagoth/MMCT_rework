@@ -1,3 +1,29 @@
+Port_Steam
+{
+	Type = NetworkPort
+	Location = [0, 0]
+	Direction = Up
+	Types = [ steam ]
+	RouteSource = NetworkNodeSteam
+	RouteEndpoint = NetworkNodeSteam
+	BlueprintRouteSource = NetworkNodeSteam
+	BlueprintRouteEndpoint = NetworkNodeSteam
+	Overlay
+	{
+		OverlayIcon = "SteamPort"
+		IconDrawMode = Never
+		RouteDrawMode = Connected
+		RouteLine = "Steam"
+		DrawRouteHub = false
+	}
+}
+NetworkNodeSteam
+{
+	Type = NetworkBasicNode
+	IncludeInBlueprints = true
+	IncludeInPhysical = true
+}
+
 ProxyHeatStorageUp
 {
 	Type = ResourceStorageProxy

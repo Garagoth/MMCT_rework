@@ -57,10 +57,16 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 
 		Port_Up : &<../cables.rules>/Part/Components/Port_Up
 		{
-			RouteSource = NetworkNode
-			RouteEndpoint = NetworkNode
-			BlueprintRouteSource = NetworkNode
-			BlueprintRouteEndpoint = NetworkNode
+			Types = [ plasma, plasma_out ]
+            IncompatibleTypes = [ plasma_out ]
+		}
+		Port_Right : &<../cables.rules>/Part/Components/Port_Right
+		{
+			Types = [ plasma, plasma_out ]
+            IncompatibleTypes = [ plasma_out ]
+		}
+		Port_Left : &<../cables.rules>/Part/Components/Port_Left
+		{
 			Types = [ plasma, plasma_out ]
             IncompatibleTypes = [ plasma_out ]
 		}
