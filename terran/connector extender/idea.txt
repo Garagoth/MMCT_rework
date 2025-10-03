@@ -1,0 +1,11 @@
+pasywny element który będzie tylko proxy wystawiał.
+
+Wariant jeden: robi proxy do BatteryStorage z trzech stron jako MultiResourceStoragem z czwartej wystawia to żeby no. dioda mogła to pociągnąć.
+Wariant drugi: Robi to samo tylko żeby dioda mogła tam wepchać prąd.
+
+Sam element NIE ma storage żadnego ani ResourceConverter.
+Najprostsza opcja: wystawić te trzy proxy jako BatteryStorage i po sprawie, ale nie ma jak ograniczyć strony wtedy...
+
+Opcja na zasysanie energii (wariant pierwszy) musi nazywać to proxy jako BatteryStorageUp.
+Opcja na rozprowadzanie energii (wariant drugi) można zrealizować robiąc tak aby ProxyBatteryStorageUp trafiło na ten combined proxy storage, czyli musi się nazywać BatteryStorageDown i tylko taki jeden musi być.
+

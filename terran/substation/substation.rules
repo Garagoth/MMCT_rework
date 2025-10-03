@@ -153,6 +153,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Criteria {
 			    Category = uses_power
 			}
+			ShowBuffRange = true
 		}
 		BuffProviderSubstations : &BuffProvider
 		{

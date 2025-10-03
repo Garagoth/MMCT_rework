@@ -22,7 +22,7 @@ Techs
 			&<terran/thermal cable line/thermal loop I piece.rules>/Part/ID
 			&<terran/thermal cable junction/thermal loop junction.rules>/Part/ID
 		]
-		Cost = 30000
+		Cost = 90000
 		Prerequisites = [YBJ.MMCTDiodeConnector, cosmoteer.reactor_large]
 	}
     {	

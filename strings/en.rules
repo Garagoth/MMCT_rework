@@ -8,15 +8,15 @@ Parts
 	Substation = "Power Substation"
 	SubstationIcon = "Substation"
 	SubstationDesc = "A substation capable of inserting or pulling power out of a cable network. \n\n"\
-				"Cable must connect to substation directly, otherwise all power consumers in range are powered wirelessly.\n"\
+				"Cable must connect to substation directly, otherwise all power consumers in range of 3 cells around are powered wirelessly.\n"\
 				"Substations must be used to send power to nearby blocks, as cables cannot do that naturally.\n"\
-				"Acts as cable connector as well and accepts batteries deliveried by crew."
+				"Acts as cable as well and accepts batteries deliveried by crew."
 
 	Substation2 = "Wireless Substation"
 	Substation2Icon = "Wireless Substation"
 	Substation2Desc = "A specialized form of wireless power projector capable of sending power to blocks (on the same ship) in a straight line from projector head.\n\n"\
-				"Cables must be attached directly to substation to transfer power to and from substation, all other battery consumers are powered wirelessly.\n"\
-				"Acts as cable connector as well and accepts batteries deliveried by crew."
+				"Cables must be attached directly to substation to transfer power to and from substation, all battery consumers are powered wirelessly.\n"\
+				"Acts as cable as well and accepts batteries deliveried by crew."
 	
 	DiodeConnector = "One-way cable connector"
 	DiodeConnectorIcon = "Connector"
@@ -26,7 +26,7 @@ Parts
 
 	ConnectorExtender = "Connector extender"
 	ConnectorExtenderIcon = "Connector extender"
-	ConnectorExtenderDesc = "Connector extender. Passive element. Has up and down. WIP."
+	ConnectorExtenderDesc = "Connector extender. Passive element, acts as splitter/joiner allowing connector to pull or push into multiple adjacent storages. Has up and down. WIP."
 
 	PowerStorageDesc = "Stores a limited cache of plasma batteries that may be used by nearby ship's systems or pushed to a cables attached.\n"\
 				"Will equalize power with other capacitors attached directly."
@@ -65,15 +65,18 @@ Parts
 	HeatResistorIcon = "Heatpipe resistor"
 	HeatResistorDesc = "Heatpipe fragment that has resistance to heat transfer.\n"\
 				"Heat will transfer from hotter side to cooler at speed depending on heat level difference, starting at 10% difference.\n"\
-				"Can be used to make sure then one side always has some heat stored for use."
+				"Can be used to make sure that one side always has some heat stored for use.\n"\
+				"Please note that resistor has limited heat transfer capacity - at max heat difference (100% on one side, 0% full on other side) it transfers enough to saturate up to 8 radiators. "\
+				"If more throughput is needed, use multiple resistors in parallel. Please note that there is a slight ramp-up time in heat transfer speed, and more importantly, "\
+				"resistors split networks - ensure there is enough heat storage on heat producing side."
 
 	Turbine = "Steam Turbine"
 	TurbineIcon = "Turbine"
-	TurbineDesc = "A turbine that can convert high pressure steam into power, this system requires active supervision to function properly, and is notably not 100% efficient.\n\n"\
+	TurbineDesc = "A turbine converts high pressure steam into power, this system requires active supervision to function properly, and is notably not 100% efficient.\n\n"\
 				"This part is WIP and as such does not currently have all damage sprites, this will change in the future.\n"\
 				"Requires attached steam pipe and at least one transformer to extract usable battery power."
 	TurbineHeat = "Heat powered Turbine"
-	TurbineDescHeat = "A turbine that can convert ship heat into power by boiling water and using steam to run turbines and dynamos.\n"\
+	TurbineDescHeat = "A turbine converts ship heat into power by boiling water and using steam to run turbines and dynamos.\n"\
 				"This system requires active supervision to function properly, and is notably not 100% efficient.\n\n"\
 				"This part is WIP and as such does not currently have all damage sprites or correct connector graphicd, this will change in the future.\n"\
 				"Requires attached heatpipe and at least one transformer to extract usable battery power."
@@ -88,7 +91,8 @@ Parts
 	
 	Transformer = "Power Transformer"
 	TransformerIcon = "Transformer"
-	TransformerDesc = "A high power electrical conversion system that can feed immense amounts of power into a grid, MMCT denies all allegations that this is a robot in disguise.\n\n"\
+	TransformerDesc = "A high power electrical conversion system that can feed immense amounts of power into a grid.\n"\
+				"It takes power from turbine and turns it into usable power, outputting to cables, capacitors or directly into power using parts.\n\n"\
 				"Connects to turbine and can power connected stuff around its head, mostly same as substations can.\n"\
 				"This part is WIP and will change visually as MMCT is updated."
 }

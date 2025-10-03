@@ -17,10 +17,13 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	SelectionPriority = 0
 	MaxHealth = 1000
 	TypeCategories = [ heat_management ]
-	ReceivableBuffs : ^/0/ReceivableBuffs [ HeatDissipation ]
+	ReceivableBuffs : ^/0/ReceivableBuffs [ MMCTHeatTransfer ]
 	AllowedDoorLocations = []
 	GeneratorRequiresDoor = false
 	CrewSpeedFactor = 0
+
+    RADIATOR_MAX_SCORE = (&<./Data/ships/terran/radiator/radiator.rules>/Part/Components/DissipationScore/MAX_SCORE)
+
 	EditorIcon
 	{
 		Texture
@@ -38,10 +41,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Location = [0, 0]
 			Direction = Up
 			Types = [ thermal ]
-			RouteSource = BlueprintNetworkNode1
-			RouteEndpoint = BlueprintNetworkNode1
-			BlueprintRouteSource = BlueprintNetworkNode1
-			BlueprintRouteEndpoint = BlueprintNetworkNode1
+			RouteSource = NetworkNodeUp
+			RouteEndpoint = NetworkNodeUp
+			BlueprintRouteSource = NetworkNodeUp
+			BlueprintRouteEndpoint = NetworkNodeUp
 			Overlay
 			{
 				OverlayIcon = "ThermalPort"
@@ -54,18 +57,18 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		Port_Down : Port_Up
 		{
 			Direction = Down
-            RouteSource = BlueprintNetworkNode2
-			RouteEndpoint = BlueprintNetworkNode2
-			BlueprintRouteSource = BlueprintNetworkNode2
-			BlueprintRouteEndpoint = BlueprintNetworkNode2
+            RouteSource = NetworkNodeDown
+			RouteEndpoint = NetworkNodeDown
+			BlueprintRouteSource = NetworkNodeDown
+			BlueprintRouteEndpoint = NetworkNodeDown
 		}
-        BlueprintNetworkNode1
+        NetworkNodeUp
 		{
 			Type = NetworkBasicNode
 			IncludeInBlueprints = true
             IncludeInPhysical = true
 		}
-        BlueprintNetworkNode2
+        NetworkNodeDown
 		{
 			Type = NetworkBasicNode
 			IncludeInBlueprints = true
@@ -97,10 +100,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 					Type = Bidirectional
 					Routes
 					[
-						[BlueprintNetworkNode1, PortUpOutput, 0]
-                        [BlueprintNetworkNode1, PortUpInput, 0]
-                        [BlueprintNetworkNode2, PortDownOutput, 0]
-                        [BlueprintNetworkNode2, PortDownInput, 0]
+						[NetworkNodeUp, PortUpOutput, 0]
+                        [NetworkNodeUp, PortUpInput, 0]
+                        [NetworkNodeDown, PortDownOutput, 0]
+                        [NetworkNodeDown, PortDownInput, 0]
 					]
 				}
             ]
@@ -132,29 +135,89 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
             Type = ValueLerp
             InputValue = HeatUpDownDiff
             InputRange = [-1.0, 1.0]
-            OutputRange = [-2000, 2000]
+            OutputRange = [-4 * (&~/Part/RADIATOR_MAX_SCORE), 4 * (&~/Part/RADIATOR_MAX_SCORE)]
         }
-        PumpMoreBuff
+        HeatMultiplierAbs
+        {
+            Type = MultiValue
+            Values = [ HeatUpDownMultiplierSmoothed ]
+            Mode = Add
+            Abs = true
+        }
+        PumpMoreBuffFromDown
 		{
 			Type = SelfBuffProvider
-			BuffType = HeatDissipation
+            OperationalToggle = PumpFromDownToggle
+			BuffType = MMCTHeatTransfer
 			BuffAmount = 1
-			BuffMultiplier = HeatUpDownMultiplier
+			BuffMultiplier = PumpQuantityClampedFromDown
 		}
+        PumpMoreBuffFromUp
+		{
+			Type = SelfBuffProvider
+            OperationalToggle = PumpFromUpToggle
+			BuffType = MMCTHeatTransfer
+			BuffAmount = 1
+			BuffMultiplier = PumpQuantityClampedFromUp
+		}
+
+        HeatUpDownMultiplierSmoothed
+        {
+            Type = SmoothedValue
+            ValueSource = HeatUpDownMultiplier
+            MaxDelta = (&~/Part/RADIATOR_MAX_SCORE) / 2
+            Deterministic = false
+        }
+        // PumpUpAvailable
+        // {
+        //     Type = PolledValue
+        //     ValueSource = { ID = PortUpOutput; ValueID = "Resources" } // Does not work - no "Resources" available in NetworkResourceStorage
+        // }
+        PumpUpCapacity
+        {
+            Type = PolledValue
+            ValueSource = { ID = PortUpInput; ValueID = "RemainingCapacity" }
+        }
+        PumpDownCapacity
+        {
+            Type = PolledValue
+            ValueSource = { ID = PortDownInput; ValueID = "RemainingCapacity" }
+        }
+        PumpQuantityClampedFromUp
+        {
+            Type = MultiValue
+            Values = [HeatMultiplierAbs, PumpDownCapacity]
+            Mode = Min
+        }
+        PumpQuantityClampedFromDown
+        {
+            Type = MultiValue
+            Values = [HeatMultiplierAbs, PumpUpCapacity]
+            Mode = Min
+        }
 
         HeatPumpFromUp
 		{
 			Type = ResourceConverter
 			OperationalToggle = PumpFromUpToggle
-			FromStorage = PortUpOutput
+			From [{
+                Storage = PortUpOutput
+                MinQuantityForConversion = 550 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
+                Quantity {
+                    BaseValue = 1
+                    BuffType = MMCTHeatTransfer
+                    BuffMode = Multiply
+                }
+            }]
+            // FromStorage = PortUpOutput
+			// MinFromQuantityForConversion = 1
+			// FromQuantity {
+            //     BaseValue = 1 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
+            //     BuffType = MMCTHeatTransfer
+            //     BuffMode = Multiply
+            // }
             ToStorage = PortDownInput
-			MinFromQuantityForConversion = 1
-			FromQuantity {
-                BaseValue = 1 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
-                BuffType = HeatDissipation
-                BuffMode = Multiply
-            }
-            ToQuantity = &FromQuantity
+            ToQuantity = &From/0/Quantity
 			Interval = 0.1
 		}
         HeatPumpFromDown
@@ -163,10 +226,10 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			OperationalToggle = PumpFromDownToggle
 			FromStorage = PortDownOutput
             ToStorage = PortUpInput
-			MinFromQuantityForConversion = 1
+			MinFromQuantityForConversion = 550 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
 			FromQuantity {
-                BaseValue = -1 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
-                BuffType = HeatDissipation
+                BaseValue = 1
+                BuffType = MMCTHeatTransfer
                 BuffMode = Multiply
             }
             ToQuantity = &FromQuantity

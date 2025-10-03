@@ -253,7 +253,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
             Type = ValueLerp
             InputValue = HeatStorageIn
             InputRange = [0.0, 1.0]
-            OutputRange = [0, 2000]
+            OutputRange = [0, 4400]
         }
         PumpMoreBuff
 		{
@@ -293,7 +293,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			FromStorage = NetworkHeatOutput
 			FromQuantity = 1000 * (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
 			ToStorage = SteamStorage
-			ToQuantity = 2000 //TODO: Adjust quantities to be meaningfull
+			ToQuantity = 1200 //TODO: Adjust quantities to be meaningfull. 1500 is reacor core, 400 is small boiler
 			Interval = 0.1
             OperationalToggle = IsOperational
             MinToQuantityForConversion = (&ToQuantity)
@@ -699,6 +699,8 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
     Stats
 	{
         HeatCapacity = (&~/Part/Components/HeatStorageIn/MaxResources) / (&<./Data/statuses/heat/heat.rules>/STATUS_TO_RESOURCE_RATIO)
+		DISSIPATION_RESOURCE = (&~/Part/Components/SteamGeneration/FromQuantity) / (&~/Part/Components/SteamGeneration/Interval)
+		HeatDissipation = (&DISSIPATION_RESOURCE) * (&<./Data/statuses/heat/heat.rules>/RESOURCE_TO_STATUS_RATIO)
 		MMCTThermalGeneration = 1 / (&~/Part/Components/SteamGeneration/Interval) * (&~/Part/Components/SteamGeneration/ToQuantity) / 100
 		MMCTThermalCapacity = (&~/Part/Components/SteamStorage/MaxResources) / 100
 		MMCTPowerBandwidth = 1/ (&~/Part/Components/ThermalDelivery/Interval) * (&~/Part/Components/ThermalDelivery/ToQuantity) / 100

@@ -202,6 +202,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 			Criteria {
 			    Categories = [uses_power, power_storage, cable_receptor]
 			}
+			ShowBuffRange = true
 		}
 		BuffProviderLongRangeCables
 		{

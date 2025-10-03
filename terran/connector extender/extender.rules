@@ -1,0 +1,172 @@
+Part : <./Data/ships/terran/base_part_terran.rules>/Part
+{
+	NameKey = "Parts/ConnectorExtender"
+	IconNameKey = "Parts/ConnectorExtenderIcon"
+	ID = YBJ.MMCTConnectorExtender
+	EditorGroup = "Power"
+	DescriptionKey = "Parts/ConnectorExtenderDesc"
+	Resources
+	[
+		[coil, 12]
+		[steel, 6]
+	]
+	TypeCategories = [cable_extender, non_flammable]
+	//ReceivableBuffs : ^/0/ReceivableBuffs [MMCTCableCable]
+	ReceivableBuffs : []
+	Size = [1, 1]
+	MaxHealth = 1000
+    EditorIcon
+	{
+		Texture
+		{
+			File = "icon.png"
+			SampleMode = Linear
+		}
+		Size = [32, 32]
+	}
+	AllowedDoorLocations [] // No doors
+    Components : ^/0/Components
+	{
+        ProxyBatteryStorageUp = &<../cables.rules>/Part/Components/ProxyBatteryStorageUp
+        ProxyBatteryStorageRight = &<../cables.rules>/Part/Components/ProxyBatteryStorageRight
+        ProxyBatteryStorageDown = &<../cables.rules>/Part/Components/ProxyBatteryStorageDown
+        ProxyBatteryStorageLeft = &<../cables.rules>/Part/Components/ProxyBatteryStorageLeft
+
+        ProxyCapacitorUp = &<../cables.rules>/Part/Components/ProxyCapacitorUp
+        ProxyCapacitorRight = &<../cables.rules>/Part/Components/ProxyCapacitorRight
+        ProxyCapacitorDown = &<../cables.rules>/Part/Components/ProxyCapacitorDown
+        ProxyCapacitorLeft = &<../cables.rules>/Part/Components/ProxyCapacitorLeft
+
+        ProxyPowerSourceDown : &<../cables.rules>/Part/Components/ProxyBatteryStorageDown
+        {
+            ProxyableComponents
+            [
+                {
+                    PartCriteria
+                    {
+                        Category = provides_power
+                    }
+                    ComponentID = BatteryStorage
+                }
+            ]
+        }
+        ProxyPowerSourceRight : ProxyPowerSourceDown
+        {
+            PartLocation = [1, 0]
+        }
+        ProxyPowerSourceLeft : ProxyPowerSourceDown
+        {
+            PartLocation = [-1, 0]
+        }
+        ProxyPowerSourceUp : ProxyPowerSourceDown
+        {
+            PartLocation = [0, -1]
+        }
+
+        Port_Up : &<../cables.rules>/Part/Components/Port_Up
+        {
+            Types = [ plasma, plasma_out ]
+            IncompatibleTypes = [ plasma_out ]
+            RouteSource = NetworkNodeUp
+			RouteEndpoint = NetworkNodeUp
+			BlueprintRouteSource = NetworkNodeUp
+			BlueprintRouteEndpoint = NetworkNodeUp
+        }
+        Port_Right : &<../cables.rules>/Part/Components/Port_Right
+        {
+            Types = [ plasma, plasma_in, plasma_out ]
+            IncompatibleTypes = [ plasma_out ]
+        }
+        Port_Down : &<../cables.rules>/Part/Components/Port_Down
+        {
+            Types = [ plasma, plasma_in ]
+            IncompatibleTypes = [ plasma_in ]
+            RouteSource = NetworkNodeDown
+			RouteEndpoint = NetworkNodeDown
+			BlueprintRouteSource = NetworkNodeDown
+			BlueprintRouteEndpoint = NetworkNodeDown
+        }
+        Port_Left : &<../cables.rules>/Part/Components/Port_Left
+        {
+            Types = [ plasma, plasma_in, plasma_out ]
+            IncompatibleTypes = [ plasma_out ]
+        }
+
+        NetworkNode : &<../cables.rules>/Part/Components/NetworkNode {}
+		NetworkNodeUp : &NetworkNode {}
+        NetworkNodeDown : &NetworkNode {}
+
+        BuffProvider
+		{
+			Type = GridBuffProvider
+            GridDistance = 1
+			BuffType = MMCTCableReceptor
+			Criteria {
+			    Categories = [cable_receptor, cable]
+			}
+			BlueprintOnly = true
+		}
+        BuffProviderSinks : &BuffProvider
+		{
+			Criteria {
+			    Category = uses_power
+			}
+			BlueprintOnly = false
+		}
+
+        CombinedBatteryReceivers : &<../diode connector/connector.rules>/Part/Components/CombinedBatteryStorageUp {}
+
+        //Zasysamy energię i oddajemy na górę
+        BatteryStorageSource
+        {
+            Type = MultiResourceStorage
+            ResourceType = battery
+            ResourceStorages = [ProxyPowerSourceRight, ProxyPowerSourceDown, ProxyPowerSourceLeft]
+            RemoveMode = PrioritizeMostResources
+        }
+
+        //Rozprowadzamy energię która przyszła z dołu
+        BatteryStorageSink
+        {
+            Type = MultiResourceStorage
+            ResourceType = battery
+            ResourceStorages = [CombinedBatteryReceivers, ProxyBatteryStorageUp, ProxyCapacitorUp, ProxyBatteryStorageRight, ProxyCapacitorRight, ProxyBatteryStorageLeft, ProxyCapacitorLeft]
+            AddMode = PrioritizeLeastResources
+        }
+
+        Graphics
+		{
+			Type = Graphics
+			Location = [.5, .5]
+            Floor
+            {
+                Layer = "floors"
+				DamageLevels
+				[
+					{
+						File = "floor.png"
+						Size = [1, 1]
+					}
+				]
+            }
+			Roof
+			{
+				Layer = "roofs"
+				DamageLevels
+				[
+					{
+						File = "roof.png"
+						NormalsFile = "roof_normals.png"
+						Size = [1, 1]
+					}
+				]
+			}
+		}
+        Blueprints
+		{
+			Type = BlueprintSprite
+			File = "blueprints.png"
+			Size = [1, 1]
+		}
+    }
+}
