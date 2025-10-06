@@ -309,12 +309,12 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 		{
 			Type = ResourceConverter
 			FromStorage = SteamStorage
-			FromQuantity = 2250
+			FromQuantity = 1500
 			ToStorage = ProxyHeatStorageUp
-			ToQuantity = 2250
+			ToQuantity = 1500
 			Interval = 0.1
             OperationalToggle = IsOperational
-            MinToQuantityForConversion = (&ToQuantity)
+            MinToQuantityForConversion = (&ToQuantity) / 2
             MinFromQuantityForConversion = (&FromQuantity)
 		}
 

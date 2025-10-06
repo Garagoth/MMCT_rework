@@ -1,6 +1,6 @@
 ID = YBJ.MMCTMod.Rework
 Name = "MMCT rework - Power Rework, Cables and Stuff"
-Version = 1.3.25
+Version = 1.3.26
 CompatibleGameVersions = ["0.30.1"]
 ModifiesMultiplayer = true
 Author = "yobeefjerky, Garagoth"
@@ -222,11 +222,19 @@ Actions
 	{
 		Action = Add
 		AddTo = "<gui/game/parts/part_highlights.rules>/PartHighlights"
-		Name = "MMCTCableReceptor"
-		ToAdd
-		{
-			Color = [200,255,90,100]
-			BorderColor = [200,255,0,200]
+		Name = MMCTCableReceptor
+		ToAdd = {
+				Color = [200,255,90,100]
+				BorderColor = [200,255,0,200]
+		}
+	}
+	{
+		Action = Add
+		AddTo = "<gui/game/parts/part_highlights.rules>/PartHighlights"
+		Name = MMCTReactorPower
+		ToAdd = {
+			Color = [100,150,255,100]
+			BorderColor = [100,150,255,200]
 		}
 	}
 	
