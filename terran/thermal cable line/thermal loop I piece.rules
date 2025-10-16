@@ -303,7 +303,7 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 
 	Stats
 	{
-		MMCTPowerBandwidth = 1 / (&~/Part/transferInterval) * (&~/Part/transferQuantity) / 100
+		MMCTThermalBandwidth = 1 / (&~/Part/transferInterval) * (&~/Part/transferQuantity) / 100
 		MMCTThermalEfficiency = ((&~/Part/Components/Entropy/FromQuantity) / (&~/Part/transferInterval)) / ((&~/Part/transferQuantity) / (&~/Part/Components/Entropy/Interval)) * 100
 	}
 

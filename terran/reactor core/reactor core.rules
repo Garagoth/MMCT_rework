@@ -283,6 +283,6 @@ Part : <./Data/ships/terran/base_part_terran.rules>/Part
 	{
 		MMCTThermalGeneration = 1 / (&~/Part/Components/HeatGeneration/Interval) * (&~/Part/Components/HeatGeneration/ToQuantity) / 100
 		MMCTThermalCapacity = (&~/Part/Components/HeatStorage/MaxResources) / 100
-		MMCTPowerBandwidth = 1/ (&~/Part/Components/ThermalDelivery/Interval) * (&~/Part/Components/ThermalDelivery/ToQuantity) / 100
+		MMCTThermalBandwidth = 1/ (&~/Part/Components/ThermalDelivery/Interval) * (&~/Part/Components/ThermalDelivery/ToQuantity) / 100
 	}
 }
